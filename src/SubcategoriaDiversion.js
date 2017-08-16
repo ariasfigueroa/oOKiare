@@ -40,7 +40,7 @@ class SubcategoriaDiversion extends Component{
         </TouchableOpacity>
       </View>),
       headerLeft: (<View/>),
-      tabBarLabel: 'Diversion',
+      tabBarLabel: 'Diversión',
       tabBarIcon: ({ tintColor }) => (
         <Icon
           name="bullhorn"
@@ -118,7 +118,7 @@ class SubcategoriaDiversion extends Component{
                 size="large"
               />
               <Text style={styles.spinnerText}>ESTAMOS BUSCANDO ALGO</Text>
-              <Text style={styles.spinnerTextBigger}>PARA TÍ</Text>
+              <Text style={styles.spinnerTextBigger}>PARA TI</Text>
 
             </View>
           </View>

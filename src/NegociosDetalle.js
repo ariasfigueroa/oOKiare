@@ -54,7 +54,7 @@ class NegociosDetalle extends Component{
         <TouchableOpacity
         style={{marginLeft: 20}}
           onPress={()=>{
-            Alert.alert('Oye...', 'Te enviaremos a una app exterena (Mapas), estas deacuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
+            Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
               var url = null;
               let coordenates = navigation.state.params.data.latitud + ','+ navigation.state.params.data.longitud;
               if (Platform.OS === 'android'){
@@ -121,7 +121,7 @@ class NegociosDetalle extends Component{
     }
 
     _sendMeToMaps(latitudeDelta, longitudeDelta){
-    Alert.alert('Oye...', 'Te enviaremos a una app exterena (Mapas), estas deacuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
+    Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
       var url = null;
       let coordenates = latitudeDelta + ','+ longitudeDelta
       if (Platform.OS === 'android'){
@@ -164,7 +164,7 @@ class NegociosDetalle extends Component{
             <View>
             {this.props.navigation.state.params.data.imagenExtra ? (<View>
               <Text style={styles.masInformacionStyle}>
-                Conócenos más :
+                ¡Conócenos más!
               </Text>
               <FlatList
                 horizontal={true}
@@ -188,7 +188,7 @@ class NegociosDetalle extends Component{
                 (
                   <View>
                   <Text style={[styles.horarioTextStyle, {fontWeight: 'bold'}]}>
-                    Dirección:
+                    Dirección
                   </Text>
                   <Text style={[styles.horarioTextStyle, {marginBottom: 20}]}>
                     {this.props.navigation.state.params.data.direccion}
@@ -200,7 +200,7 @@ class NegociosDetalle extends Component{
                   (
                     <View>
                     <Text style={[styles.horarioTextStyle, {fontWeight: 'bold'}]}>
-                      Distancia:
+                      Distancia
                     </Text>
                     <Text style={[styles.horarioTextStyle, {marginBottom: 20}]}>
                       {this.props.navigation.state.params.distancia}KM
@@ -214,7 +214,7 @@ class NegociosDetalle extends Component{
               (
                 <View>
                 <Text style={[styles.horarioTextStyle, {fontWeight: 'bold'}]}>
-                  Horario:
+                  Horario
                 </Text>
                 <Text style={styles.horarioTextStyle}>
                   Domingo: {this.props.navigation.state.params.data.horarios[0].abi} - {this.props.navigation.state.params.data.horarios[0].cer}
@@ -226,7 +226,7 @@ class NegociosDetalle extends Component{
                   Martes: {this.props.navigation.state.params.data.horarios[2].abi} - {this.props.navigation.state.params.data.horarios[2].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Mercoles: {this.props.navigation.state.params.data.horarios[3].abi} - {this.props.navigation.state.params.data.horarios[3].cer}
+                  Miércoles: {this.props.navigation.state.params.data.horarios[3].abi} - {this.props.navigation.state.params.data.horarios[3].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
                   Jueves: {this.props.navigation.state.params.data.horarios[4].abi} - {this.props.navigation.state.params.data.horarios[4].cer}
@@ -235,7 +235,7 @@ class NegociosDetalle extends Component{
                   Viernes: {this.props.navigation.state.params.data.horarios[5].abi} - {this.props.navigation.state.params.data.horarios[5].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Sabado: {this.props.navigation.state.params.data.horarios[6].abi} - {this.props.navigation.state.params.data.horarios[6].cer}
+                  Sábado: {this.props.navigation.state.params.data.horarios[6].abi} - {this.props.navigation.state.params.data.horarios[6].cer}
                 </Text>
                 </View>
               ) : null}

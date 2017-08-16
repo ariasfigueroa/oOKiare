@@ -62,7 +62,7 @@ class SubcategoriaPistear extends Component{
       this.setState({data:[...this.props.navigation.state.params.dataPistear.values()]});
     }
 
-    
+
     _obtenerNegociosPorSubcategoria(negocios, subcategoriaNombre, imagenBannerUrl){
       this.setState({hideIndicator: false});
       Firebase.subcategoriasPorEstado(this.props.navigation.state.params.estadoSeleccionado, '/negocios', (snapshot)=>{
@@ -118,7 +118,7 @@ class SubcategoriaPistear extends Component{
                 size="large"
               />
               <Text style={styles.spinnerText}>ESTAMOS BUSCANDO ALGO</Text>
-              <Text style={styles.spinnerTextBigger}>PARA TÍ</Text>
+              <Text style={styles.spinnerTextBigger}>PARA TI</Text>
 
             </View>
           </View>
