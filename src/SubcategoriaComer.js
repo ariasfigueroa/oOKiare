@@ -118,7 +118,7 @@ class SubcategoriaComer extends Component{
                 size="large"
               />
               <Text style={styles.spinnerText}>ESTAMOS BUSCANDO ALGO</Text>
-              <Text style={styles.spinnerTextBigger}>PARA TÍ</Text>
+              <Text style={styles.spinnerTextBigger}>PARA TI</Text>
 
             </View>
           </View>

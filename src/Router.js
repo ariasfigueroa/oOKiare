@@ -15,7 +15,7 @@ const Tabs = TabNavigator({
   Comer: {
     screen: hoistNonReactStatic(({ screenProps }) => <SubcategoriaComer screenProps={{estadoSeleccionado: screenProps.estadoSeleccionado, data: screenProps.dataComer}}/>, SubcategoriaComer),
   },
-  Diversion: {
+  Diversión: {
     screen: hoistNonReactStatic(({ screenProps }) => <SubcategoriaDiversion screenProps={{estadoSeleccionado: screenProps.estadoSeleccionado, data: screenProps.dataDiversion}}/>, SubcategoriaDiversion),
   },
   Pistear: {

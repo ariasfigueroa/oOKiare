@@ -101,7 +101,7 @@ class KiareApp extends Component {
           this.setState({estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre})
           Firebase.subcategoriasPorEstado(closeEstado, '/negocios', this._obtenerDatosDeSnapshot.bind(this));
         } else {
-          console.log('No se obtubo estado...');
+          console.log('No se obtubo ciudad...');
         }
       });
      } else {
@@ -210,7 +210,7 @@ class KiareApp extends Component {
                 size="large"
               />
               <Text style={styles.spinnerText}>ESTAMOS BUSCANDO ALGO</Text>
-              <Text style={styles.spinnerTextBigger}>PARA TÍ</Text>
+              <Text style={styles.spinnerTextBigger}>PARA TI</Text>
 
             </View>
           </View>
@@ -232,7 +232,7 @@ class KiareApp extends Component {
                 size="large"
               />
               <Text style={styles.spinnerText}>ESTAMOS BUSCANDO ALGO</Text>
-              <Text style={styles.spinnerTextBigger}>PARA TÍ</Text>
+              <Text style={styles.spinnerTextBigger}>PARA TI</Text>
 
             </View>
           </View>
@@ -248,7 +248,7 @@ class KiareApp extends Component {
           <View style={styles.centeredComponentsListState}>
             <View style={styles.centeredComponents}>
               <Text style={styles.textHeaderSelectedStateStyle}>
-                ENCONTRAMOS PARA TÍ
+                ENCONTRAMOS PARA TI
               </Text>
               <TouchableOpacity
                 onPress={()=>{
@@ -380,11 +380,11 @@ const Tabs = TabNavigator({
   Comer: {
     screen: SubcategoriaComer,
   },
-  Diversion: {
+  Diversión: {
     screen: SubcategoriaDiversion,
   },
   Pistear: {
-    screen: SubcategoriaEventos ,
+    screen: SubcategoriaEventos,
   },
   Eventos: {
     screen: SubcategoriaPistear,
