@@ -45,6 +45,11 @@ class KiareApp extends Component {
       estadoSeleccionado: null,
       estadoNombre: null,
     }
+    console.log = ()=>{};
+    console.info = ()=>{};
+    console.error = ()=>{};
+    console.warn = ()=>{};
+    console.debug = ()=>{};
   }
 
   componentDidMount(){
