@@ -42,11 +42,13 @@ class NegociosDetalle extends Component{
             }
           }
         >
+        <View>
           <Ionicons
             name="ios-call"
             size={20}
             color="rgba(207, 187, 164, 1.0)"
           />
+        </View>
         </TouchableOpacity>
       ) : null}
 
@@ -57,23 +59,26 @@ class NegociosDetalle extends Component{
             Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
               var url = null;
               let coordenates = navigation.state.params.data.latitud + ','+ navigation.state.params.data.longitud;
+              let dirflg = '&dirflg=d'
               if (Platform.OS === 'android'){
                 // here goes the call to open the google maps
                 url = 'geo:';
               } else {
                 // her goes the call to open Apple maps
-                url = 'http://maps.apple.com/?ll=';
+                url = 'http://maps.apple.com/?daddr=';
               }
-              Linking.openURL(url+coordenates);
+              Linking.openURL(url+coordenates+dirflg);
             }},],  { cancelable: false });
           }
         }
         >
-          <Icon
-            name="location"
-            size={20}
-            color="rgba(207, 187, 164, 1.0)"
-          />
+          <View>
+            <Icon
+              name="location"
+              size={20}
+              color="rgba(207, 187, 164, 1.0)"
+            />
+          </View>
         </TouchableOpacity>
       ) : null}
 
