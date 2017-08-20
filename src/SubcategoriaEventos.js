@@ -55,11 +55,22 @@ class SubcategoriaEventos extends Component{
       this.state = {
         data: [],
       }
-      //console.log(this.props.screenProps);
     }
 
     componentWillMount(){
-      this.setState({data:[...this.props.navigation.state.params.dataEventos.values()]});
+      var data = [...this.props.navigation.state.params.dataEventos.values()];
+      data.sort((a, b) =>{
+        var nombreA = a.nombre.toUpperCase();
+        var nombreB = b.nombre.toUpperCase();
+        if(nombreA < nombreB){
+          return -1;
+        }
+        if(nombreA > nombreB){
+          return 1;
+        }
+        return 0;
+      });
+      this.setState({data});
     }
 
 
