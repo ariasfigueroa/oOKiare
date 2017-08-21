@@ -19,7 +19,9 @@ import SubcategoriaPistear from './SubcategoriaPistear';
 import SubcategoriaEspecial from './SubcategoriaEspecial';
 import NegociosPorCategoria from './NegociosPorCategoria';
 import NegociosDetalle from './NegociosDetalle';
+import KiareAppMenu from './KiareAppMenu';
 import WebBrowser from './WebBrowser';
+import Subcategories from './Subcategories';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 
@@ -40,8 +42,7 @@ class KiareApp extends Component {
       error: null,
       estadoSeleccionado: null,
       estadoNombre: null,
-      dataBusiness: null,
-      dataSubcategories: null,
+      dataCategories: null,
     }
     console.log = ()=>{};
     console.info = ()=>{};
@@ -58,7 +59,7 @@ class KiareApp extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        Firebase.obtenerArbol('/estados', this._obtenerEstados.bind(this));
+        Firebase.obtenerArbol('/ciudades', this._obtenerEstados.bind(this));
       },
       (error) => {
         console.log("No Geolocalization");
@@ -70,9 +71,10 @@ class KiareApp extends Component {
 
   _obtenerEstados(snapshot){
     if (snapshot) {
-      currentDistance = 0;
-      closeEstado = null;
-      closeEstadoNombre = null;
+      var currentDistance = 0;
+      var closeEstado = null;
+      var closeEstadoNombre = null;
+      var categorias = null;
       var index = 0;
       snapshot.forEach((snapshotChild)=>{
         index++;
@@ -93,17 +95,22 @@ class KiareApp extends Component {
               currentDistance = distancia;
               closeEstado = key;
               closeEstadoNombre = snapshotChild.child('nombre').val();
+              categorias = snapshotChild.child('categorias').val();
             }
-        } else {
-          currentDistance = distancia;
-          closeEstado = key;
-          closeEstadoNombre = snapshotChild.child('nombre').val();
-        }
+            } else {
+              currentDistance = distancia;
+              closeEstado = key;
+              closeEstadoNombre = snapshotChild.child('nombre').val();
+              categorias = snapshotChild.child('categorias').val();
+            }
 
         if (closeEstado && (index === snapshot.numChildren())){
-          this.setState({estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre});
-          console.log('antes the extraer subcategoriasPorEstado');
-          Firebase.subcategoriasPorEstado(closeEstado, '/negocios', this._getSnapshotData.bind(this));
+          //Firebase.subcategoriasPorEstado(closeEstado, '/negocios', this._getSnapshotData.bind(this));
+          var dataCategories = Firebase.jsonToArray(categorias);
+          const { navigate } = this.props.navigation;
+          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this), latitude: this.state.latitude, longitude: this.state.longitude});
+          this.setState({hideIndicator: true, estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre});
+
         } else {
           console.log('No se obtubo ciudad...');
         }
@@ -448,6 +455,9 @@ export const Stack = StackNavigator({
   Principal: {
     screen: KiareApp,
   },
+  KiareAppMenu: {
+    screen: KiareAppMenu,
+  },
   Menu: {
     screen: Tabs,
   },
@@ -459,6 +469,9 @@ export const Stack = StackNavigator({
   },
   WebBrowser: {
     screen: WebBrowser,
+  },
+  Subcategories: {
+    screen: Subcategories,
   }
 },
 {
