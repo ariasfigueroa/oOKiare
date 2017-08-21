@@ -35,15 +35,13 @@ class KiareApp extends Component {
     super(props);
     this.state = {
       hideIndicator: false,
-      dataComer: null,
-      dataDiversion: null,
-      dataEventos: null,
-      dataPistear: null,
       latitude: null,
       longitude: null,
       error: null,
       estadoSeleccionado: null,
       estadoNombre: null,
+      dataBusiness: null,
+      dataSubcategories: null,
     }
     console.log = ()=>{};
     console.info = ()=>{};
@@ -103,8 +101,9 @@ class KiareApp extends Component {
         }
 
         if (closeEstado && (index === snapshot.numChildren())){
-          this.setState({estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre})
-          Firebase.subcategoriasPorEstado(closeEstado, '/negocios', this._obtenerDatosDeSnapshot.bind(this));
+          this.setState({estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre});
+          console.log('antes the extraer subcategoriasPorEstado');
+          Firebase.subcategoriasPorEstado(closeEstado, '/negocios', this._getSnapshotData.bind(this));
         } else {
           console.log('No se obtubo ciudad...');
         }
@@ -112,7 +111,6 @@ class KiareApp extends Component {
      } else {
       console.log('snapshot es nulo');
     }
-
   }
 
   _getDistance(pointDelta){
@@ -186,11 +184,42 @@ class KiareApp extends Component {
     }
   }
 
-  _retornoDatos(dataComer, dataDiversion, dataEventos, dataPistear){
+
+  _getSnapshotData(snapshot){
+    try {
+      if (snapshot){
+        var dataSubcategories = [];
+        var dataBusiness = Firebase.snapshotToMap(snapshot);
+        var businessSubcategories = Firebase.getSubcategoriesFrom(dataBusiness);
+        Firebase.obtenerArbol('/subcategorias/', (snapshotSubcategories) =>{
+          snapshotSubcategories.forEach((childSnapshot)=>{
+            if (businessSubcategories.has(childSnapshot.key)){
+              let subcategoria = {
+                nombre: childSnapshot.child('nombre').val(),
+                imagenUrl: childSnapshot.child('imagenUrl').val(),
+                categorias: childSnapshot.child('categorias').val(),
+                negocios: childSnapshot.child('negocios').val(),
+                key: childSnapshot.key,
+                imagenBannerUrl: childSnapshot.child('imagenBannerUrl').val(),
+              }
+              dataSubcategories.push(subcategoria);
+            }
+          });
+          this._retornoDatos(dataSubcategories, dataBusiness);
+        });
+      }else {
+        console.log('snapshot es nulo');
+      }
+    }catch (error){
+      console.log(error);
+    }
+
+  }
+
+  _retornoDatos(dataSubcategories, dataBusiness){
       const { navigate } = this.props.navigation;
-      navigate('Menu', {dataComer, dataDiversion, dataEventos, dataPistear, estadoSeleccionado: this.state.estadoSeleccionado, estadoNombre: this.state.estadoNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this), latitude: this.state.latitude, longitude: this.state.longitude});
-      this.setState({hideIndicator: true, dataComer, dataDiversion, dataEventos, dataPistear});
-      console.log(this.state);
+      navigate('Menu', {dataSubcategories, dataBusiness, estadoSeleccionado: this.state.estadoSeleccionado, estadoNombre: this.state.estadoNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this), latitude: this.state.latitude, longitude: this.state.longitude});
+      this.setState({hideIndicator: true, dataSubcategories, dataBusiness});
   }
 
   _mostrarCambioEstadoManual(){

@@ -56,11 +56,19 @@ class SubcategoriaComer extends Component{
         data: [],
         hideIndicator: true,
       }
-      console.log(this.props.navigation.state.params)
+      console.log(this.props.navigation.state.params);
     }
 
     componentWillMount(){
-      var data = [...this.props.navigation.state.params.dataComer.values()];
+      let categoriaL = 'comer';
+      var data = this.props.navigation.state.params.dataSubcategories
+      .filter(item => {
+        var returnValue = false;
+        for (var categoria in item.categorias){
+          returnValue = categoria.toUpperCase().indexOf(categoriaL.toUpperCase()) >= 0;
+        }
+       return returnValue;
+      });
       data.sort((a, b) =>{
         var nombreA = a.nombre.toUpperCase();
         var nombreB = b.nombre.toUpperCase();
@@ -77,38 +85,64 @@ class SubcategoriaComer extends Component{
 
     _obtenerNegociosPorSubcategoria(negocios, subcategoriaNombre, imagenBannerUrl){
       this.setState({hideIndicator: false});
-      Firebase.subcategoriasPorEstado(this.props.navigation.state.params.estadoSeleccionado, '/negocios', (snapshot)=>{
-        if (snapshot){
-          var data = new Map();
-          for (var value in negocios){
-            if (snapshot.hasChild(value)){
-              var snapshotLocal = snapshot.child(value).val();
-              snapshotLocal['key'] = snapshot.child(value).key;
-              // calculate schedule start
-              if ( Object.keys(snapshotLocal.horarios).length > 0){
-                var date = new Date();
-                if ((snapshotLocal.horarios[date.getDay()].abi && snapshotLocal.horarios[date.getDay()].cer) && (!(snapshotLocal.horarios[date.getDay()].abi === 0 && snapshotLocal.horarios[date.getDay()].cer === 0) && (snapshotLocal.horarios[date.getDay()].abi !== snapshotLocal.horarios[date.getDay()].cer))){
-                  if (snapshotLocal.horarios[date.getDay()].abi < date.getHours() && snapshotLocal.horarios[date.getDay()].cer > date.getHours()){
-                    snapshotLocal['isBusinessOpen'] = 'open';
-                  } else {
-                   snapshotLocal['isBusinessOpen'] = 'closed';
-                  }
+      var data = new Map();
+      for (var negocioKey in negocios){
+          if (this.props.navigation.state.params.dataBusiness.has(negocioKey)){
+            var negocio = this.props.navigation.state.params.dataBusiness.get(negocioKey);
+            console.log(negocio);
+            negocio['key'] = negocioKey;
+            if ( Object.keys(negocio.horarios).length > 0){
+              var date = new Date();
+              if ((negocio.horarios[date.getDay()].abi && negocio.horarios[date.getDay()].cer) && (!(negocio.horarios[date.getDay()].abi === 0 && negocio.horarios[date.getDay()].cer === 0) && (negocio.horarios[date.getDay()].abi !== negocio.horarios[date.getDay()].cer))){
+                if (negocio.horarios[date.getDay()].abi < date.getHours() && negocio.horarios[date.getDay()].cer > date.getHours()){
+                  negocio['isBusinessOpen'] = 'open';
                 } else {
-                  snapshotLocal['isBusinessOpen'] = '';
+                 negocio['isBusinessOpen'] = 'closed';
                 }
               } else {
-                snapshotLocal['isBusinessOpen'] = '';
+                negocio['isBusinessOpen'] = '';
               }
-              // calculate schedule end
-              data.set(snapshotLocal.key, snapshotLocal);
+            } else {
+              negocio['isBusinessOpen'] = '';
             }
+            data.set(negocio.key, negocio);
           }
-          this.props.navigation.navigate('NegociosPorCategoria', {dataNegocios: data, subcategoriaNombre, imagenBannerUrl, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
-          this.setState({hideIndicator: true});
-        } else {
-          console.log('snapshot es nulo en _obtenerNegociosPorSubcategoria');
-        }
-      });
+      }
+      this.props.navigation.navigate('NegociosPorCategoria', {dataNegocios: data, subcategoriaNombre, imagenBannerUrl, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+      this.setState({hideIndicator: true});
+
+      //  Firebase.subcategoriasPorEstado(this.props.navigation.state.params.estadoSeleccionado, '/negocios', (snapshot)=>{
+      //    if (snapshot){
+      //      var data = new Map();
+      //      for (var value in negocios){
+      //        if (snapshot.hasChild(value)){
+      //          var snapshotLocal = snapshot.child(value).val();
+      //          snapshotLocal['key'] = snapshot.child(value).key;
+      //          // calculate schedule start
+      //          if ( Object.keys(snapshotLocal.horarios).length > 0){
+      //            var date = new Date();
+      //            if ((snapshotLocal.horarios[date.getDay()].abi && snapshotLocal.horarios[date.getDay()].cer) && (!(snapshotLocal.horarios[date.getDay()].abi === 0 && snapshotLocal.horarios[date.getDay()].cer === 0) && (snapshotLocal.horarios[date.getDay()].abi !== snapshotLocal.horarios[date.getDay()].cer))){
+      //              if (snapshotLocal.horarios[date.getDay()].abi < date.getHours() && snapshotLocal.horarios[date.getDay()].cer > date.getHours()){
+      //                snapshotLocal['isBusinessOpen'] = 'open';
+      //              } else {
+      //               snapshotLocal['isBusinessOpen'] = 'closed';
+      //              }
+      //            } else {
+      //              snapshotLocal['isBusinessOpen'] = '';
+      //            }
+      //          } else {
+      //            snapshotLocal['isBusinessOpen'] = '';
+      //          }
+      //          // calculate schedule end
+      //          data.set(snapshotLocal.key, snapshotLocal);
+      //        }
+      //      }
+      //      this.props.navigation.navigate('NegociosPorCategoria', {dataNegocios: data, subcategoriaNombre, imagenBannerUrl, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+      //      this.setState({hideIndicator: true});
+      //    } else {
+      //      console.log('snapshot es nulo en _obtenerNegociosPorSubcategoria');
+      //    }
+      //  });
     }
 
 
