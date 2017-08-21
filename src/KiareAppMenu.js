@@ -25,27 +25,6 @@ class KiareAppMenu extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     headerTitle: navigation.state.params.estadoNombre.toUpperCase(),
-    headerRight:
-    (<View style={{marginRight: 20,}}>
-      <TouchableOpacity
-        onPress={
-          ()=>{
-            navigation.state.params.mostrarCambioEstadoManual();
-            const backAction = NavigationActions.back();
-            navigation.dispatch(backAction)
-          }
-        }
-      >
-      <View>
-        <Icon
-          name="exchange"
-          size={25}
-          color="rgba(207, 187, 164, 1.0)"
-        />
-      </View>
-
-      </TouchableOpacity>
-    </View>),
     headerLeft: (<View/>),
   });
 
