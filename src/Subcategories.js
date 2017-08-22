@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
@@ -73,46 +74,66 @@ class Subcategories extends Component{
 
 
   render(){
-    return(
-      <View style={styles.container}>
-        <StatusBar
-           barStyle="light-content"
-        />
-        <Image source={require('../resources/images/fondo_nuevo.png')}/>
-        <View style={styles.containerList}>
-          <ScrollView>
-            <FlatList
-              horizontal={false}
-              numColumns={3}
-              data={this.state.data}
-              renderItem={({item}) =>
-                <View style={styles.flatListSubcategoryContainerStyle}>
-                  <View style={styles.flatListSubcategorySquareStyle}>
-                    <TouchableOpacity
-                      style={styles.flatListSubcategoryTouchableStyle}
-                      onPress={() => {
-                        console.log('get business by Category');
-                      }}
-                      >
-                      {item.imagenUrl !== null ?
-                        <CachedImage
-                          resizeMode={'contain'}
-                          style={styles.flatListSubcategoryImageStyle}
-                          source={{uri: item.imagenUrl}}/> :
-                          null
-                        }
-                    </TouchableOpacity>
+    if (this.state.data && this.state.data.length > 0 ){
+      return(
+        <View style={styles.container}>
+          <StatusBar
+             barStyle="light-content"
+          />
+          <Image source={require('../resources/images/fondo_nuevo.png')}/>
+          <View style={styles.containerList}>
+            <ScrollView>
+              <FlatList
+                horizontal={false}
+                numColumns={3}
+                data={this.state.data}
+                renderItem={({item}) =>
+                  <View style={styles.flatListSubcategoryContainerStyle}>
+                    <View style={styles.flatListSubcategorySquareStyle}>
+                      <TouchableOpacity
+                        style={styles.flatListSubcategoryTouchableStyle}
+                        onPress={() => {
+                          this.props.navigation.navigate('BusinessBySubcategory', {subcategory: item.key, subcategoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                        }}
+                        >
+                        {item.imagenUrl !== null ?
+                          <CachedImage
+                            resizeMode={'contain'}
+                            style={styles.flatListSubcategoryImageStyle}
+                            source={{uri: item.imagenUrl}}/> :
+                            null
+                          }
+                      </TouchableOpacity>
+                    </View>
+                    <View style={{width: 85}}>
+                      <Text numberOfLines={2} style={{flex:1, backgroundColor: 'transparent', color: "#CFBBA4", fontSize: 12, fontWeight: '100', textAlign: 'center'}}> {item.nombre} </Text>
+                    </View>
                   </View>
-                  <View style={{width: 85}}>
-                    <Text numberOfLines={2} style={{flex:1, backgroundColor: 'transparent', color: "#CFBBA4", fontSize: 12, fontWeight: '100', textAlign: 'center'}}> {item.nombre} </Text>
-                  </View>
-                </View>
-              }
-            />
-          </ScrollView>
+                }
+              />
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <StatusBar
+             barStyle="light-content"
+          />
+          <Image source={require('../resources/images/fondo_nuevo.png')}/>
+          <View style={styles.containerLogoAndSpinner}>
+            <View style={styles.centeredComponents}>
+              <ActivityIndicator
+                animating={!(this.state.data && this.state.data.length > 0)}
+                style={{height: 80}}
+                size="large"
+              />
+            </View>
+          </View>
+        </View>
+      );
+    }
   }
 }
 
@@ -153,8 +174,17 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 60,
     height: 60,
-  }
-
+  },
+  containerLogoAndSpinner: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+  },
+  centeredComponents: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default Subcategories;

@@ -11,21 +11,16 @@ import {
 } from 'react-native';
 
 import Firebase from '../lib/Firebase';
-import { TabNavigator, StackNavigator, TabBarBottom } from 'react-navigation';
-import SubcategoriaComer from './SubcategoriaComer';
-import SubcategoriaDiversion from './SubcategoriaDiversion';
-import SubcategoriaEventos from './SubcategoriaEventos';
-import SubcategoriaPistear from './SubcategoriaPistear';
-import SubcategoriaEspecial from './SubcategoriaEspecial';
-import NegociosPorCategoria from './NegociosPorCategoria';
+import { StackNavigator, NavigationActions } from 'react-navigation';
+
 import NegociosDetalle from './NegociosDetalle';
 import KiareAppMenu from './KiareAppMenu';
 import WebBrowser from './WebBrowser';
 import Subcategories from './Subcategories';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import hoistNonReactStatic from 'hoist-non-react-statics';
+import BusinessBySubcategory from './BusinessBySubcategory';
 
-import { NavigationActions } from 'react-navigation'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 class KiareApp extends Component {
 
@@ -44,7 +39,7 @@ class KiareApp extends Component {
       estadoNombre: null,
       dataCategories: null,
     }
-    console.log = ()=>{};
+    //console.log = ()=>{};
     console.info = ()=>{};
     console.error = ()=>{};
     console.warn = ()=>{};
@@ -59,6 +54,7 @@ class KiareApp extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
+        console.log('before');
         Firebase.obtenerArbol('/ciudades', this._obtenerEstados.bind(this));
       },
       (error) => {
@@ -108,6 +104,7 @@ class KiareApp extends Component {
           //Firebase.subcategoriasPorEstado(closeEstado, '/negocios', this._getSnapshotData.bind(this));
           var dataCategories = Firebase.jsonToArray(categorias);
           const { navigate } = this.props.navigation;
+          console.log('done');
           navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this), latitude: this.state.latitude, longitude: this.state.longitude});
           this.setState({hideIndicator: true, estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre});
 
@@ -416,53 +413,12 @@ const styles = StyleSheet.create({
 
 export default KiareApp;
 
-
-const Tabs = TabNavigator({
-  Comer: {
-    screen: SubcategoriaComer,
-  },
-  Diversión: {
-    screen: SubcategoriaDiversion,
-  },
-  Pistear: {
-    screen: SubcategoriaEventos,
-  },
-  Eventos: {
-    screen: SubcategoriaPistear,
-  },
-  Especial: {
-    screen: SubcategoriaEspecial,
-  }
-},
-{
-  tabBarComponent: TabBarBottom,
-  tabBarPosition: "bottom",
-  tabBarOptions: {
-    style: {
-      backgroundColor: 'rgba(70, 34, 72, 1.0)'
-    },
-    labelStyle: {
-      fontSize: 12,
-      marginBottom: 6,
-  },
-    activeTintColor: 'rgba(207, 187, 164, 1.0)',
-    activeBackgroundColor: '#272238',
-  }
-}
-);
-
 export const Stack = StackNavigator({
   Principal: {
     screen: KiareApp,
   },
   KiareAppMenu: {
     screen: KiareAppMenu,
-  },
-  Menu: {
-    screen: Tabs,
-  },
-  NegociosPorCategoria: {
-    screen: NegociosPorCategoria,
   },
   NegociosDetalle: {
     screen: NegociosDetalle,
@@ -472,6 +428,9 @@ export const Stack = StackNavigator({
   },
   Subcategories: {
     screen: Subcategories,
+  },
+  BusinessBySubcategory: {
+    screen: BusinessBySubcategory
   }
 },
 {

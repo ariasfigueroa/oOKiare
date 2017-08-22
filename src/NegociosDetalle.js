@@ -121,10 +121,6 @@ class NegociosDetalle extends Component{
       console.log(this.props.navigation.state);
     }
 
-    componentWillMount(){
-
-    }
-
     _sendMeToMaps(latitudeDelta, longitudeDelta){
     Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
       var url = null;
@@ -222,25 +218,25 @@ class NegociosDetalle extends Component{
                   Horario
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Domingo: {this.props.navigation.state.params.data.horarios[0].abi} - {this.props.navigation.state.params.data.horarios[0].cer}
+                  Domingo: {(this.props.navigation.state.params.data.horarios[0].abi === 0 && this.props.navigation.state.params.data.horarios[0].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[0].abi +' - '+ this.props.navigation.state.params.data.horarios[0].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Lunes: {this.props.navigation.state.params.data.horarios[1].abi} - {this.props.navigation.state.params.data.horarios[1].cer}
+                  Lunes: {(this.props.navigation.state.params.data.horarios[1].abi === 0 && this.props.navigation.state.params.data.horarios[1].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[1].abi +' - '+ this.props.navigation.state.params.data.horarios[1].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Martes: {this.props.navigation.state.params.data.horarios[2].abi} - {this.props.navigation.state.params.data.horarios[2].cer}
+                  Martes: {(this.props.navigation.state.params.data.horarios[2].abi === 0 && this.props.navigation.state.params.data.horarios[2].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[2].abi +' - '+ this.props.navigation.state.params.data.horarios[2].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Miércoles: {this.props.navigation.state.params.data.horarios[3].abi} - {this.props.navigation.state.params.data.horarios[3].cer}
+                  Miércoles: {(this.props.navigation.state.params.data.horarios[3].abi === 0 && this.props.navigation.state.params.data.horarios[3].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[3].abi +' - '+ this.props.navigation.state.params.data.horarios[3].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Jueves: {this.props.navigation.state.params.data.horarios[4].abi} - {this.props.navigation.state.params.data.horarios[4].cer}
+                  Jueves: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[4].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[4].abi +' - '+ this.props.navigation.state.params.data.horarios[4].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Viernes: {this.props.navigation.state.params.data.horarios[5].abi} - {this.props.navigation.state.params.data.horarios[5].cer}
+                  Viernes: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[5].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[5].abi +' - '+ this.props.navigation.state.params.data.horarios[5].cer}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Sábado: {this.props.navigation.state.params.data.horarios[6].abi} - {this.props.navigation.state.params.data.horarios[6].cer}
+                  Sábado: {(this.props.navigation.state.params.data.horarios[6].abi === 0 && this.props.navigation.state.params.data.horarios[6].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[6].abi +' - '+ this.props.navigation.state.params.data.horarios[6].cer}
                 </Text>
                 </View>
               ) : null}
