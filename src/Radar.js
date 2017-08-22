@@ -196,6 +196,8 @@ class Radar extends Component{
                 style={{height: 80}}
                 size="large"
               />
+              <Text style={styles.spinnerText}>ESTAMOS BUSCANDO ALGO</Text>
+              <Text style={styles.spinnerTextBigger}>PARA TI</Text>
             </View>
           </View>
         </View>
@@ -288,6 +290,18 @@ const styles = StyleSheet.create({
   centeredComponents: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  spinnerText: {
+    backgroundColor: 'transparent',
+    color: 'white',
+    fontSize: 10,
+    fontWeight: '100',
+  },
+  spinnerTextBigger: {
+    backgroundColor: 'transparent',
+    color: 'white',
+    fontSize: 24,
+    fontWeight: '100',
   },
 
 });

@@ -43,7 +43,7 @@ class BusinessBySubcategory extends Component{
     constructor(props){
       super(props);
       this.state = {
-        data: [],
+        data: null,
         imagenBannerUrl: null,
       }
     }
@@ -54,13 +54,15 @@ class BusinessBySubcategory extends Component{
           let json = snapshotSubcategory.child('negocios').val();
           var data = [];
           var index = 0;
-          for (var item in json){
-            Firebase.obtenerArbol('/negocios/'+item,(snapshot)=>{
+          if (json && Object.keys(json).length > 0){
+            for (var item in json){
               index++;
-              if (snapshot){
-                var item = snapshot.val();
-                item['key'] = snapshot.key;
-                data.push(item);
+              Firebase.obtenerArbol('/negocios/'+item,(snapshot)=>{
+                if (snapshot && snapshot.child('estado').val() === this.props.navigation.state.params.estadoSeleccionado){
+                  var item = snapshot.val();
+                  item['key'] = snapshot.key;
+                  data.push(item);
+                }
                 if (index === Object.keys(json).length){
                   data.sort((a, b) =>{
                   var nombreA = a.nombre.toUpperCase();
@@ -75,9 +77,12 @@ class BusinessBySubcategory extends Component{
                   });
                   this.setState({data, imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
                 }
-              }
-            });
+              });
+            }
+          } else {
+            this.setState({data: [], imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
           }
+
         }
       } catch (error) {
         console.log(error);
@@ -105,7 +110,7 @@ class BusinessBySubcategory extends Component{
 
 
   render(){
-    if (this.state.data && this.state.data.length > 0 && this.state.imagenBannerUrl){
+    if (this.state.data && this.state.imagenBannerUrl){
       return(
         <View style={styles.container}>
           <StatusBar
@@ -130,7 +135,8 @@ class BusinessBySubcategory extends Component{
                   }
               </Swiper>
             </View>
-          <FlatList
+          {this.state.data.length > 0
+          ? (<FlatList
             horizontal={false}
             numColumns={3}
             data={this.state.data}
@@ -187,7 +193,13 @@ class BusinessBySubcategory extends Component{
 
               </View>
             }
-          />
+          />)
+          : (<View style={styles.centeredComponents}>
+              <Text style={styles.spinnerText}>LO SENTIMOS, NO HAY REGISTROS PARA LA CATEGORIA</Text>
+              <Text style={styles.spinnerTextBigger}> {this.props.navigation.state.params.subcategoryName}</Text>
+            </View>)
+        }
+
         </View>
         </View>
       );
@@ -201,7 +213,7 @@ class BusinessBySubcategory extends Component{
           <View style={styles.containerLogoAndSpinner}>
             <View style={styles.centeredComponents}>
               <ActivityIndicator
-                animating={!(this.state.data && this.state.data.length > 0 && this.state.imagenBannerUrl)}
+                animating={!(this.state.data && this.state.imagenBannerUrl)}
                 style={{height: 80}}
                 size="large"
               />
@@ -310,6 +322,18 @@ const styles = StyleSheet.create({
   centeredComponents: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  spinnerText: {
+    backgroundColor: 'transparent',
+    color: 'white',
+    fontSize: 10,
+    fontWeight: '100',
+  },
+  spinnerTextBigger: {
+    backgroundColor: 'transparent',
+    color: 'white',
+    fontSize: 24,
+    fontWeight: '100',
   },
 
 });

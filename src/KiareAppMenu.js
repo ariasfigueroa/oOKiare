@@ -28,7 +28,7 @@ class KiareAppMenu extends Component {
         <TouchableOpacity
           style={styles.radarStyle}
           onPress={()=>{
-            navigation.navigate('Radar', { estadoSeleccionado: navigation.state.params.estadoSeleccionado, latitude: navigation.state.params.latitude, longitude: navigation.state.params.longitude});
+            navigation.navigate('Radar', {estadoSeleccionado: navigation.state.params.estadoSeleccionado, latitude: navigation.state.params.latitude, longitude: navigation.state.params.longitude});
           }}
         >
           <View>
@@ -59,7 +59,7 @@ class KiareAppMenu extends Component {
           <TouchableOpacity
             style={styles.categoryOptionTouchableStyle}
             onPress={()=>{
-              this.props.navigation.navigate('Subcategories', {subcategories: item.subcategorias, categoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+              this.props.navigation.navigate('Subcategories', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategories: item.subcategorias, categoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
             }}
             >
             <CachedImage resizeMode={'contain'} style={styles.categoryOptionImageStyle} source={{uri: item.imagenUrl}}/>

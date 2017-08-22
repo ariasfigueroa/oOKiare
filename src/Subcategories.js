@@ -93,7 +93,7 @@ class Subcategories extends Component{
                       <TouchableOpacity
                         style={styles.flatListSubcategoryTouchableStyle}
                         onPress={() => {
-                          this.props.navigation.navigate('BusinessBySubcategory', {subcategory: item.key, subcategoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                          this.props.navigation.navigate('BusinessBySubcategory', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategory: item.key, subcategoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, });
                         }}
                         >
                         {item.imagenUrl !== null ?
