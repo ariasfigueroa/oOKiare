@@ -28,7 +28,7 @@ class KiareAppMenu extends Component {
         <TouchableOpacity
           style={styles.radarStyle}
           onPress={()=>{
-            console.log('process radar');
+            navigation.navigate('Radar', { estadoSeleccionado: navigation.state.params.estadoSeleccionado, latitude: navigation.state.params.latitude, longitude: navigation.state.params.longitude});
           }}
         >
           <View>

@@ -22,7 +22,7 @@ const {width} = Dimensions.get('window');
 class Radar extends Component{
 
     static navigationOptions = ({ navigation }) => ({
-      headerTitle: navigation.state.params.subcategoryName,
+      headerTitle: '20 + CERCA',
       headerRight: null,
       headerLeft: (<TouchableOpacity
         onPress={()=>{
@@ -44,40 +44,48 @@ class Radar extends Component{
       super(props);
       this.state = {
         data: [],
-        imagenBannerUrl: null,
       }
     }
 
-    _getBusiness(snapshotSubcategory){
+    _getBusiness(snapshot){
       try {
-        if (snapshotSubcategory){
-          let json = snapshotSubcategory.child('negocios').val();
+        if (snapshot){
           var data = [];
-          var index = 0;
-          for (var item in json){
-            Firebase.obtenerArbol('/negocios/'+item,(snapshot)=>{
-              index++;
-              if (snapshot){
-                var item = snapshot.val();
-                item['key'] = snapshot.key;
-                data.push(item);
-                if (index === Object.keys(json).length){
-                  data.sort((a, b) =>{
-                  var nombreA = a.nombre.toUpperCase();
-                  var nombreB = b.nombre.toUpperCase();
-                  if(nombreA < nombreB){
-                    return -1;
-                  }
-                  if(nombreA > nombreB){
-                    return 1;
-                  }
-                    return 0;
-                  });
-                  this.setState({data, imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
-                }
-              }
-            });
+          snapshot.forEach((negocio) =>{
+            var item = negocio.val();
+            item['key'] = negocio.key;
+            // Calculate Distance
+
+            let pointDelta = {
+              latitude: item.latitud,
+              longitude: item.longitud,
+            };
+
+            let currentPoint= {
+              latitude: this.props.navigation.state.params.latitude,
+              longitude: this.props.navigation.state.params.longitude,
+            }
+
+            let distanciaFunc = this._getDistance.bind(this);
+            let distance = Math.round(distanciaFunc(currentPoint, pointDelta));
+
+            item['distance'] = distance;
+
+            data.push(item);
+          });
+          data.sort((a, b) =>{
+          var distanceA = a.distance;
+          var distanceB = b.distance;
+          if(distanceA < distanceB){
+            return -1;
           }
+          if(distanceA > distanceB){
+            return 1;
+          }
+            return 0;
+          });
+          var topData = data.slice(0, 20);
+          this.setState({data: topData});
         }
       } catch (error) {
         console.log(error);
@@ -85,7 +93,7 @@ class Radar extends Component{
     }
 
     componentWillMount(){
-        Firebase.obtenerArbol('/subcategorias/'+this.props.navigation.state.params.subcategory, this._getBusiness.bind(this));
+      Firebase.getBusinessByCity(this.props.navigation.state.params.estadoSeleccionado, '/negocios/', this._getBusiness.bind(this))
     }
 
     _getDistance(currentPoint, pointDelta){
@@ -105,7 +113,7 @@ class Radar extends Component{
 
 
   render(){
-    if (this.state.data && this.state.data.length > 0 && this.state.imagenBannerUrl){
+    if (this.state.data && this.state.data.length > 0){
       return(
         <View style={styles.container}>
           <StatusBar
@@ -184,7 +192,7 @@ class Radar extends Component{
           <View style={styles.containerLogoAndSpinner}>
             <View style={styles.centeredComponents}>
               <ActivityIndicator
-                animating={!(this.state.data && this.state.data.length > 0 && this.state.imagenBannerUrl)}
+                animating={!(this.state.data && this.state.data.length > 0 )}
                 style={{height: 80}}
                 size="large"
               />

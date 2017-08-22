@@ -18,6 +18,7 @@ import KiareAppMenu from './KiareAppMenu';
 import WebBrowser from './WebBrowser';
 import Subcategories from './Subcategories';
 import BusinessBySubcategory from './BusinessBySubcategory';
+import Radar from './Radar';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -431,6 +432,9 @@ export const Stack = StackNavigator({
   },
   BusinessBySubcategory: {
     screen: BusinessBySubcategory
+  },
+  Radar: {
+    screen: Radar
   }
 },
 {
