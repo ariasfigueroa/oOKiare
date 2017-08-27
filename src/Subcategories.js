@@ -53,17 +53,18 @@ class Subcategories extends Component{
         var subcategoriesMap = Firebase.jsonToMap(this.props.navigation.state.params.subcategories);
         Firebase.obtenerArbol('/subcategorias/', (snapshotSubcategories) =>{
           snapshotSubcategories.forEach((childSnapshot)=>{
-            if (subcategoriesMap.has(childSnapshot.key)){
-              let subcategoria = {
-                nombre: childSnapshot.child('nombre').val(),
-                imagenUrl: childSnapshot.child('imagenUrl').val(),
-                categorias: childSnapshot.child('categorias').val(),
-                negocios: childSnapshot.child('negocios').val(),
-                key: childSnapshot.key,
-                imagenBannerUrl: childSnapshot.child('imagenBannerUrl').val(),
+            if (childSnapshot.child('activo').val())
+              if (subcategoriesMap.has(childSnapshot.key)){
+                let subcategoria = {
+                  nombre: childSnapshot.child('nombre').val(),
+                  imagenUrl: childSnapshot.child('imagenUrl').val(),
+                  categorias: childSnapshot.child('categorias').val(),
+                  negocios: childSnapshot.child('negocios').val(),
+                  key: childSnapshot.key,
+                  imagenBannerUrl: childSnapshot.child('imagenBannerUrl').val(),
+                }
+                data.push(subcategoria);
               }
-              data.push(subcategoria);
-            }
           });
           this.setState({data});
         });

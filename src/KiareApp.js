@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   StatusBar,
   AppRegistry,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import Firebase from '../lib/Firebase';
@@ -55,7 +56,6 @@ class KiareApp extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        console.log('before');
         Firebase.obtenerArbol('/ciudades', this._obtenerEstados.bind(this));
       },
       (error) => {
@@ -105,7 +105,6 @@ class KiareApp extends Component {
           //Firebase.subcategoriasPorEstado(closeEstado, '/negocios', this._getSnapshotData.bind(this));
           var dataCategories = Firebase.jsonToArray(categorias);
           const { navigate } = this.props.navigation;
-          console.log('done');
           navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this), latitude: this.state.latitude, longitude: this.state.longitude});
           this.setState({hideIndicator: true, estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre});
 
@@ -228,12 +227,11 @@ class KiareApp extends Component {
   }
 
   _mostrarCambioEstadoManual(){
-    this.setState({estadoNombre: null, estadoSeleccionado: null, dataComer: null, dataDiversion: null, dataEventos: null, dataPistear: null});
+    this.setState({hideIndicator: false, estadoNombre: null, estadoSeleccionado: null});
   }
 
-
   render() {
-    if (this.state.hideIndicator === false ){
+    if (this.state.hideIndicator === false && this.state.estadoSeleccionado === null && this.state.estadoNombre === null){
       return (
         <View style={styles.container}>
           <StatusBar
@@ -250,29 +248,6 @@ class KiareApp extends Component {
               />
               <Text style={styles.spinnerText}>ESTAMOS BUSCANDO ALGO</Text>
               <Text style={styles.spinnerTextBigger}>PARA TI</Text>
-
-            </View>
-          </View>
-        </View>
-      );
-    } else if (this.state.dataComer && this.state.dataDiversion && this.state.dataEventos && this.state.dataPistear){
-      return (
-        <View style={styles.container}>
-          <StatusBar
-             barStyle="light-content"
-          />
-          <Image source={require('../resources/images/fondo_nuevo.png')}/>
-          <View style={styles.containerLogoAndSpinner}>
-            <Image style={styles.logoCenter} source={require('../resources/images/img_central_nueva.png')}/>
-            <View style={styles.centeredComponents}>
-              <ActivityIndicator
-                animating={!this.state.hideIndicator}
-                style={{height: 80}}
-                size="large"
-              />
-              <Text style={styles.spinnerText}>ESTAMOS BUSCANDO ALGO</Text>
-              <Text style={styles.spinnerTextBigger}>PARA TI</Text>
-
             </View>
           </View>
         </View>
@@ -289,31 +264,105 @@ class KiareApp extends Component {
               <Text style={styles.textHeaderSelectedStateStyle}>
                 ENCONTRAMOS PARA TI
               </Text>
+
               <TouchableOpacity
                 onPress={()=>{
-                  this.setState({estadoSeleccionado: 'juarez', hideIndicator: false, estadoNombre: 'Ciudad Juárez'})
-                  Firebase.subcategoriasPorEstado('juarez', '/negocios', this._obtenerDatosDeSnapshot.bind(this));
+                  let ciudad = 'juarez';
+                  let ciudadNombre = 'Ciudad Juarez';
+                  let hideIndicator = false;
+                  try {
+                    Firebase.obtenerArbol('/ciudades/'+ciudad, (ciudad)=>{
+                      if (ciudad){
+                        if (ciudad.child('activo').val()){
+                          const { navigate } = this.props.navigation;
+                          var dataCategories = Firebase.jsonToArray(ciudad.child('categorias').val());
+                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
+                          this.setState({hideIndicator, estadoSeleccionado: ciudad, estadoNombre: ciudadNombre});
+                        } else {
+                          Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });
+                        }
+                      }else {
+                        Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });
+                      }
+                    });
+                        } catch(error){
+                    console.log(error);
+                  }
                 }}
               >
                 <View>
                   <Text style={styles.textCiudadSelectedStateStyle}>
-                    Ciudad Juárez
+                    CIUDAD JUÁREZ
                   </Text>
                 </View>
               </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={()=>{
-                  this.setState({estadoSeleccionado: 'leon', hideIndicator: false, estadoNombre: 'León'})
-                  Firebase.subcategoriasPorEstado('leon', '/negocios', this._obtenerDatosDeSnapshot.bind(this));
-                }}
+                  let ciudad = 'chihuahua';
+                  let ciudadNombre = 'Chihuahua';
+                  let hideIndicator = false;
+                  try {
+                    Firebase.obtenerArbol('/ciudades/'+ciudad, (ciudad)=>{
+                      if (ciudad){
+                        if (ciudad.child('activo').val()){
+                          const { navigate } = this.props.navigation;
+                          var dataCategories = Firebase.jsonToArray(ciudad.child('categorias').val());
+                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
+                          this.setState({hideIndicator, estadoSeleccionado: ciudad, estadoNombre: ciudadNombre});
+                        } else {
+                          Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });
+                        }
+                      }else {
+                        Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });
+                      }
+                    });
+                  } catch(error){
+                    console.log(error);
+                  }
+                }
+              }
               >
                 <View>
                   <Text style={styles.textCiudadSelectedStateStyle}>
-                    León
+                    CHUHUAHUA
                   </Text>
                 </View>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={()=>{
+                  let ciudad = 'leon';
+                  let ciudadNombre = 'Leon';
+                  let hideIndicator = false;
+                  try {
+                    Firebase.obtenerArbol('/ciudades/'+ciudad, (ciudad)=>{
+                      if (ciudad){
+                        if (ciudad.child('activo').val()){
+                          const { navigate } = this.props.navigation;
+                          var dataCategories = Firebase.jsonToArray(ciudad.child('categorias').val());
+                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
+                          this.setState({hideIndicator, estadoSeleccionado: ciudad, estadoNombre: ciudadNombre});
+                        } else {
+                          Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });
+                        }
+                      }else {
+                        Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });
+                      }
+                    });
+                  } catch(error){
+                    console.log(error);
+                  }
+                }
+              }
+              >
+                <View>
+                  <Text style={styles.textCiudadSelectedStateStyle}>
+                    LEÓN
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
               <Text style={styles.textSmallCommentStateStyle}>
                 SELECCIONA TÚ CIUDAD PARA CONTINUAR
               </Text>

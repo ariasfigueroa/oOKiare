@@ -51,38 +51,39 @@ class BusinessBySubcategory extends Component{
     _getBusiness(snapshotSubcategory){
       try {
         if (snapshotSubcategory){
-          let json = snapshotSubcategory.child('negocios').val();
-          var data = [];
-          var index = 0;
-          if (json && Object.keys(json).length > 0){
-            for (var item in json){
-              index++;
-              Firebase.obtenerArbol('/negocios/'+item,(snapshot)=>{
-                if (snapshot && snapshot.child('estado').val() === this.props.navigation.state.params.estadoSeleccionado){
-                  var item = snapshot.val();
-                  item['key'] = snapshot.key;
-                  data.push(item);
-                }
-                if (index === Object.keys(json).length){
-                  data.sort((a, b) =>{
-                  var nombreA = a.nombre.toUpperCase();
-                  var nombreB = b.nombre.toUpperCase();
-                  if(nombreA < nombreB){
-                    return -1;
+          if (snapshotSubcategory.child('activo').val()){
+            let json = snapshotSubcategory.child('negocios').val();
+            var data = [];
+            var index = 0;
+            if (json && Object.keys(json).length > 0){
+              for (var item in json){
+                index++;
+                Firebase.obtenerArbol('/negocios/'+item,(snapshot)=>{
+                  if (snapshot && snapshot.child('estado').val() === this.props.navigation.state.params.estadoSeleccionado && snapshot.child('activo').val()){
+                    var item = snapshot.val();
+                    item['key'] = snapshot.key;
+                    data.push(item);
                   }
-                  if(nombreA > nombreB){
-                    return 1;
+                  if (index === Object.keys(json).length){
+                    data.sort((a, b) =>{
+                    var nombreA = a.nombre.toUpperCase();
+                    var nombreB = b.nombre.toUpperCase();
+                    if(nombreA < nombreB){
+                      return -1;
+                    }
+                    if(nombreA > nombreB){
+                      return 1;
+                    }
+                      return 0;
+                    });
+                    this.setState({data, imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
                   }
-                    return 0;
-                  });
-                  this.setState({data, imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
-                }
-              });
+                });
+              }
+            } else {
+              this.setState({data: [], imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
             }
-          } else {
-            this.setState({data: [], imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
           }
-
         }
       } catch (error) {
         console.log(error);

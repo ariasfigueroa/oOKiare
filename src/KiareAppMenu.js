@@ -24,7 +24,7 @@ class KiareAppMenu extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: navigation.state.params.estadoNombre.toUpperCase(),
     headerLeft: (<View/>),
-    headerRight: (
+    headerRight: navigation.state.params.latitude && navigation.state.params.longitude ? (
         <TouchableOpacity
           style={styles.radarStyle}
           onPress={()=>{
@@ -39,7 +39,8 @@ class KiareAppMenu extends Component {
             />
           </View>
         </TouchableOpacity>
-    ),
+    ) :
+    (<View/>),
   });
 
   constructor(props){
@@ -54,24 +55,25 @@ class KiareAppMenu extends Component {
   render() {
     const categoriasList = this.props.navigation.state.params.dataCategories
     .map((item)=>{
-      return(
-        <View style={styles.categoryOptionStyle}>
-          <TouchableOpacity
-            style={styles.categoryOptionTouchableStyle}
-            onPress={()=>{
-              this.props.navigation.navigate('Subcategories', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategories: item.subcategorias, categoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
-            }}
-            >
-            <CachedImage resizeMode={'contain'} style={styles.categoryOptionImageStyle} source={{uri: item.imagenUrl}}/>
-            <View style={styles.categoryOptionRowDirectionStyle}>
-              <View style={styles.categoryOptionIconViewStyle}>
-                <CachedImage resizeMode={'contain'} style={styles.categoryOptionIconStyle} source={{uri: item.imagenIcon}}/>
+      if (item.activo)
+        return(
+          <View style={styles.categoryOptionStyle}>
+            <TouchableOpacity
+              style={styles.categoryOptionTouchableStyle}
+              onPress={()=>{
+                this.props.navigation.navigate('Subcategories', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategories: item.subcategorias, categoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+              }}
+              >
+              <CachedImage resizeMode={'contain'} style={styles.categoryOptionImageStyle} source={{uri: item.imagenUrl}}/>
+              <View style={styles.categoryOptionRowDirectionStyle}>
+                <View style={styles.categoryOptionIconViewStyle}>
+                  <CachedImage resizeMode={'contain'} style={styles.categoryOptionIconStyle} source={{uri: item.imagenIcon}}/>
+                </View>
+                <Text style={styles.categoryOptionTextStyle}>{item.nombre.toUpperCase()}</Text>
               </View>
-              <Text style={styles.categoryOptionTextStyle}>{item.nombre.toUpperCase()}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      );
+            </TouchableOpacity>
+          </View>
+        );
     });
       return (
         <View style={styles.containerBackground}>
@@ -95,7 +97,6 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top:0,
-    bottom:0,
   },
   categoryOptionStyle:{
     height: 140,
