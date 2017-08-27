@@ -276,7 +276,7 @@ class KiareApp extends Component {
                         if (ciudad.child('activo').val()){
                           const { navigate } = this.props.navigation;
                           var dataCategories = Firebase.jsonToArray(ciudad.child('categorias').val());
-                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
+                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad.key, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
                           this.setState({hideIndicator, estadoSeleccionado: ciudad, estadoNombre: ciudadNombre});
                         } else {
                           Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });
@@ -308,7 +308,7 @@ class KiareApp extends Component {
                         if (ciudad.child('activo').val()){
                           const { navigate } = this.props.navigation;
                           var dataCategories = Firebase.jsonToArray(ciudad.child('categorias').val());
-                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
+                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad.key, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
                           this.setState({hideIndicator, estadoSeleccionado: ciudad, estadoNombre: ciudadNombre});
                         } else {
                           Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });
@@ -341,7 +341,7 @@ class KiareApp extends Component {
                         if (ciudad.child('activo').val()){
                           const { navigate } = this.props.navigation;
                           var dataCategories = Firebase.jsonToArray(ciudad.child('categorias').val());
-                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
+                          navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: ciudad.key, estadoNombre: ciudadNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this)});
                           this.setState({hideIndicator, estadoSeleccionado: ciudad, estadoNombre: ciudadNombre});
                         } else {
                           Alert.alert('Oops...', 'La ciudad seleccionada no se encuentra activa.',  [ {text: 'OK', onPress: () => console.log('OK Pressed')},],  { cancelable: false });

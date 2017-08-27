@@ -45,7 +45,7 @@ class Subcategories extends Component{
       this.state = {
         data: [],
       }
-    }
+  }
 
     componentWillMount(){
       try {
