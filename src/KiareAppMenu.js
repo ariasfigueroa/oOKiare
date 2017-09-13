@@ -22,25 +22,26 @@ const {width, height} = Dimensions.get('window');
 class KiareAppMenu extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    headerTitle: navigation.state.params.estadoNombre.toUpperCase(),
-    headerLeft: (<View/>),
-    headerRight: navigation.state.params.latitude && navigation.state.params.longitude ? (
-        <TouchableOpacity
-          style={styles.radarStyle}
-          onPress={()=>{
-            navigation.navigate('Radar', {estadoSeleccionado: navigation.state.params.estadoSeleccionado, latitude: navigation.state.params.latitude, longitude: navigation.state.params.longitude});
-          }}
-        >
-          <View>
-            <MaterialCommunityIcons
-              name="radar"
-              size={20}
-              color="rgba(207, 187, 164, 1.0)"
-            />
-          </View>
-        </TouchableOpacity>
-    ) :
-    (<View/>),
+    header: null,
+    // headerTitle: navigation.state.params.estadoNombre.toUpperCase(),
+    // headerLeft: (<View/>),
+    // headerRight: navigation.state.params.latitude && navigation.state.params.longitude ? (
+    //     <TouchableOpacity
+    //       style={styles.radarStyle}
+    //       onPress={()=>{
+    //         navigation.navigate('Radar', {estadoSeleccionado: navigation.state.params.estadoSeleccionado, latitude: navigation.state.params.latitude, longitude: navigation.state.params.longitude});
+    //       }}
+    //     >
+    //       <View>
+    //         <MaterialCommunityIcons
+    //           name="radar"
+    //           size={20}
+    //           color="rgba(207, 187, 164, 1.0)"
+    //         />
+    //       </View>
+    //     </TouchableOpacity>
+    // ) :
+    // (<View/>),
   });
 
   constructor(props){
@@ -53,8 +54,12 @@ class KiareAppMenu extends Component {
 
 
   render() {
+    console.log(width);
+    console.log(height/3);
     const categoriasList = this.props.navigation.state.params.dataCategories
     .map((item)=>{
+      var icon = item.imagenIcon;
+      icon += '?random_number=' + new Date().getTime();
       if (item.activo)
         return(
           <View style={styles.categoryOptionStyle}>
@@ -64,10 +69,10 @@ class KiareAppMenu extends Component {
                 this.props.navigation.navigate('Subcategories', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategories: item.subcategorias, categoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
               }}
               >
-              <CachedImage resizeMode={'contain'} style={styles.categoryOptionImageStyle} source={{uri: item.imagenUrl}}/>
+              <CachedImage resizeMode={'cover'} style={styles.categoryOptionImageStyle} source={{uri: item.imagenUrl}}/>
               <View style={styles.categoryOptionRowDirectionStyle}>
                 <View style={styles.categoryOptionIconViewStyle}>
-                  <CachedImage resizeMode={'contain'} style={styles.categoryOptionIconStyle} source={{uri: item.imagenIcon}}/>
+                  <CachedImage resizeMode={'contain'} style={styles.categoryOptionIconStyle} source={{uri: icon}}/>
                 </View>
                 <Text style={styles.categoryOptionTextStyle}>{item.nombre.toUpperCase()}</Text>
               </View>
@@ -97,25 +102,23 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top:0,
-    bottom: 5,
+    bottom: 0,
   },
   categoryOptionStyle:{
-    height: 140,
+    height: height/3,
     width,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   categoryOptionTextStyle:{
     backgroundColor: 'transparent',
     color: 'white',
-    fontSize: 25,
-    fontWeight: '100',
+    fontSize: 40,
+    fontWeight: 'bold',
   },
   categoryOptionRowDirectionStyle:{
-    flexDirection:'row',
     alignItems:'center',
-    paddingLeft: width/6,
     position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,0.7)',
     width,
   },
   categoryOptionIconViewStyle:{
@@ -123,16 +126,18 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
   categoryOptionIconStyle:{
-    height: 25,
-    width: 25,
-    marginRight: 10,
+    height: 60,
+    width: 60,
+    marginBottom: 10,
   },
   categoryOptionImageStyle:{
-    height: 140,
+    height: height/3,
     width,
   },
   categoryOptionTouchableStyle:{
-    justifyContent: 'flex-end'
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   radarStyle:{
     flexDirection: 'row',
