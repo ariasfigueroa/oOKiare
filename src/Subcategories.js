@@ -14,7 +14,7 @@ import {
 
 import Icon from 'react-native-vector-icons/Entypo';
 import { NavigationActions } from 'react-navigation';
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 import CachedImage from 'react-native-cached-image';
 import Swiper from 'react-native-swiper';
 import Firebase from '../lib/Firebase';
@@ -22,22 +22,23 @@ import Firebase from '../lib/Firebase';
 class Subcategories extends Component{
 
     static navigationOptions = ({ navigation }) => ({
-      headerTitle: navigation.state.params.categoryName,
-      headerRight: null,
-      headerLeft: (<TouchableOpacity
-        onPress={()=>{
-                      const backAction = NavigationActions.back();
-                      navigation.dispatch(backAction);
-                    }
-                }>
-                <View style={{paddingLeft: 20}}>
-                  <Icon
-                    name= "back"
-                    color= "#CFBBA4"
-                    size={20}
-                  />
-                </View>
-              </TouchableOpacity>),
+      header: null,
+      // headerTitle: navigation.state.params.categoryName,
+      // headerRight: null,
+      // headerLeft: (<TouchableOpacity
+      //   onPress={()=>{
+      //                 const backAction = NavigationActions.back();
+      //                 navigation.dispatch(backAction);
+      //               }
+      //           }>
+      //           <View style={{paddingLeft: 20}}>
+      //             <Icon
+      //               name= "back"
+      //               color= "#CFBBA4"
+      //               size={20}
+      //             />
+      //           </View>
+      //         </TouchableOpacity>),
     });
 
     constructor(props){
@@ -86,30 +87,50 @@ class Subcategories extends Component{
             <ScrollView>
               <FlatList
                 horizontal={false}
-                numColumns={3}
                 data={this.state.data}
-                renderItem={({item}) =>
-                  <View style={styles.flatListSubcategoryContainerStyle}>
-                    <View style={styles.flatListSubcategorySquareStyle}>
+                renderItem={({item}) => {
+                  var icon = item.imagenUrl;
+                  var imagenUrl = '';
+                  return (
+                    <View style={styles.categoryOptionStyle}>
                       <TouchableOpacity
-                        style={styles.flatListSubcategoryTouchableStyle}
-                        onPress={() => {
+                        style={styles.categoryOptionTouchableStyle}
+                        onPress={()=>{
                           this.props.navigation.navigate('BusinessBySubcategory', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategory: item.key, subcategoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, });
                         }}
                         >
-                        {item.imagenUrl !== null ?
-                          <CachedImage
-                            resizeMode={'contain'}
-                            style={styles.flatListSubcategoryImageStyle}
-                            source={{uri: item.imagenUrl}}/> :
-                            null
-                          }
+                        <CachedImage resizeMode={'cover'} style={styles.categoryOptionImageStyle} source={{uri: imagenUrl}}/>
+                        <View style={styles.categoryOptionRowDirectionStyle}>
+                          <View style={styles.categoryOptionIconViewStyle}>
+                            <CachedImage resizeMode={'contain'} style={styles.categoryOptionIconStyle} source={{uri: icon}}/>
+                          </View>
+                          <Text numberOfLines={2} style={styles.categoryOptionTextStyle}>{item.nombre.toUpperCase()}</Text>
+                        </View>
                       </TouchableOpacity>
                     </View>
-                    <View style={{width: 85}}>
-                      <Text numberOfLines={2} style={{flex:1, backgroundColor: 'transparent', color: "#CFBBA4", fontSize: 12, fontWeight: '100', textAlign: 'center'}}> {item.nombre} </Text>
-                    </View>
-                  </View>
+                  //   <View style={styles.flatListSubcategoryContainerStyle}>
+                  //     <View style={styles.flatListSubcategorySquareStyle}>
+                  //       <TouchableOpacity
+                  //         style={styles.flatListSubcategoryTouchableStyle}
+                  //         onPress={() => {
+                  //          this.props.navigation.navigate('BusinessBySubcategory', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategory: item.key, subcategoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, });
+                  //           }
+                  //         }>
+                  //         {item.imagenUrl !== null ?
+                  //          <CachedImage
+                  //           resizeMode={'contain'}
+                  //           style={styles.flatListSubcategoryImageStyle}
+                  //           source={{uri: item.imagenUrl}}/> :
+                  //           null
+                  //         }
+                  //     </TouchableOpacity>
+                  //   </View>
+                  //   <View style={{width: 85}}>
+                  //     <Text numberOfLines={2} style={{flex:1, backgroundColor: 'transparent', color: "#CFBBA4", fontSize: 12, fontWeight: '100', textAlign: 'center'}}> {item.nombre} </Text>
+                  //   </View>
+                  // </View>
+                );
+                  }
                 }
               />
             </ScrollView>
@@ -148,7 +169,7 @@ const styles = StyleSheet.create({
   containerList: {
     flex: 1,
     position: "absolute",
-    top: 10,
+    top: 0,
     bottom: 0,
     alignItems: 'center',
   },
@@ -185,6 +206,47 @@ const styles = StyleSheet.create({
   centeredComponents: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  categoryOptionStyle:{
+    height: height/3,
+    width,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.5)"
+  },
+  categoryOptionTouchableStyle:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  categoryOptionImageStyle:{
+    height: height/3,
+    width,
+  },
+  categoryOptionRowDirectionStyle:{
+      flexDirection: 'row',
+      alignItems:'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      width,
+    },
+  categoryOptionIconViewStyle:{
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  categoryOptionIconStyle:{
+    height: 40,
+    width: 40,
+    marginRight: 10,
+  },
+  categoryOptionTextStyle:{
+    backgroundColor: 'transparent',
+    color: 'white',
+    fontSize: 25,
+    fontWeight: '500',
+    textAlign: 'center',
+    flexWrap: 'wrap',
+    width: (width/2),
   },
 });
 

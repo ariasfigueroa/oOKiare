@@ -58,8 +58,6 @@ class KiareAppMenu extends Component {
     console.log(height/3);
     const categoriasList = this.props.navigation.state.params.dataCategories
     .map((item)=>{
-      var icon = item.imagenIcon;
-      icon += '?random_number=' + new Date().getTime();
       if (item.activo)
         return(
           <View style={styles.categoryOptionStyle}>
@@ -72,7 +70,7 @@ class KiareAppMenu extends Component {
               <CachedImage resizeMode={'cover'} style={styles.categoryOptionImageStyle} source={{uri: item.imagenUrl}}/>
               <View style={styles.categoryOptionRowDirectionStyle}>
                 <View style={styles.categoryOptionIconViewStyle}>
-                  <CachedImage resizeMode={'contain'} style={styles.categoryOptionIconStyle} source={{uri: icon}}/>
+                  <CachedImage resizeMode={'contain'} style={styles.categoryOptionIconStyle} source={{uri: item.imagenIcon}}/>
                 </View>
                 <Text style={styles.categoryOptionTextStyle}>{item.nombre.toUpperCase()}</Text>
               </View>
