@@ -54,8 +54,6 @@ class KiareAppMenu extends Component {
 
 
   render() {
-    console.log(width);
-    console.log(height/3);
     const categoriasList = this.props.navigation.state.params.dataCategories
     .map((item)=>{
       if (item.activo)
@@ -115,10 +113,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   categoryOptionRowDirectionStyle:{
-    alignItems:'center',
-    position: 'absolute',
-    width,
-  },
+      alignItems:'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      width,
+      height: height/3,
+      backgroundColor: "rgba(0,0,0,0.6)"
+    },
   categoryOptionIconViewStyle:{
     alignItems:'center',
     justifyContent:'center',

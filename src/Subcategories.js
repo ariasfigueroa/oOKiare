@@ -52,9 +52,10 @@ class Subcategories extends Component{
       try {
         var data =[];
         var subcategoriesMap = Firebase.jsonToMap(this.props.navigation.state.params.subcategories);
+        var subcategoriesNestedMap = Firebase.jsonToMapNested(this.props.navigation.state.params.subcategories);
         Firebase.obtenerArbol('/subcategorias/', (snapshotSubcategories) =>{
           snapshotSubcategories.forEach((childSnapshot)=>{
-            if (childSnapshot.child('activo').val())
+            if (childSnapshot.child('activo').val() === true){
               if (subcategoriesMap.has(childSnapshot.key)){
                 let subcategoria = {
                   nombre: childSnapshot.child('nombre').val(),
@@ -65,8 +66,13 @@ class Subcategories extends Component{
                   key: childSnapshot.key,
                   imagenBannerUrl: childSnapshot.child('imagenBannerUrl').val(),
                 }
+                if (subcategoriesNestedMap.has(childSnapshot.key)){
+                  subcategoria['isNested'] = true;
+                  subcategoria['subcategories'] = subcategoriesNestedMap.get(childSnapshot.key);
+                }
                 data.push(subcategoria);
               }
+            }
           });
           this.setState({data});
         });
@@ -91,13 +97,17 @@ class Subcategories extends Component{
                 data={this.state.data}
                 renderItem={({item}) => {
                   var icon = item.imagenIcon;
-                  var imagenUrl = '';
+                  var imagenUrl = item.imagenUrl;
                   return (
                     <View style={styles.categoryOptionStyle}>
                       <TouchableOpacity
                         style={styles.categoryOptionTouchableStyle}
                         onPress={()=>{
-                          this.props.navigation.navigate('BusinessBySubcategory', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategory: item.key, subcategoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, });
+                          if (item.isNested){
+                              this.props.navigation.navigate('Subcategories', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategories: item.subcategories, categoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                          } else {
+                              this.props.navigation.navigate('BusinessBySubcategory', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategory: item.key, subcategoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, });
+                          }
                         }}
                         >
                         <CachedImage resizeMode={'cover'} style={styles.categoryOptionImageStyle} source={{uri: imagenUrl}}/>
@@ -213,7 +223,6 @@ const styles = StyleSheet.create({
     width,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "rgba(0,0,0,0.5)"
   },
   categoryOptionTouchableStyle:{
     flex: 1,
@@ -230,6 +239,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       position: 'absolute',
       width,
+      height: height/3,
+      backgroundColor: "rgba(0,0,0,0.6)"
     },
   categoryOptionIconViewStyle:{
     alignItems:'center',
