@@ -59,6 +59,7 @@ class Subcategories extends Component{
                 let subcategoria = {
                   nombre: childSnapshot.child('nombre').val(),
                   imagenUrl: childSnapshot.child('imagenUrl').val(),
+                  imagenIcon: childSnapshot.child('imagenIcon').val(),
                   categorias: childSnapshot.child('categorias').val(),
                   negocios: childSnapshot.child('negocios').val(),
                   key: childSnapshot.key,
@@ -89,7 +90,7 @@ class Subcategories extends Component{
                 horizontal={false}
                 data={this.state.data}
                 renderItem={({item}) => {
-                  var icon = item.imagenUrl;
+                  var icon = item.imagenIcon;
                   var imagenUrl = '';
                   return (
                     <View style={styles.categoryOptionStyle}>
