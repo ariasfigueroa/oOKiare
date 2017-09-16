@@ -22,22 +22,23 @@ const {width} = Dimensions.get('window');
 class BusinessBySubcategory extends Component{
 
     static navigationOptions = ({ navigation }) => ({
-      headerTitle: navigation.state.params.subcategoryName,
-      headerRight: null,
-      headerLeft: (<TouchableOpacity
-        onPress={()=>{
-                      const backAction = NavigationActions.back();
-                      navigation.dispatch(backAction);
-                    }
-                }>
-                <View style={{paddingLeft: 20}}>
-                  <Icon
-                    name= "back"
-                    color= "#CFBBA4"
-                    size={20}
-                  />
-                </View>
-              </TouchableOpacity>),
+      header: null,
+      // headerTitle: navigation.state.params.subcategoryName,
+      // headerRight: null,
+      // headerLeft: (<TouchableOpacity
+      //   onPress={()=>{
+      //                 const backAction = NavigationActions.back();
+      //                 navigation.dispatch(backAction);
+      //               }
+      //           }>
+      //           <View style={{paddingLeft: 20}}>
+      //             <Icon
+      //               name= "back"
+      //               color= "#CFBBA4"
+      //               size={20}
+      //             />
+      //           </View>
+      //         </TouchableOpacity>),
     });
 
     constructor(props){
@@ -62,6 +63,24 @@ class BusinessBySubcategory extends Component{
                   if (snapshot && snapshot.child('estado').val() === this.props.navigation.state.params.estadoSeleccionado && snapshot.child('activo').val()){
                     var item = snapshot.val();
                     item['key'] = snapshot.key;
+
+                    if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                      let pointDelta = {
+                        latitude: item.latitud,
+                        longitude: item.longitud,
+                      };
+
+                      let currentPoint= {
+                        latitude: this.props.navigation.state.params.latitude,
+                        longitude: this.props.navigation.state.params.longitude,
+                      }
+
+                      let distanciaFunc = this._getDistance.bind(this);
+                      let distancia = Math.round(distanciaFunc(currentPoint, pointDelta));
+
+                      item['distancia'] = distancia;
+                    }
+
                     data.push(item);
                   }
                   if (index === Object.keys(json).length){
@@ -76,6 +95,7 @@ class BusinessBySubcategory extends Component{
                     }
                       return 0;
                     });
+
                     this.setState({data, imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
                   }
                 });
@@ -139,57 +159,32 @@ class BusinessBySubcategory extends Component{
           {this.state.data.length > 0
           ? (<FlatList
             horizontal={false}
-            numColumns={3}
             data={this.state.data}
-            style={{paddingTop: 10}}
             renderItem={({item}) =>
-              <View style={{alignItems:"center", marginBottom: 10}}>
-                <View style={{backgroundColor:"rgba(255,255,255,0.3)", width: 70, height: 70, marginLeft: 20, marginRight: 20, marginBottom: 10,  borderRadius: 12, padding: 10}}>
+              <View style={styles.businessContainer}>
+                <View style={styles.businessLogoStyle}>
                   <TouchableOpacity
                     style={{flex: 1, alignItems: "center", justifyContent: "center"}}
                     onPress={() => {
-                      if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
-                        let pointDelta = {
-                          latitude: item.latitud,
-                          longitude: item.longitud,
-                        };
-
-                        let currentPoint= {
-                          latitude: this.props.navigation.state.params.latitude,
-                          longitude: this.props.navigation.state.params.longitude,
+                        if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                          this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia});
+                        } else {
+                          this.props.navigation.navigate('NegociosDetalle', {data: item});
                         }
-
-                        let distanciaFunc = this._getDistance.bind(this);
-                        let distancia = Math.round(distanciaFunc(currentPoint, pointDelta));
-
-                        this.props.navigation.navigate('NegociosDetalle', {data: item, distancia});
-                      } else {
-                        this.props.navigation.navigate('NegociosDetalle', {data: item});
                       }
-                      }}
+                    }
                     >
                     {item.imagenUrl !== null ? <CachedImage resizeMode={'contain'} style={styles.imageStyle} source={{uri: item.imagenUrl}}/> : null }
                   </TouchableOpacity>
                 </View>
-                <View style={{width: 85}}>
-                  <Text numberOfLines={2} style={{flex:1, backgroundColor: 'transparent', color: "#CFBBA4", fontSize: 12, fontWeight: '100', textAlign: 'center'}}> {item.nombre} </Text>
+                <View style={styles.textContainer}>
+                  <Text numberOfLines={2} style={styles.textTitle}>{item.nombre.toUpperCase()}</Text>
+                  <Text numberOfLines={1} style={styles.textTitleSmall}>Distancia: {item.distancia} KM</Text>
                 </View>
 
-                { item.isBusinessOpen === 'open' ? (<View style={styles.openBusinessStyle}>
-                  <Icon
-                    name= "lock-open"
-                    color= "white"
-                    size={14}
-                  />
-                </View>)
-                 : item.isBusinessOpen === 'closed' ?
-                 (<View style={styles.closedBusinessStyle}>
-                   <Icon
-                     name= "lock"
-                     color= "white"
-                     size={14}
-                   />
-                 </View>) : null
+                { item.isBusinessOpen === 'open' ? (<View style={styles.openBusinessStyle}><Text style={styles.smallText}>ABIERTO</Text></View>)
+                 :
+                 (<View style={styles.closedBusinessStyle}><Text style={styles.smallText}>CERRADO</Text></View>)
                 }
 
               </View>
@@ -246,6 +241,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    marginTop: 20,
   },
   welcome: {
     fontSize: 20,
@@ -292,11 +288,11 @@ const styles = StyleSheet.create({
   },
   closedBusinessStyle: {
     position:'absolute',
-    top: - 10,
-    left:70,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    top: 10,
+    left:20,
+    width: 60,
+    height: 15,
+    borderRadius: 4,
     backgroundColor: 'red',
     flex: 1,
     alignItems: 'center',
@@ -304,11 +300,11 @@ const styles = StyleSheet.create({
   },
   openBusinessStyle: {
     position:'absolute',
-    top: - 10,
-    left:70,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    top: 10,
+    left:20,
+    width: 60,
+    height: 15,
+    borderRadius: 4,
     backgroundColor: 'green',
     flex: 1,
     alignItems: 'center',
@@ -336,7 +332,46 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '100',
   },
-
+  businessContainer:{
+    flexDirection: 'row',
+    alignItems:"center",
+    width: width - 20,
+    height: 120
+  },
+  businessLogoStyle:{
+    backgroundColor:"rgba(255,255,255,0.3)",
+    width: 80,
+    height: 80,
+    borderRadius: 12,
+  },
+    textContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      height: 80,
+      width: width - 100,
+      paddingLeft: 10,
+    },
+    textTitle:{
+      flexWrap: 'wrap',
+      color: "white",
+      fontSize: 20,
+      fontWeight: '500',
+      textAlign: 'left',
+      backgroundColor: 'transparent',
+    },
+    textTitleSmall:{
+      flexWrap: 'wrap',
+      color: "white",
+      fontSize: 14,
+      fontWeight: '300',
+      textAlign: 'left',
+      backgroundColor: 'transparent',
+      marginTop: 5,
+    },
+    smallText:{
+      color:"white",
+      fontSize: 11,
+    }
 });
 
 export default BusinessBySubcategory;

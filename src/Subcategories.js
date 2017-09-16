@@ -254,11 +254,12 @@ const styles = StyleSheet.create({
   categoryOptionTextStyle:{
     backgroundColor: 'transparent',
     color: 'white',
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: '500',
-    textAlign: 'center',
+    textAlign: 'left',
     flexWrap: 'wrap',
-    width: (width/2),
+    width: (width/2 + 80),
+    justifyContent: 'center'
   },
 });
 
