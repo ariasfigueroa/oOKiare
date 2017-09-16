@@ -247,14 +247,14 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
   categoryOptionIconStyle:{
-    height: 40,
-    width: 40,
-    marginRight: 10,
+    height: 60,
+    width: 60,
+    marginRight: 20,
   },
   categoryOptionTextStyle:{
     backgroundColor: 'transparent',
     color: 'white',
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: '500',
     textAlign: 'left',
     flexWrap: 'wrap',

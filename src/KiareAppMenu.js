@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   categoryOptionTextStyle:{
     backgroundColor: 'transparent',
     color: 'white',
-    fontSize: 40,
+    fontSize: 50,
     fontWeight: 'bold',
   },
   categoryOptionRowDirectionStyle:{
