@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       width,
       height: height/3,
-      backgroundColor: "rgba(0,0,0,0.6)"
+      backgroundColor: "rgba(0,0,0,0.4)"
     },
   categoryOptionIconViewStyle:{
     alignItems:'center',
