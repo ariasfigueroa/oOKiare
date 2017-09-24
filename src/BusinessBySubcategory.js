@@ -177,11 +177,21 @@ class BusinessBySubcategory extends Component{
                     {item.imagenUrl !== null ? <CachedImage resizeMode={'contain'} style={styles.imageStyle} source={{uri: item.imagenUrl}}/> : null }
                   </TouchableOpacity>
                 </View>
-                <View style={styles.textContainer}>
-                  <Text numberOfLines={2} style={styles.textTitle}>{item.nombre.toUpperCase()}</Text>
-                  <Text numberOfLines={1} style={styles.textTitleSmall}>Distancia: {item.distancia} KM</Text>
-                </View>
-
+                <TouchableOpacity
+                  onPress={() => {
+                      if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                        this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia});
+                      } else {
+                        this.props.navigation.navigate('NegociosDetalle', {data: item});
+                      }
+                    }
+                  }
+                  >
+                  <View style={styles.textContainer}>
+                    <Text numberOfLines={2} style={styles.textTitle}>{item.nombre.toUpperCase()}</Text>
+                    <Text numberOfLines={1} style={styles.textTitleSmall}>Distancia: {item.distancia} KM</Text>
+                  </View>
+                </TouchableOpacity>
                 { item.isBusinessOpen === 'open' ? (<View style={styles.openBusinessStyle}><Text style={styles.smallText}>ABIERTO</Text></View>)
                  :
                  (<View style={styles.closedBusinessStyle}><Text style={styles.smallText}>CERRADO</Text></View>)

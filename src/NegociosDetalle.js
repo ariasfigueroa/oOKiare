@@ -23,92 +23,93 @@ import { NavigationActions } from 'react-navigation';
 import Swiper from 'react-native-swiper';
 import CachedImage from 'react-native-cached-image';
 import Communications from 'react-native-communications';
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 
 class NegociosDetalle extends Component{
 
   static navigationOptions = ({ navigation }) => ({
-    headerTitle: navigation.state.params.data.nombre,
-    headerRight: (
-      <View style={{flexDirection: 'row', marginRight: 20, alignItems: 'flex-end'}}>
-      {navigation.state.params.data.telefono ? (
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert('Enlazar llamada', 'Te comunicaremos al: ' + navigation.state.params.data.telefono,  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
-              // Here goes to code to call
-              Communications.phonecall(navigation.state.params.data.telefono, false);
-            }},],  { cancelable: false });
-            }
-          }
-        >
-        <View>
-          <Ionicons
-            name="ios-call"
-            size={20}
-            color="rgba(207, 187, 164, 1.0)"
-          />
-        </View>
-        </TouchableOpacity>
-      ) : null}
-
-      {navigation.state.params.distancia ? (
-        <TouchableOpacity
-        style={{marginLeft: 20}}
-          onPress={()=>{
-            Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
-              var url = null;
-              let coordenates = navigation.state.params.data.latitud + ','+ navigation.state.params.data.longitud;
-              let dirflg = '&dirflg=d'
-              if (Platform.OS === 'android'){
-                // here goes the call to open the google maps
-                url = 'geo:';
-              } else {
-                // her goes the call to open Apple maps
-                url = 'http://maps.apple.com/?daddr=';
-              }
-              Linking.openURL(url+coordenates+dirflg);
-            }},],  { cancelable: false });
-          }
-        }
-        >
-          <View>
-            <Icon
-              name="location"
-              size={20}
-              color="rgba(207, 187, 164, 1.0)"
-            />
-          </View>
-        </TouchableOpacity>
-      ) : null}
-
-      {navigation.state.params.data.web ? (
-        <TouchableOpacity
-          style={{marginLeft: 20}}
-          onPress={null}
-        >
-          <MaterialCommunityIcons
-            name="web"
-            size={20}
-            color="rgba(207, 187, 164, 1.0)"
-          />
-        </TouchableOpacity>
-      ) : null}
-    </View>),
-    headerLeft: (<TouchableOpacity
-      onPress={()=>{
-                    const backAction = NavigationActions.back();
-                    navigation.dispatch(backAction);
-                  }
-              }>
-              <View style={{paddingLeft: 20}}>
-                <Icon
-                  name= "back"
-                  color= "#CFBBA4"
-                  size={20}
-                />
-              </View>
-    </TouchableOpacity>),
+    header: null,
+    // headerTitle: navigation.state.params.data.nombre,
+    // headerRight: (
+    //   <View style={{flexDirection: 'row', marginRight: 20, alignItems: 'flex-end'}}>
+    //   {navigation.state.params.data.telefono ? (
+    //     <TouchableOpacity
+    //       onPress={() => {
+    //         Alert.alert('Enlazar llamada', 'Te comunicaremos al: ' + navigation.state.params.data.telefono,  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
+    //           // Here goes to code to call
+    //           Communications.phonecall(navigation.state.params.data.telefono, false);
+    //         }},],  { cancelable: false });
+    //         }
+    //       }
+    //     >
+    //     <View>
+    //       <Ionicons
+    //         name="ios-call"
+    //         size={20}
+    //         color="rgba(207, 187, 164, 1.0)"
+    //       />
+    //     </View>
+    //     </TouchableOpacity>
+    //   ) : null}
+    //
+    //   {navigation.state.params.distancia ? (
+    //     <TouchableOpacity
+    //     style={{marginLeft: 20}}
+    //       onPress={()=>{
+    //         Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
+    //           var url = null;
+    //           let coordenates = navigation.state.params.data.latitud + ','+ navigation.state.params.data.longitud;
+    //           let dirflg = '&dirflg=d'
+    //           if (Platform.OS === 'android'){
+    //             // here goes the call to open the google maps
+    //             url = 'geo:';
+    //           } else {
+    //             // her goes the call to open Apple maps
+    //             url = 'http://maps.apple.com/?daddr=';
+    //           }
+    //           Linking.openURL(url+coordenates+dirflg);
+    //         }},],  { cancelable: false });
+    //       }
+    //     }
+    //     >
+    //       <View>
+    //         <Icon
+    //           name="location"
+    //           size={20}
+    //           color="rgba(207, 187, 164, 1.0)"
+    //         />
+    //       </View>
+    //     </TouchableOpacity>
+    //   ) : null}
+    //
+    //   {navigation.state.params.data.web ? (
+    //     <TouchableOpacity
+    //       style={{marginLeft: 20}}
+    //       onPress={null}
+    //     >
+    //       <MaterialCommunityIcons
+    //         name="web"
+    //         size={20}
+    //         color="rgba(207, 187, 164, 1.0)"
+    //       />
+    //     </TouchableOpacity>
+    //   ) : null}
+    // </View>),
+    // headerLeft: (<TouchableOpacity
+    //   onPress={()=>{
+    //                 const backAction = NavigationActions.back();
+    //                 navigation.dispatch(backAction);
+    //               }
+    //           }>
+    //           <View style={{paddingLeft: 20}}>
+    //             <Icon
+    //               name= "back"
+    //               color= "#CFBBA4"
+    //               size={20}
+    //             />
+    //           </View>
+    // </TouchableOpacity>),
 
   });
 
@@ -118,23 +119,24 @@ class NegociosDetalle extends Component{
       this.state = {
         masInformacionData: [],
       }
-      console.log(this.props.navigation.state);
+      console.log(this.props.navigation.state.params);
     }
 
     _sendMeToMaps(latitudeDelta, longitudeDelta){
-    Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
-      var url = null;
-      let coordenates = latitudeDelta + ','+ longitudeDelta
-      if (Platform.OS === 'android'){
-        // here goes the call to open the google maps
-        url = 'geo:';
-      } else {
-        // her goes the call to open Apple maps
-        url = 'http://maps.apple.com/?ll=';
-      }
-      Linking.openURL(url+coordenates);
-    }},],  { cancelable: false });
+      Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
+        var url = null;
+        let coordenates = latitudeDelta + ','+ longitudeDelta
+        if (Platform.OS === 'android'){
+          // here goes the call to open the google maps
+          url = 'geo:';
+        } else {
+          // her goes the call to open Apple maps
+          url = 'http://maps.apple.com/?ll=';
+        }
+        Linking.openURL(url+coordenates);
+      }},],  { cancelable: false });
     }
+
   render(){
     return(
       <View style={styles.container}>
@@ -143,48 +145,56 @@ class NegociosDetalle extends Component{
         />
         <Image source={require('../resources/images/fondo_nuevo.png')}/>
         <View style={styles.containerAbsolute}>
-          <View style={styles.sliderStyle}>
-            <Swiper
-              removeClippedSubviews={false}
-              autoplay={true}
-              height= {160}
-              style={{backgroundColor: "transparent"}}
-              >
-                {this.props.navigation.state.params.data.imagenBannerUrl.map((item, i) => <Slider
-                  imagenUrl={item.imagenUrl}
-                  key={i}
-                  url='http://kiare.com.mx'
-                  navigation={this.props.navigation}
-                  />
-                )
-                }
-            </Swiper>
-          </View>
           <ScrollView>
             <View style={{marginLeft: 20,}}>
             <View>
-            {this.props.navigation.state.params.data.imagenExtra ? (<View>
-              <Text style={styles.masInformacionStyle}>
-                ¡Conócenos más!
-              </Text>
-              <FlatList
-                horizontal={true}
-                data={this.props.navigation.state.params.data.imagenExtra}
-                renderItem={({item}) =>
-                  <View style={{alignItems:"center", marginBottom: 10}}>
-                    <View style={{backgroundColor:"rgba(255,255,255,0.3)", width: 120, height: 160, marginLeft: 5, marginRight: 5, borderRadius: 12}}>
-                      <TouchableOpacity
-                        style={{flex: 1, alignItems: "center", justifyContent: "center"}}
-                        onPress={null}
-                        >
-                        {item.imagenUrl !== null ? <CachedImage style={styles.imageBusinessStyle} source={{uri: item.imagenUrl}}/> : null }
-                      </TouchableOpacity>
-                    </View>
+            <View style={styles.verticalAligning}>
+              <View style={styles.logoImageStyle}>
+
+              </View>
+              <View style={styles.buttonsBusinessContainer}>
+                <TouchableOpacity>
+                  <View style={styles.buttonBusinessStyle}>
 
                   </View>
-                }
-              />
-            </View>) : null}
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <View style={styles.buttonBusinessStyle}>
+
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <View style={styles.buttonBusinessStyle}>
+
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.horizontalBar}>
+
+            </View>
+
+            <View style={styles.horizontalBarLarge}>
+
+            </View>
+
+            <View style={styles.horizontalBarMedium}>
+
+            </View>
+
+            <View style={styles.horizontalBarLarge}>
+
+            </View>
+
+            <View style={styles.horizontalBar}>
+
+            </View>
+
+            <View style={styles.horizontalBar}>
+
+            </View>
+
               {this.props.navigation.state.params.data.direccion ?
                 (
                   <View>
@@ -198,15 +208,14 @@ class NegociosDetalle extends Component{
                 ): null}
 
                 {this.props.navigation.state.params.distancia ?
-                  (
-                    <View>
+                  (<View>
                     <Text style={[styles.horarioTextStyle, {fontWeight: 'bold'}]}>
                       Distancia
                     </Text>
                     <Text style={[styles.horarioTextStyle, {marginBottom: 20}]}>
-                      {this.props.navigation.state.params.distancia}KM
+                      {this.props.navigation.state.params.distancia} KM
                     </Text>
-                    </View>
+                  </View>
                   ): null}
 
             </View>
@@ -265,7 +274,6 @@ const Slider = props => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: '#F5FCFF',
   },
   welcome: {
@@ -283,6 +291,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     bottom: 10,
+    marginTop: 20,
   },
   sliderStyle: {
     backgroundColor:"transparent",
@@ -336,7 +345,54 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '100',
     marginBottom: 10,
-  }
+  },
+  logoImageStyle:{
+    marginVertical: 10,
+    width: ((width/3) * 2) - 10,
+    height: (height/2) - 60,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    borderRadius: 10
+  },
+  buttonsBusinessContainer:{
+    marginVertical: 10,
+    marginLeft: 10,
+    width: ((width/3) * 1) - 30,
+    height: (height/2) - 60,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  buttonBusinessStyle:{
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: "rgba(255,255,255,0.3)",
+  },
+  verticalAligning: {
+    flexDirection: 'row',
+  },
+  horizontalBar:{
+    width: width - 40,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    marginBottom: 10,
+  },
+  horizontalBarLarge:{
+    width: width - 40,
+    height: (height/2) - 60,
+    borderRadius: 8,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    marginBottom: 10,
+  },
+  horizontalBarMedium:{
+    width: width - 40,
+    height: (height/6) * 1,
+    borderRadius: 8,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    marginBottom: 10,
+  },
 });
 
 export default NegociosDetalle;

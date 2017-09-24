@@ -249,16 +249,16 @@ const styles = StyleSheet.create({
   categoryOptionIconStyle:{
     height: 60,
     width: 60,
-    marginRight: 20,
+    marginRight: 10,
   },
   categoryOptionTextStyle:{
     backgroundColor: 'transparent',
     color: 'white',
-    fontSize: 40,
-    fontWeight: '500',
+    fontSize: 25,
+    fontWeight: 'bold',
     textAlign: 'left',
     flexWrap: 'wrap',
-    width: (width/2 + 80),
+    width: (width/2 + 70),
     justifyContent: 'center'
   },
 });
