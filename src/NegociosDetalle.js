@@ -150,82 +150,97 @@ class NegociosDetalle extends Component{
             <View>
             <View style={styles.verticalAligning}>
               <View style={styles.logoImageStyle}>
-
+                <CachedImage resizeMode={'cover'} style={styles.logoImageSizeStyle} source={{uri: this.props.navigation.state.params.data.imagenUrl}}/>
               </View>
               <View style={styles.buttonsBusinessContainer}>
                 <TouchableOpacity>
                   <View style={styles.buttonBusinessStyle}>
-
+                    <MaterialCommunityIcons
+                      name= "sale"
+                      size={40}
+                      color="#EC573B"
+                    />
+                    <Text style={styles.smallText}>Promos</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <View style={styles.buttonBusinessStyle}>
-
+                  <MaterialIcons
+                    name= "room-service"
+                    size={40}
+                    color="#F8C029"
+                  />
+                  <Text style={styles.smallText}>Servicios</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <View style={styles.buttonBusinessStyle}>
-
+                    <Icon
+                      name= "medal"
+                      size={40}
+                      color="#88A451"
+                    />
+                    <Text style={styles.smallText}>Sugerencia</Text>
                   </View>
                 </TouchableOpacity>
               </View>
             </View>
 
             <View style={styles.horizontalBar}>
-
+              <TouchableOpacity
+                style={{marginHorizontal: 20}}
+                onPress={() => {
+                  Alert.alert('Enlazar llamada', 'Te comunicaremos al: ' + this.props.navigation.state.params.data.telefono,  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
+                    // Here goes to code to call
+                    Communications.phonecall(this.props.navigation.state.params.data.telefono, false);
+                  }},],  { cancelable: false });
+                  }
+                }
+              >
+                <Ionicons
+                  name="ios-call"
+                  size={40}
+                  color="#EC573B"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{marginHorizontal: 20}}
+              >
+                <MaterialCommunityIcons
+                  name="heart"
+                  size={40}
+                  color="#F8C029"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{marginHorizontal: 20}}
+              >
+                <IconFontAwesome
+                  name="share-square"
+                  size={40}
+                  color="#88A451"
+                />
+              </TouchableOpacity>
             </View>
 
             <View style={styles.horizontalBarLarge}>
+              <Text style={[styles.textTitle, {marginBottom: 10}]}>{this.props.navigation.state.params.data.nombre}</Text>
+              <View style={[styles.verticalAligning,{paddingLeft: 10, alignItems: 'center', marginBottom: 10}]}>
+                <Icon
+                  name="location-pin"
+                  size={30}
+                  color="#F8C029"
+                />
+                <Text numberOfLines={2} style={styles.textTitleMiddle}>{this.props.navigation.state.params.data.direccion}</Text>
+              </View>
 
-            </View>
-
-            <View style={styles.horizontalBarMedium}>
-
-            </View>
-
-            <View style={styles.horizontalBarLarge}>
-
-            </View>
-
-            <View style={styles.horizontalBar}>
-
-            </View>
-
-            <View style={styles.horizontalBar}>
-
-            </View>
-
-              {this.props.navigation.state.params.data.direccion ?
-                (
-                  <View>
-                  <Text style={[styles.horarioTextStyle, {fontWeight: 'bold'}]}>
-                    Dirección
-                  </Text>
-                  <Text style={[styles.horarioTextStyle, {marginBottom: 20}]}>
-                    {this.props.navigation.state.params.data.direccion}
-                  </Text>
-                  </View>
-                ): null}
-
-                {this.props.navigation.state.params.distancia ?
-                  (<View>
-                    <Text style={[styles.horarioTextStyle, {fontWeight: 'bold'}]}>
-                      Distancia
-                    </Text>
-                    <Text style={[styles.horarioTextStyle, {marginBottom: 20}]}>
-                      {this.props.navigation.state.params.distancia} KM
-                    </Text>
-                  </View>
-                  ): null}
-
-            </View>
-
-              {(Object.keys(this.props.navigation.state.params.data.horarios).length > 0) ?
-              (
-                <View>
-                <Text style={[styles.horarioTextStyle, {fontWeight: 'bold'}]}>
-                  Horario
-                </Text>
+              <View style={[styles.verticalAligning,{paddingLeft: 10, alignItems: 'center', marginBottom: 10}]}>
+                <Icon
+                  name="clock"
+                  size={25}
+                  color="#EC573B"
+                />
+                <View style={{marginLeft:5}}>
                 <Text style={styles.horarioTextStyle}>
                   Domingo: {(this.props.navigation.state.params.data.horarios[0].abi === 0 && this.props.navigation.state.params.data.horarios[0].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[0].abi +' - '+ this.props.navigation.state.params.data.horarios[0].cer}
                 </Text>
@@ -248,8 +263,156 @@ class NegociosDetalle extends Component{
                   Sábado: {(this.props.navigation.state.params.data.horarios[6].abi === 0 && this.props.navigation.state.params.data.horarios[6].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[6].abi +' - '+ this.props.navigation.state.params.data.horarios[6].cer}
                 </Text>
                 </View>
-              ) : null}
+              </View>
 
+              <View style={[styles.verticalAligning,{alignItems: 'center', marginBottom: 10}]}>
+                <Text numberOfLines={1} style={styles.textTitleMiddle}>Rango de precio: </Text>
+                <Text numberOfLines={1} style={styles.textTitleMiddle}>{this.props.navigation.state.params.data.rangoDePrecions ? this.props.navigation.state.params.data.rangoDePrecions : 'No establecido'}</Text>
+              </View>
+              <View style={[styles.verticalAligning,{alignItems: 'center', marginBottom: 10}]}>
+                <Icon
+                  name="link"
+                  size={18}
+                  color="white"
+                />
+                <Text numberOfLines={1} style={styles.textTitleMiddle}>{this.props.navigation.state.params.data.web ? this.props.navigation.state.params.data.web : ' Sitio web no proporcionado.'}</Text>
+              </View>
+
+            </View>
+
+            <View style={[styles.horizontalBarMedium, {padding: 10}]}>
+              <View style={[styles.verticalAligning]}>
+                <IconFontAwesome
+                  name="newspaper-o"
+                  size={25}
+                  color="white"
+                  style={{marginRight: 10}}
+                />
+                {this.props.navigation.state.params.data.informacion ? (<Text numberOfLines={4} style={[styles.textTitleMiddle, {width: width - 100}]}>{this.props.navigation.state.params.data.informacion}</Text>)
+                : (<Text numberOfLines={4} style={[styles.textTitleMiddle, {width: width - 100}]}>Para más información visita nuestro establecimiento.</Text>)}
+              </View>
+            </View>
+
+            <View style={styles.horizontalBarNoPaddingLarge}>
+              <Swiper
+                removeClippedSubviews={false}
+                autoplay={false}
+                width= {width - 40}
+                height= {(height/2) + 20}
+                style={{backgroundColor: "transparent", borderRadius: 10}}
+                >
+                  {this.props.navigation.state.params.data.imagenExtra.map((item, i) => <Slider
+                    imagenUrl={item.imagenUrl}
+                    key={i}
+                    />
+                  )
+                  }
+              </Swiper>
+            </View>
+
+            <View style={styles.horizontalBar}>
+              <TouchableOpacity
+                onPress={()=>{
+                  if (this.props.navigation.state.params.data.latitud && this.props.navigation.state.params.data.longitud){
+                    Alert.alert('¡Oye!', 'Te enviaremos a una app externa de Mapas. ¿Estás de acuerdo?',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'}, {text: 'Si', onPress: () => {
+                      var url = null;
+                      let coordenates = this.props.navigation.state.params.data.latitud + ','+ this.props.navigation.state.params.data.longitud;
+                      let dirflg = '&dirflg=d'
+                      if (Platform.OS === 'android'){
+                        // here goes the call to open the google maps
+                        url = 'geo:';
+                      } else {
+                        // her goes the call to open Apple maps
+                        url = 'http://maps.apple.com/?daddr=';
+                      }
+                      Linking.openURL(url+coordenates+dirflg);
+                    }},],  { cancelable: false });
+                  }else {
+                    Alert.alert('¡Oye!', 'GPS no detectado',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                  }
+                }
+              }
+              >
+                <View style={[styles.verticalAligning, {alignItems: 'center', paddingHorizontal: 10, justifyContent: "center", width: width - 50 }]}>
+                  <Text style={[styles.horarioTextStyle, {fontWeight: 'bold', marginRight: 20}]}>
+                    Llevame al Lugar
+                  </Text>
+                  <MaterialCommunityIcons
+                    name="google-maps"
+                    size={30}
+                    color="#EC573B"
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.horizontalBar}>
+              <View style={[styles.verticalAligning, {alignItems: 'center', paddingHorizontal: 20, justifyContent: "space-between", width: width - 40 }]}>
+                <TouchableOpacity
+                  onPress={()=>{
+                    if (this.props.navigation.state.params.data.facebookUrl){
+                        console.log('send to facebook');
+                    }else {
+                      Alert.alert('Oops!', 'Fecebook no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                    }
+                  }}
+                >
+                  <Icon
+                    name="facebook-with-circle"
+                    size={40}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={()=>{
+                    if (this.props.navigation.state.params.data.twitterkUrl){
+                        console.log('send to twitter');
+                    }else {
+                      Alert.alert('Oops!', 'Twitter no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                    }
+                  }}
+                >
+                  <Icon
+                    name="twitter-with-circle"
+                    size={40}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={()=>{
+                    if (this.props.navigation.state.params.data.instagramkUrl){
+                        console.log('send to instragram');
+                    }else {
+                      Alert.alert('Oops!', 'Instagram no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                    }
+                  }}
+                >
+                  <Icon
+                    name="instagram-with-circle"
+                    size={40}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={()=>{
+                    if (this.props.navigation.state.params.data.googlekUrl){
+                        console.log('send to google plus');
+                    }else {
+                      Alert.alert('Oops!', 'Google Plus no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                    }
+                  }}
+                >
+                  <Icon
+                    name="google--with-circle"
+                    size={40}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+
+            </View>
             </View>
          </ScrollView>
         </View>
@@ -261,12 +424,12 @@ class NegociosDetalle extends Component{
 const Slider = props => (
     <TouchableOpacity
     onPress={()=>{
-      props.navigation.navigate('WebBrowser', {url: props.url});
+      console.log('open');
     }}
     style={styles.touchableOpacitySliderStyle}
     >
       <View style={styles.sliderViewContainer}>
-        <CachedImage resizeMode={'contain'} style={styles.imageSliderStyle} source={{uri: props.imagenUrl}}/>
+        <CachedImage resizeMode={'cover'} style={styles.imageSliderStyle} source={{uri: props.imagenUrl}}/>
       </View>
     </TouchableOpacity>
 );
@@ -317,17 +480,17 @@ const styles = StyleSheet.create({
   },
   imageSliderStyle: {
     flex: 1,
-    width,
+    width: width - 40,
+    height: (height/2) + 20,
   },
   sliderViewContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
   },
   horarioTextStyle: {
     backgroundColor: 'transparent',
-    color: 'rgba(207, 187, 164, 1.0)',
+    color: 'white',
     fontSize: 16,
     fontWeight: '100',
   },
@@ -350,8 +513,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: ((width/3) * 2) - 10,
     height: (height/2) - 60,
-    backgroundColor: "rgba(255,255,255,0.3)",
+    backgroundColor: "rgba(255,255,255,0.4)",
     borderRadius: 10
+  },
+  logoImageSizeStyle:{
+    width: ((width/3) * 2) - 10,
+    height: (height/2) - 60,
   },
   buttonsBusinessContainer:{
     marginVertical: 10,
@@ -368,6 +535,8 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 8,
     backgroundColor: "rgba(255,255,255,0.3)",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   verticalAligning: {
     flexDirection: 'row',
@@ -378,10 +547,28 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "rgba(255,255,255,0.3)",
     marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   horizontalBarLarge:{
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     width: width - 40,
-    height: (height/2) - 60,
+    height: (height/2) + 20,
+    borderRadius: 8,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    marginBottom: 10,
+    paddingVertical: 10,
+    paddingHorizontal:10,
+  },
+  horizontalBarNoPaddingLarge:{
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    width: width - 40,
+    height: (height/2) + 20,
     borderRadius: 8,
     backgroundColor: "rgba(255,255,255,0.3)",
     marginBottom: 10,
@@ -392,6 +579,27 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "rgba(255,255,255,0.3)",
     marginBottom: 10,
+  },
+  smallText:{
+    color:"white",
+    fontSize: 10,
+  },
+  textTitle:{
+    flexWrap: 'wrap',
+    color: "white",
+    fontSize: 25,
+    fontWeight: '500',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginBottom: 10,
+  },
+  textTitleMiddle:{
+    flexWrap: 'wrap',
+    color: "white",
+    fontSize: 15,
+    fontWeight: '500',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
   },
 });
 

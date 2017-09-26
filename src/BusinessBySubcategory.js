@@ -144,12 +144,13 @@ class BusinessBySubcategory extends Component{
                 removeClippedSubviews={false}
                 autoplay={true}
                 height= {160}
+                width={width - 20}
                 style={{backgroundColor: "transparent"}}
                 >
                   {this.state.imagenBannerUrl.map((item, i) => <Slider
                     imagenUrl={item.imagenUrl}
                     key={i}
-                    url='http://kiare.com.mx'
+                    url={item.url}
                     navigation={this.props.navigation}
                     />
                   )
@@ -272,9 +273,10 @@ const styles = StyleSheet.create({
   },
   sliderStyle: {
     backgroundColor:"transparent",
-    height: 145,
-    width,
-    marginBottom: 20,
+    height: 120,
+    width: width - 20,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   imageStyle:{
     flex: 1,
@@ -288,7 +290,7 @@ const styles = StyleSheet.create({
   },
   imageSliderStyle: {
     flex: 1,
-    width,
+    width: width - 20,
   },
   sliderViewContainer: {
     flex: 1,
