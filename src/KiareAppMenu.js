@@ -16,6 +16,8 @@ import Firebase from '../lib/Firebase';
 import { StackNavigator } from 'react-navigation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CachedImage from 'react-native-cached-image';
+import Icon from 'react-native-vector-icons/Ionicons';
+import ActionButton from 'react-native-circular-action-menu';
 
 const {width, height} = Dimensions.get('window');
 
@@ -81,10 +83,25 @@ class KiareAppMenu extends Component {
           <StatusBar
              barStyle="light-content"
           />
-          <Image source={require('../resources/images/fondo_nuevo.png')}/>
-          <ScrollView style={styles.container}>
+          <ScrollView>
             {categoriasList}
           </ScrollView>
+          <View style={styles.container}>
+            <ActionButton
+            position="right"
+            buttonColor="rgba(213,85,60,0.8)">
+              <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => console.log("notes tapped!")}>
+                <Icon name="md-heart" style={styles.actionButtonIcon} />
+              </ActionButton.Item>
+              <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {}}>
+                <Icon name="md-home" style={styles.actionButtonIcon} />
+              </ActionButton.Item>
+              <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {}}>
+                <Icon name="md-person" style={styles.actionButtonIcon} />
+              </ActionButton.Item>
+            </ActionButton>
+          </View>
+
         </View>
       );
   }
@@ -94,11 +111,12 @@ const styles = StyleSheet.create({
   containerBackground: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: "black"
   },
   container: {
-    position: 'absolute',
-    top:0,
-    bottom: 0,
+    position: 'relative',
+    width,
+    bottom: 20,
   },
   categoryOptionStyle:{
     height: height/3,
@@ -142,7 +160,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 20,
     alignItems: 'flex-end'
-  }
+  },
+  actionButtonIcon: {
+  fontSize: 20,
+  height: 22,
+  color: 'white',
+},
 });
 
 export default KiareAppMenu;
