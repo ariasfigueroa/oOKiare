@@ -19,6 +19,9 @@ import CachedImage from 'react-native-cached-image';
 import Swiper from 'react-native-swiper';
 import Firebase from '../lib/Firebase';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import ActionButton from 'react-native-circular-action-menu';
+
 class Subcategories extends Component{
 
     static navigationOptions = ({ navigation }) => ({
@@ -89,8 +92,7 @@ class Subcategories extends Component{
           <StatusBar
              barStyle="light-content"
           />
-          <Image source={require('../resources/images/fondo_nuevo.png')}/>
-          <View style={styles.containerList}>
+
             <ScrollView>
               <FlatList
                 horizontal={false}
@@ -119,34 +121,27 @@ class Subcategories extends Component{
                         </View>
                       </TouchableOpacity>
                     </View>
-                  //   <View style={styles.flatListSubcategoryContainerStyle}>
-                  //     <View style={styles.flatListSubcategorySquareStyle}>
-                  //       <TouchableOpacity
-                  //         style={styles.flatListSubcategoryTouchableStyle}
-                  //         onPress={() => {
-                  //          this.props.navigation.navigate('BusinessBySubcategory', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, subcategory: item.key, subcategoryName: item.nombre.toUpperCase(), latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, });
-                  //           }
-                  //         }>
-                  //         {item.imagenUrl !== null ?
-                  //          <CachedImage
-                  //           resizeMode={'contain'}
-                  //           style={styles.flatListSubcategoryImageStyle}
-                  //           source={{uri: item.imagenUrl}}/> :
-                  //           null
-                  //         }
-                  //     </TouchableOpacity>
-                  //   </View>
-                  //   <View style={{width: 85}}>
-                  //     <Text numberOfLines={2} style={{flex:1, backgroundColor: 'transparent', color: "#CFBBA4", fontSize: 12, fontWeight: '100', textAlign: 'center'}}> {item.nombre} </Text>
-                  //   </View>
-                  // </View>
                 );
                   }
                 }
               />
             </ScrollView>
-          </View>
-        </View>
+            <View style={styles.containerRelative}>
+              <ActionButton
+              position="right"
+              buttonColor="rgba(213,85,60,1)">
+                <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => console.log("notes tapped!")}>
+                  <Ionicons name="md-heart" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {}}>
+                  <Ionicons name="md-home" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {}}>
+                  <Ionicons name="md-person" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+              </ActionButton>
+            </View>
+            </View>
       );
     } else {
       return (
@@ -175,7 +170,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'black',
   },
   containerList: {
     flex: 1,
@@ -183,6 +178,11 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     alignItems: 'center',
+  },
+  containerRelative: {
+    position: 'absolute',
+    width,
+    bottom: 20,
   },
   flatListSubcategoryContainerStyle: {
     alignItems:"center",
@@ -261,6 +261,11 @@ const styles = StyleSheet.create({
     width: (width/2 + 70),
     justifyContent: 'center'
   },
+  actionButtonIcon: {
+  fontSize: 20,
+  height: 22,
+  color: 'white',
+},
 });
 
 export default Subcategories;

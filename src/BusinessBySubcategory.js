@@ -16,6 +16,8 @@ import { NavigationActions } from 'react-navigation';
 import CachedImage from 'react-native-cached-image';
 import Swiper from 'react-native-swiper';
 import Firebase from '../lib/Firebase';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import ActionButton from 'react-native-circular-action-menu';
 
 const {width} = Dimensions.get('window');
 
@@ -23,22 +25,6 @@ class BusinessBySubcategory extends Component{
 
     static navigationOptions = ({ navigation }) => ({
       header: null,
-      // headerTitle: navigation.state.params.subcategoryName,
-      // headerRight: null,
-      // headerLeft: (<TouchableOpacity
-      //   onPress={()=>{
-      //                 const backAction = NavigationActions.back();
-      //                 navigation.dispatch(backAction);
-      //               }
-      //           }>
-      //           <View style={{paddingLeft: 20}}>
-      //             <Icon
-      //               name= "back"
-      //               color= "#CFBBA4"
-      //               size={20}
-      //             />
-      //           </View>
-      //         </TouchableOpacity>),
     });
 
     constructor(props){
@@ -206,9 +192,25 @@ class BusinessBySubcategory extends Component{
               <Text style={styles.spinnerTextBigger}> {this.props.navigation.state.params.subcategoryName}</Text>
             </View>)
         }
+        <View style={styles.containerRelative}>
+          <ActionButton
+          position="right"
+          buttonColor="rgba(213,85,60,1)">
+            <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => console.log("notes tapped!")}>
+              <Ionicons name="md-heart" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {}}>
+              <Ionicons name="md-home" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {}}>
+              <Ionicons name="md-person" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+        </View>
+        </View>
 
-        </View>
-        </View>
+
+      </View>
       );
     } else {
       return (
@@ -251,8 +253,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    marginTop: 20,
+  },
+  containerRelative: {
+    position: 'relative',
+    width,
+    bottom: 20,
   },
   welcome: {
     fontSize: 20,
@@ -265,11 +270,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   containerList: {
-    flex: 1,
     position: "absolute",
     top: 0,
     bottom: 0,
     alignItems: 'center',
+    marginTop: 20
   },
   sliderStyle: {
     backgroundColor:"transparent",
@@ -383,7 +388,12 @@ const styles = StyleSheet.create({
     smallText:{
       color:"white",
       fontSize: 11,
-    }
+    },
+    actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
 });
 
 export default BusinessBySubcategory;

@@ -89,7 +89,7 @@ class KiareAppMenu extends Component {
           <View style={styles.container}>
             <ActionButton
             position="right"
-            buttonColor="rgba(213,85,60,0.8)">
+            buttonColor="rgba(213,85,60,1)">
               <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => console.log("notes tapped!")}>
                 <Icon name="md-heart" style={styles.actionButtonIcon} />
               </ActionButton.Item>
@@ -101,7 +101,6 @@ class KiareAppMenu extends Component {
               </ActionButton.Item>
             </ActionButton>
           </View>
-
         </View>
       );
   }

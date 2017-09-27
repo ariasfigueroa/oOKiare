@@ -31,6 +31,8 @@ import PopupDialog, {
   FadeAnimation,
 } from 'react-native-popup-dialog';
 
+import ActionButton from 'react-native-circular-action-menu';
+
 const {width, height} = Dimensions.get('window');
 const scaleAnimation = new ScaleAnimation();
 
@@ -522,11 +524,24 @@ class NegociosDetalle extends Component{
                 </TouchableOpacity>
               </View>
             </View>
-
-
             </View>
             </View>
          </ScrollView>
+         <View style={styles.containerRelative}>
+           <ActionButton
+           position="right"
+           buttonColor="rgba(213,85,60,1)">
+             <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => console.log("notes tapped!")}>
+               <Ionicons name="md-heart" style={styles.actionButtonIcon} />
+             </ActionButton.Item>
+             <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {}}>
+               <Ionicons name="md-home" style={styles.actionButtonIcon} />
+             </ActionButton.Item>
+             <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {}}>
+               <Ionicons name="md-person" style={styles.actionButtonIcon} />
+             </ActionButton.Item>
+           </ActionButton>
+         </View>
         </View>
       </View>
     );
@@ -719,7 +734,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: width - 40,
     backgroundColor: "rgba(255,255,255,0.3)",
-  }
+  },
+  containerRelative: {
+    position: 'absolute',
+    width,
+    bottom: 20,
+  },
+  actionButtonIcon: {
+  fontSize: 20,
+  height: 22,
+  color: 'white',
+},
 });
 
 export default NegociosDetalle;
