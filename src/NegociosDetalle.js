@@ -23,8 +23,16 @@ import { NavigationActions } from 'react-navigation';
 import Swiper from 'react-native-swiper';
 import CachedImage from 'react-native-cached-image';
 import Communications from 'react-native-communications';
-const {width, height} = Dimensions.get('window');
+import PopupDialog, {
+  DialogTitle,
+  DialogButton,
+  SlideAnimation,
+  ScaleAnimation,
+  FadeAnimation,
+} from 'react-native-popup-dialog';
 
+const {width, height} = Dimensions.get('window');
+const scaleAnimation = new ScaleAnimation();
 
 class NegociosDetalle extends Component{
 
@@ -119,7 +127,24 @@ class NegociosDetalle extends Component{
       this.state = {
         masInformacionData: [],
       }
+
+      this.showScaleAnimationDialog = this.showScaleAnimationDialog.bind(this);
+      this.scaleAnimationServiceDialog = this.scaleAnimationServiceDialog.bind(this);
+      this.scaleAnimationSugerenciaDialog = this.scaleAnimationSugerenciaDialog.bind(this);
+
       console.log(this.props.navigation.state.params);
+    }
+
+    showScaleAnimationDialog() {
+      this.scaleAnimationDialog.show();
+    }
+
+    scaleAnimationServiceDialog(){
+      this.scaleAnimationServiceDialog.show();
+    }
+
+    scaleAnimationSugerenciaDialog(){
+      this.scaleAnimationSugerenciaDialog.show();
     }
 
     _sendMeToMaps(latitudeDelta, longitudeDelta){
@@ -144,6 +169,87 @@ class NegociosDetalle extends Component{
            barStyle="light-content"
         />
         <Image source={require('../resources/images/fondo_nuevo.png')}/>
+        <PopupDialog
+            ref={(popupDialog) => {
+              this.scaleAnimationDialog = popupDialog;
+            }}
+            width={width - 40}
+            dialogAnimation={scaleAnimation}
+            dialogTitle={<DialogTitle title="Promos" />}
+            actions={[
+              <DialogButton
+                text="Cerrar"
+                onPress={() => {
+                  this.scaleAnimationDialog.dismiss();
+                }}
+                key="button-1"
+              />,
+            ]}
+            >
+            <View style={styles.dialogContentView}>
+              <MaterialCommunityIcons
+                name= "sale"
+                size={40}
+                color="#EC573B"
+              />
+              <Text>{this.props.navigation.state.params.data.promo ? this.props.navigation.state.params.data.promo : 'No hay promo...'}</Text>
+            </View>
+        </PopupDialog>
+
+        <PopupDialog
+            ref={(popupDialog) => {
+              this.scaleAnimationServiceDialog = popupDialog;
+            }}
+            width={width - 40}
+            dialogAnimation={scaleAnimation}
+            dialogTitle={<DialogTitle title="Servicios" />}
+            actions={[
+              <DialogButton
+                text="Cerrar"
+                onPress={() => {
+                  this.scaleAnimationServiceDialog.dismiss();
+                }}
+                key="button-1"
+              />,
+            ]}
+            >
+            <View style={styles.dialogContentView}>
+              <MaterialIcons
+                name= "room-service"
+                size={40}
+                color="#F8C029"
+              />
+              <Text>{this.props.navigation.state.params.data.servicios ? this.props.navigation.state.params.data.servicios : 'No hay servicios...'}</Text>
+            </View>
+        </PopupDialog>
+
+        <PopupDialog
+            ref={(popupDialog) => {
+              this.scaleAnimationSugerenciaDialog = popupDialog;
+            }}
+            width={width - 40}
+            dialogAnimation={scaleAnimation}
+            dialogTitle={<DialogTitle title="Sugerencia" />}
+            actions={[
+              <DialogButton
+                text="Cerrar"
+                onPress={() => {
+                  this.scaleAnimationSugerenciaDialog.dismiss();
+                }}
+                key="button-1"
+              />,
+            ]}
+            >
+            <View style={styles.dialogContentView}>
+              <Icon
+                name= "medal"
+                size={40}
+                color="#88A451"
+              />
+              <Text>{this.props.navigation.state.params.data.sugerencia ? this.props.navigation.state.params.data.sugerencia : 'No hay sugerencia...'}</Text>
+            </View>
+        </PopupDialog>
+
         <View style={styles.containerAbsolute}>
           <ScrollView>
             <View style={{marginLeft: 20,}}>
@@ -153,7 +259,9 @@ class NegociosDetalle extends Component{
                 <CachedImage resizeMode={'cover'} style={styles.logoImageSizeStyle} source={{uri: this.props.navigation.state.params.data.imagenUrl}}/>
               </View>
               <View style={styles.buttonsBusinessContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this.showScaleAnimationDialog}
+                >
                   <View style={styles.buttonBusinessStyle}>
                     <MaterialCommunityIcons
                       name= "sale"
@@ -163,7 +271,9 @@ class NegociosDetalle extends Component{
                     <Text style={styles.smallText}>Promos</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this.scaleAnimationServiceDialog}
+                >
                   <View style={styles.buttonBusinessStyle}>
                   <MaterialIcons
                     name= "room-service"
@@ -173,7 +283,9 @@ class NegociosDetalle extends Component{
                   <Text style={styles.smallText}>Servicios</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this.scaleAnimationSugerenciaDialog}
+                >
                   <View style={styles.buttonBusinessStyle}>
                     <Icon
                       name= "medal"
@@ -601,6 +713,13 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     backgroundColor: 'transparent',
   },
+  dialogContentView:{
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: width - 40,
+    backgroundColor: "rgba(255,255,255,0.3)",
+  }
 });
 
 export default NegociosDetalle;
