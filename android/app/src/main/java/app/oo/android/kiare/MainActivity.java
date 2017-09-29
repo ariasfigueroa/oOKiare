@@ -1,4 +1,4 @@
-package com.kiare;
+package app.oo.android.kiare;
 
 import com.facebook.react.ReactActivity;
 
