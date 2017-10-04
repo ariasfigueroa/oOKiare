@@ -323,11 +323,6 @@ class KiareApp extends Component {
                 }
               }
               >
-                <View>
-                  <Text style={styles.textCiudadSelectedStateStyle}>
-                    CHUHUAHUA
-                  </Text>
-                </View>
               </TouchableOpacity>
 
               <TouchableOpacity

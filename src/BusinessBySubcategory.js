@@ -49,6 +49,20 @@ class BusinessBySubcategory extends Component{
                   if (snapshot && snapshot.child('estado').val() === this.props.navigation.state.params.estadoSeleccionado && snapshot.child('activo').val()){
                     var item = snapshot.val();
                     item['key'] = snapshot.key;
+                    if ( Object.keys(item.horarios).length > 0){
+                      var date = new Date();
+                      if ((item.horarios[date.getDay()].abi && item.horarios[date.getDay()].cer) && (!(item.horarios[date.getDay()].abi === 0 && item.horarios[date.getDay()].cer === 0) && (item.horarios[date.getDay()].abi !== item.horarios[date.getDay()].cer))){
+                        if (item.horarios[date.getDay()].abi < date.getHours() && item.horarios[date.getDay()].cer > date.getHours()){
+                          item['isBusinessOpen'] = 'open';
+                        } else {
+                         item['isBusinessOpen'] = 'closed';
+                        }
+                      } else {
+                        item['isBusinessOpen'] = 'closed';
+                      }
+                    } else {
+                      item['isBusinessOpen'] = 'closed';
+                    }
 
                     if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
                       let pointDelta = {
@@ -188,7 +202,7 @@ class BusinessBySubcategory extends Component{
             }
           />)
           : (<View style={styles.centeredComponents}>
-              <Text style={styles.spinnerText}>LO SENTIMOS, NO HAY REGISTROS PARA LA CATEGORIA</Text>
+              <Text style={styles.spinnerText}>LO SENTIMOS, NO HAY REGISTROS PARA LA CATEGORÍA</Text>
               <Text style={styles.spinnerTextBigger}> {this.props.navigation.state.params.subcategoryName}</Text>
             </View>)
         }
