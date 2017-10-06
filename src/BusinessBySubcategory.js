@@ -84,19 +84,32 @@ class BusinessBySubcategory extends Component{
                     data.push(item);
                   }
                   if (index === Object.keys(json).length){
-                    data.sort((a, b) =>{
-                    var nombreA = a.nombre.toUpperCase();
-                    var nombreB = b.nombre.toUpperCase();
-                    if(nombreA < nombreB){
-                      return -1;
-                    }
-                    if(nombreA > nombreB){
-                      return 1;
-                    }
-                      return 0;
-                    });
-
-                    this.setState({data, imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
+                    if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                      data.sort((a, b) =>{
+                        var distanciaA = a.distancia;
+                        var distanciaB = b.distancia;
+                        if(distanciaA < distanciaB){
+                          return -1;
+                        }
+                        if(distanciaA > distanciaB){
+                          return 1;
+                        }
+                        return 0;
+                      });
+                    } else {
+                      data.sort((a, b) =>{
+                        var nombreA = a.nombre.toUpperCase();
+                        var nombreB = b.nombre.toUpperCase();
+                        if(nombreA < nombreB){
+                          return -1;
+                        }
+                        if(nombreA > nombreB){
+                          return 1;
+                        }
+                        return 0;
+                     });
+                   }
+                   this.setState({data, imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
                   }
                 });
               }
