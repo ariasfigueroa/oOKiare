@@ -529,6 +529,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6195DB7E1F7FEB9000B791B5 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				107DA6C1A74342E3AC85CA1D /* libRNVectorIcons.a */,
+				B8DE5F95F88145088F6AECC1 /* libRNFetchBlob.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -575,6 +584,7 @@
 				00E356EF1AD99517003FC87E /* kiareTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				4B9D4DA92B8E429BAE6BBD9E /* Resources */,
+				6195DB7E1F7FEB9000B791B5 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -681,7 +691,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = SPL825P975;
+						DevelopmentTeam = CSJG5TDJF7;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1190,7 +1200,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = SPL825P975;
+				DEVELOPMENT_TEAM = CSJG5TDJF7;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1203,7 +1213,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.oo.kiare;
+				PRODUCT_BUNDLE_IDENTIFIER = org.oo.ios.kiare;
 				PRODUCT_NAME = kiare;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1214,7 +1224,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SPL825P975;
+				DEVELOPMENT_TEAM = CSJG5TDJF7;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1227,7 +1237,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.oo.kiare;
+				PRODUCT_BUNDLE_IDENTIFIER = org.oo.ios.kiare;
 				PRODUCT_NAME = kiare;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

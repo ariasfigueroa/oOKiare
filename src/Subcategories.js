@@ -26,22 +26,6 @@ class Subcategories extends Component{
 
     static navigationOptions = ({ navigation }) => ({
       header: null,
-      // headerTitle: navigation.state.params.categoryName,
-      // headerRight: null,
-      // headerLeft: (<TouchableOpacity
-      //   onPress={()=>{
-      //                 const backAction = NavigationActions.back();
-      //                 navigation.dispatch(backAction);
-      //               }
-      //           }>
-      //           <View style={{paddingLeft: 20}}>
-      //             <Icon
-      //               name= "back"
-      //               color= "#CFBBA4"
-      //               size={20}
-      //             />
-      //           </View>
-      //         </TouchableOpacity>),
     });
 
     constructor(props){
@@ -234,7 +218,6 @@ const styles = StyleSheet.create({
     width,
   },
   categoryOptionRowDirectionStyle:{
-      flexDirection: 'row',
       alignItems:'center',
       justifyContent: 'center',
       position: 'absolute',
@@ -249,14 +232,13 @@ const styles = StyleSheet.create({
   categoryOptionIconStyle:{
     height: 60,
     width: 60,
-    marginRight: 10,
   },
   categoryOptionTextStyle:{
     backgroundColor: 'transparent',
     color: 'white',
     fontSize: 25,
     fontWeight: 'bold',
-    textAlign: 'left',
+    textAlign: 'center',
     flexWrap: 'wrap',
     width: (width/2 + 70),
     justifyContent: 'center'
