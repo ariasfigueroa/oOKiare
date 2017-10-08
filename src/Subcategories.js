@@ -10,6 +10,7 @@ import {
   Dimensions,
   ScrollView,
   ActivityIndicator,
+  PixelRatio,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
@@ -221,6 +222,8 @@ const styles = StyleSheet.create({
     width,
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomColor: '#000',
+    borderBottomWidth: 3 / PixelRatio.get(),
   },
   categoryOptionTouchableStyle:{
     flex: 1,
