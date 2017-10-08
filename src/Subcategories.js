@@ -56,6 +56,7 @@ class Subcategories extends Component{
         var data =[];
         var subcategoriesMap = Firebase.jsonToMap(this.props.navigation.state.params.subcategories);
         var subcategoriesNestedMap = Firebase.jsonToMapNested(this.props.navigation.state.params.subcategories);
+
         Firebase.obtenerArbol('/subcategorias/', (snapshotSubcategories) =>{
           snapshotSubcategories.forEach((childSnapshot)=>{
             if (childSnapshot.child('activo').val() === true){
@@ -68,15 +69,28 @@ class Subcategories extends Component{
                   negocios: childSnapshot.child('negocios').val(),
                   key: childSnapshot.key,
                   imagenBannerUrl: childSnapshot.child('imagenBannerUrl').val(),
+                  orden: childSnapshot.child('orden').val(),
                 }
                 if (subcategoriesNestedMap.has(childSnapshot.key)){
                   subcategoria['isNested'] = true;
                   subcategoria['subcategories'] = subcategoriesNestedMap.get(childSnapshot.key);
                 }
                 data.push(subcategoria);
+                data.sort((a, b) =>{
+                  var ordenA = a.orden;
+                  var ordenB = b.orden;
+                  if(ordenA < ordenB){
+                    return -1;
+                  }
+                  if(ordenA > ordenB){
+                    return 1;
+                  }
+                  return 0;
+                });
               }
             }
           });
+
           this.setState({data});
         });
       } catch (error){

@@ -104,6 +104,17 @@ class KiareApp extends Component {
         if (closeEstado && (index === snapshot.numChildren())){
           //Firebase.subcategoriasPorEstado(closeEstado, '/negocios', this._getSnapshotData.bind(this));
           var dataCategories = Firebase.jsonToArray(categorias);
+          dataCategories.sort((a, b) =>{
+            var ordenA = a.orden;
+            var ordenB = b.orden;
+            if(ordenA < ordenB){
+              return -1;
+            }
+            if(ordenA > ordenB){
+              return 1;
+            }
+            return 0;
+          });
           const { navigate } = this.props.navigation;
           navigate('KiareAppMenu', {dataCategories , estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre, mostrarCambioEstadoManual: this._mostrarCambioEstadoManual.bind(this), latitude: this.state.latitude, longitude: this.state.longitude});
           this.setState({hideIndicator: true, estadoSeleccionado: closeEstado, estadoNombre: closeEstadoNombre});

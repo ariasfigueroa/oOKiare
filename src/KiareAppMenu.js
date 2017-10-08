@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  PixelRatio,
 } from 'react-native';
 
 import Firebase from '../lib/Firebase';
@@ -48,6 +49,7 @@ class KiareAppMenu extends Component {
 
   constructor(props){
     super(props);
+
   }
 
   _mostrarCambioEstadoManual(){
@@ -56,7 +58,20 @@ class KiareAppMenu extends Component {
 
 
   render() {
-    const categoriasList = this.props.navigation.state.params.dataCategories
+    var dataCategories = this.props.navigation.state.params.dataCategories;
+    dataCategories.sort((a, b) =>{
+      var ordenA = a.orden;
+      var ordenB = b.orden;
+      if(ordenA < ordenB){
+        return -1;
+      }
+      if(ordenA > ordenB){
+        return 1;
+      }
+      return 0;
+    });
+
+    const categoriasList = dataCategories
     .map((item)=>{
       if (item.activo)
         return(
@@ -122,6 +137,8 @@ const styles = StyleSheet.create({
     width,
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomColor: '#000',
+    borderBottomWidth: 3 / PixelRatio.get(),
   },
   categoryOptionTextStyle:{
     backgroundColor: 'transparent',
