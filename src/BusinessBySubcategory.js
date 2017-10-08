@@ -301,11 +301,11 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     alignItems: 'center',
-    marginTop: 20
+    paddingTop: 20
   },
   sliderStyle: {
     backgroundColor:"transparent",
-    height: 120,
+    height: 160,
     width: width - 20,
     justifyContent: 'center',
     alignItems: 'center'
