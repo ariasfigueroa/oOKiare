@@ -91,7 +91,9 @@ class Subcategories extends Component{
           <StatusBar
              barStyle="light-content"
           />
-
+          <View style={styles.headerContainer}>
+            <Image resizeMode={'contain'} style={styles.headerImageContainer} source={require('../resources/images/kiare_logo_vertical.png')}/>
+          </View>
             <ScrollView>
               <FlatList
                 horizontal={false}
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#272338',
   },
   containerList: {
     flex: 1,
@@ -218,7 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   categoryOptionStyle:{
-    height: height/3,
+    height: (height - 50)/3,
     width,
     justifyContent: 'center',
     alignItems: 'center',
@@ -265,6 +267,16 @@ const styles = StyleSheet.create({
   height: 22,
   color: 'white',
 },
+  headerContainer: {
+    width,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  headerImageContainer: {
+    height: 30,
+    marginTop: 20,
+  }
 });
 
 export default Subcategories;

@@ -253,6 +253,9 @@ class NegociosDetalle extends Component{
         </PopupDialog>
 
         <View style={styles.containerAbsolute}>
+          <View style={styles.headerContainer}>
+            <Image resizeMode={'contain'} style={styles.headerImageContainer} source={require('../resources/images/kiare_logo_vertical.png')}/>
+          </View>
           <ScrollView>
             <View style={{marginLeft: 20,}}>
             <View>
@@ -581,7 +584,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     bottom: 10,
-    marginTop: 20,
   },
   sliderStyle: {
     backgroundColor:"transparent",
@@ -638,24 +640,25 @@ const styles = StyleSheet.create({
   },
   logoImageStyle:{
     marginVertical: 10,
-    width: ((width/3) * 2) - 10,
+    width: ((width/3) * 2),
     height: (height/2) - 60,
     backgroundColor: "rgba(255,255,255,0.4)",
     borderRadius: 10
   },
   logoImageSizeStyle:{
-    width: ((width/3) * 2) - 10,
+    width: ((width/3) * 2),
     height: (height/2) - 60,
   },
   buttonsBusinessContainer:{
     marginVertical: 10,
-    marginLeft: 10,
+    marginLeft: 5,
     width: ((width/3) * 1) - 30,
     height: (height/2) - 60,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    marginRight: 20
   },
   buttonBusinessStyle:{
     width: 60,
@@ -745,6 +748,17 @@ const styles = StyleSheet.create({
   height: 22,
   color: 'white',
 },
+headerContainer: {
+  width,
+  height: 60,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#272338'
+},
+headerImageContainer: {
+  height: 30,
+  marginTop: 20,
+}
 });
 
 export default NegociosDetalle;

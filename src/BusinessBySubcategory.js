@@ -152,6 +152,9 @@ class BusinessBySubcategory extends Component{
           />
           <Image source={require('../resources/images/fondo_nuevo.png')}/>
           <View style={styles.containerList}>
+            <View style={styles.headerContainer}>
+              <Image resizeMode={'contain'} style={styles.headerImageContainer} source={require('../resources/images/kiare_logo_vertical.png')}/>
+            </View>
             <View style={styles.sliderStyle}>
               <Swiper
                 removeClippedSubviews={false}
@@ -280,6 +283,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: "#272338",
   },
   containerRelative: {
     position: 'relative',
@@ -301,7 +305,6 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     alignItems: 'center',
-    paddingTop: 20
   },
   sliderStyle: {
     backgroundColor:"transparent",
@@ -421,6 +424,17 @@ const styles = StyleSheet.create({
     height: 22,
     color: 'white',
   },
+  headerContainer: {
+    width,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#272338'
+  },
+  headerImageContainer: {
+    height: 30,
+    marginTop: 20,
+  }
 });
 
 export default BusinessBySubcategory;
