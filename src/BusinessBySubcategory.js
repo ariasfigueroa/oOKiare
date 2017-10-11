@@ -317,6 +317,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 60,
     height: 60,
+    borderRadius: 6,
   },
   touchableOpacitySliderStyle: {
     flex: 1,
@@ -326,6 +327,7 @@ const styles = StyleSheet.create({
   imageSliderStyle: {
     flex: 1,
     width: width - 20,
+    borderRadius: 10,
   },
   sliderViewContainer: {
     flex: 1,

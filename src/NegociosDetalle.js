@@ -650,7 +650,7 @@ const styles = StyleSheet.create({
   logoImageSizeStyle:{
     width: ((width/3) * 1.2),
     height: ((width/3) * 1.2),
-
+    borderRadius: 12,
   },
   buttonsBusinessContainer:{
     paddingTop: 10,
