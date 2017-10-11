@@ -640,29 +640,31 @@ const styles = StyleSheet.create({
   },
   logoImageStyle:{
     marginVertical: 10,
-    width: ((width/3) * 2),
-    height: (height/2) - 60,
-    backgroundColor: "rgba(255,255,255,0.4)",
-    borderRadius: 10
+    width: ((width/3) * 1.8),
+    height: ((width/3) * 1.8),
+    backgroundColor: "rgba(255,255,255,0.3)",
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logoImageSizeStyle:{
-    width: ((width/3) * 2),
-    height: (height/2) - 60,
+    width: ((width/3) * 1.2),
+    height: ((width/3) * 1.2),
+
   },
   buttonsBusinessContainer:{
-    marginVertical: 10,
-    marginLeft: 5,
+    paddingTop: 10,
     width: ((width/3) * 1) - 30,
-    height: (height/2) - 60,
+    height: ((width/3) * 1.8),
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    marginRight: 20
+    marginRight: 20,
   },
   buttonBusinessStyle:{
-    width: 60,
-    height: 60,
+    width: 80,
+    height: 65,
     borderRadius: 8,
     backgroundColor: "rgba(255,255,255,0.3)",
     alignItems: 'center',
@@ -712,7 +714,7 @@ const styles = StyleSheet.create({
   },
   smallText:{
     color:"white",
-    fontSize: 10,
+    fontSize: 14,
   },
   textTitle:{
     flexWrap: 'wrap',
