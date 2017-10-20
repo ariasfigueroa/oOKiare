@@ -47,6 +47,12 @@
       "idiom" : "iphone",
       "filename" : "IconoIOS.png",
       "scale" : "3x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "kiare_logo_grande.png",
+      "scale" : "1x"
     }
   ],
   "info" : {

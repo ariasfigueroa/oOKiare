@@ -108,13 +108,20 @@ class KiareAppMenu extends Component {
             <ActionButton
             position="right"
             buttonColor="rgba(213,85,60,1)">
-              <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => console.log("notes tapped!")}>
+              <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => {
+                console.log("Likes tapped!")
+              }}>
                 <Icon name="md-heart" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {}}>
+              <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {
+                console.log("Home");
+              }}>
                 <Icon name="md-home" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {}}>
+              <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {
+                console.log("Login");
+                this.props.navigation.navigate('KiareLogIn', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+              }}>
                 <Icon name="md-person" style={styles.actionButtonIcon} />
               </ActionButton.Item>
             </ActionButton>

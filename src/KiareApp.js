@@ -20,6 +20,9 @@ import WebBrowser from './WebBrowser';
 import Subcategories from './Subcategories';
 import BusinessBySubcategory from './BusinessBySubcategory';
 import Radar from './Radar';
+import KiareLogIn from './KiareLogIn';
+import ResetPassword from './ResetPassword';
+import RequestAccount from './RequestAccount';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -490,6 +493,15 @@ export const Stack = StackNavigator({
   },
   Radar: {
     screen: Radar
+  },
+  KiareLogIn:{
+    screen: KiareLogIn
+  },
+  ResetPassword:{
+    screen: ResetPassword
+  },
+  RequestAccount:{
+    screen: RequestAccount
   }
 },
 {
