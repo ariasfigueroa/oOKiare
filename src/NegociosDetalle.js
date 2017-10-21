@@ -131,6 +131,7 @@ class NegociosDetalle extends Component{
       this.state = {
         masInformacionData: [],
         userUid: null,
+        colorFavorite: '#F8C029',
       }
 
       this.showScaleAnimationDialog = this.showScaleAnimationDialog.bind(this);
@@ -142,23 +143,14 @@ class NegociosDetalle extends Component{
 
     componentWillMount(){
       AsyncStorage.getItem('userUid')
-      .then((result) => {
-        if (result){
-          this.setState({userUid: result})
-        } else {
-          console.log('userUid is null, can not add to favorites.');
-        }
-      })
-      .catch((error)=>{
-        console.log('componentWillMount():'+error);
-      });
-    }
-
-    componentWillMount(){
-      AsyncStorage.getItem('userUid')
       .then((result)=>{
         if (result){
           this.setState({userUid: result});
+          Firebase.isBusinessFavorite('/users/'+result+'/negocios/favoritos/',this.props.navigation.state.params.data.key, () => {
+              this.setState({colorFavorite: '#FFFFFF'});
+          }, (error) => {
+            console.log(error);
+          });
         } else {
           console.log("userUid is null, means the user is no logged");
         }
@@ -354,10 +346,10 @@ class NegociosDetalle extends Component{
               <TouchableOpacity
                 style={{marginHorizontal: 20}}
                 onPress={() =>{
-                  //userUid
-                  if (this.state.userUid !=== null && this.state.userUid !=== ''){
+                  if (this.state.userUid){
                      //Firebase.setBussinessFavorites('/users/xbEMtkjh3mY257tN17tkfVhX8Hh2/negocios/favoritos/',this.props.navigation.state.params.data.key);
                      Firebase.setBussinessFavorites('/users/'+this.state.userUid+'/negocios/favoritos/',this.props.navigation.state.params.data.key);
+                     this.setState({colorFavorite: '#FFFFFF'});
                   } else {
                      Alert.alert('Favoritos', 'Necesitas estar loggeado para agregar negocios como favoritos.');
                   }
@@ -366,7 +358,7 @@ class NegociosDetalle extends Component{
                 <MaterialCommunityIcons
                   name="heart"
                   size={40}
-                  color="#F8C029"
+                  color={this.state.colorFavorite}
                 />
               </TouchableOpacity>
               <TouchableOpacity
