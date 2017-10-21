@@ -19,6 +19,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CachedImage from 'react-native-cached-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ActionButton from 'react-native-circular-action-menu';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const {width, height} = Dimensions.get('window');
 
@@ -104,27 +105,30 @@ class KiareAppMenu extends Component {
           <ScrollView>
             {categoriasList}
           </ScrollView>
-          <View style={styles.container}>
-            <ActionButton
-            position="right"
-            buttonColor="rgba(213,85,60,1)">
-              <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => {
-                console.log("Likes tapped!")
-              }}>
-                <Icon name="md-heart" style={styles.actionButtonIcon} />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {
-                console.log("Home");
-              }}>
-                <Icon name="md-home" style={styles.actionButtonIcon} />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {
-                console.log("Login");
-                this.props.navigation.navigate('KiareLogIn', {estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
-              }}>
-                <Icon name="md-person" style={styles.actionButtonIcon} />
-              </ActionButton.Item>
-            </ActionButton>
+          <View style={styles.tabContainer}>
+            <TouchableOpacity
+              onPress={()=>{
+                console.log("Likes");
+              }}
+            >
+              <Ionicons name="md-heart" size={40} color="#ffffff" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={()=>{
+
+              }}
+            >
+              <Ionicons name="md-home" size={40} color="#CE267A" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={()=>{
+                this.props.navigation.navigate('KiareLogIn');
+              }}
+            >
+              <Ionicons name="md-person" size={40} color="#ffffff" />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -140,10 +144,10 @@ const styles = StyleSheet.create({
   container: {
     position: 'relative',
     width,
-    bottom: 20,
+    bottom: 50,
   },
   categoryOptionStyle:{
-    height: (height - 50)/3,
+    height: (height - 100)/3,
     width,
     justifyContent: 'center',
     alignItems: 'center',
@@ -161,7 +165,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       position: 'absolute',
       width,
-      height: height/3,
+      height: (height-50)/3,
       backgroundColor: "rgba(0,0,0,0.4)"
     },
   categoryOptionIconViewStyle:{
@@ -174,7 +178,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   categoryOptionImageStyle:{
-    height: height/3,
+    height: (height-50)/3,
     width,
   },
   categoryOptionTouchableStyle:{
@@ -201,7 +205,17 @@ headerContainer: {
 headerImageContainer: {
   height: 30,
   marginTop: 20,
+},
+tabContainer:{
+  width: width,
+  height: 50,
+  backgroundColor: "#272338",
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: 30,
 }
+
 });
 
 export default KiareAppMenu;

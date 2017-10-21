@@ -26,7 +26,7 @@ class KiareLogIn extends Component {
 
   static navigationOptions = ({ navigation }) => ({
     header: null,
-
+    gesturesEnabled: false,
   });
 
   constructor(props){
