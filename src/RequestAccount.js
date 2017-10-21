@@ -13,6 +13,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  AsyncStorage,
 } from 'react-native';
 
 import { NavigationActions } from 'react-navigation';
@@ -54,26 +55,18 @@ class RequestAccount extends Component {
         this.setState({
           showActivityIndicator: !this.state.showActivityIndicator
         });
-        let object = {email: this.state.userName, password: this.state.password, clienteKey: this.state.clienteKey, clienteNombre: this.state.cliente};
+        let object = {email: this.state.userName, password: this.state.password};
         Firebase.createUser(object, (user)=>{
-          console.log('here');
           if (user){
             // Send request to create the account.
-            object['key'] = user.uid;
-            object['token'] = this.state.token;
-
-            Firebase.requestNewAccount(object, ()=>{
-              // success
-              Alert.alert('Enviado', 'Solicitud enviada.', [ {text: 'OK', onPress: () => {
-                Firebase.logOut(()=>{
-                  this.setState({
-                    showActivityIndicator: !this.state.showActivityIndicator
-                  });
+            object['uid'] = user.uid;
+            Firebase.setUser(object, ()=>{
+                AsyncStorage.setItem('userUid', user.uid);
+                Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
+                  this.setState({showActivityIndicator: !this.state.showActivityIndicator});
                   this.goBack();
-                });
-              }, style: 'cancel'}],  { cancelable: false });
-            }, (error) => {
-              // error
+                }, style: 'cancel'},], { cancelable: false });
+            }, (error)=>{
               this.setState({errorMessage: error, showActivityIndicator: !this.state.showActivityIndicator});
             });
           }else {
