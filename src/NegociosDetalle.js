@@ -12,6 +12,7 @@ import {
   Platform,
   Linking,
   Alert,
+  AsyncStorage,
 } from 'react-native';
 
 import Firebase from '../lib/Firebase';
@@ -150,6 +151,20 @@ class NegociosDetalle extends Component{
       })
       .catch((error)=>{
         console.log('componentWillMount():'+error);
+      });
+    }
+
+    componentWillMount(){
+      AsyncStorage.getItem('userUid')
+      .then((result)=>{
+        if (result){
+          this.setState({userUid: result});
+        } else {
+          console.log("userUid is null, means the user is no logged");
+        }
+      })
+      .catch((error)=>{
+        console.log(error);
       });
     }
 
