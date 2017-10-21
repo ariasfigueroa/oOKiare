@@ -14,6 +14,7 @@ import {
   Alert,
 } from 'react-native';
 
+import Firebase from '../lib/Firebase';
 import Icon from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -128,13 +129,28 @@ class NegociosDetalle extends Component{
       super(props);
       this.state = {
         masInformacionData: [],
+        userUid: null,
       }
 
       this.showScaleAnimationDialog = this.showScaleAnimationDialog.bind(this);
       this.scaleAnimationServiceDialog = this.scaleAnimationServiceDialog.bind(this);
       this.scaleAnimationSugerenciaDialog = this.scaleAnimationSugerenciaDialog.bind(this);
 
-      console.log(this.props.navigation.state.params);
+      console.log('Constructor:'+this.props.navigation.state.params);
+    }
+
+    componentWillMount(){
+      AsyncStorage.getItem('userUid')
+      .then((result) => {
+        if (result){
+          this.setState({userUid: result})
+        } else {
+          console.log('userUid is null, can not add to favorites.');
+        }
+      })
+      .catch((error)=>{
+        console.log('componentWillMount():'+error);
+      });
     }
 
     showScaleAnimationDialog() {
@@ -322,6 +338,15 @@ class NegociosDetalle extends Component{
               </TouchableOpacity>
               <TouchableOpacity
                 style={{marginHorizontal: 20}}
+                onPress={() =>{
+                  //userUid
+                  if (this.state.userUid !=== null && this.state.userUid !=== ''){
+                     //Firebase.setBussinessFavorites('/users/xbEMtkjh3mY257tN17tkfVhX8Hh2/negocios/favoritos/',this.props.navigation.state.params.data.key);
+                     Firebase.setBussinessFavorites('/users/'+this.state.userUid+'/negocios/favoritos/',this.props.navigation.state.params.data.key);
+                  } else {
+                     Alert.alert('Favoritos', 'Necesitas estar loggeado para agregar negocios como favoritos.');
+                  }
+                }}
               >
                 <MaterialCommunityIcons
                   name="heart"
