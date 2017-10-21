@@ -11,6 +11,7 @@ import {
   ScrollView,
   Dimensions,
   PixelRatio,
+  AsyncStorage,
 } from 'react-native';
 
 import Firebase from '../lib/Firebase';
@@ -20,6 +21,7 @@ import CachedImage from 'react-native-cached-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ActionButton from 'react-native-circular-action-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 const {width, height} = Dimensions.get('window');
 
@@ -124,7 +126,17 @@ class KiareAppMenu extends Component {
 
             <TouchableOpacity
               onPress={()=>{
-                this.props.navigation.navigate('KiareLogIn');
+                AsyncStorage.getItem('user')
+                .then((result)=>{
+                  if (result){
+                    this.props.navigation.navigate('KiareLogOut');
+                  } else {
+                    this.props.navigation.navigate('KiareLogIn');
+                  }
+                })
+                .catch((error)=>{
+                  console.log(error);
+                });
               }}
             >
               <Ionicons name="md-person" size={40} color="#ffffff" />

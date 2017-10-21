@@ -15,6 +15,7 @@ import {
   AsyncStorage,
 } from 'react-native';
 
+import Firebase from '../lib/Firebase';
 import Icon from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -130,20 +131,30 @@ class NegociosDetalle extends Component{
       this.state = {
         masInformacionData: [],
         userUid: null,
+        colorFavorite: '#F8C029',
       }
 
       this.showScaleAnimationDialog = this.showScaleAnimationDialog.bind(this);
       this.scaleAnimationServiceDialog = this.scaleAnimationServiceDialog.bind(this);
       this.scaleAnimationSugerenciaDialog = this.scaleAnimationSugerenciaDialog.bind(this);
 
-      console.log(this.props.navigation.state.params);
+      console.log('Constructor:'+this.props.navigation.state.params);
     }
 
     componentWillMount(){
-      AsyncStorage.getItem('userUid')
+      AsyncStorage.getItem('user')
       .then((result)=>{
         if (result){
+<<<<<<< HEAD
+          this.setState({userUid: result.uid});
+=======
           this.setState({userUid: result});
+          Firebase.isBusinessFavorite('/users/'+result+'/negocios/favoritos/',this.props.navigation.state.params.data.key, () => {
+              this.setState({colorFavorite: '#FFFFFF'});
+          }, (error) => {
+            console.log(error);
+          });
+>>>>>>> 0edf9ce81fa4bb1088d7ee48b3adaa137e0478f1
         } else {
           console.log("userUid is null, means the user is no logged");
         }
@@ -338,11 +349,20 @@ class NegociosDetalle extends Component{
               </TouchableOpacity>
               <TouchableOpacity
                 style={{marginHorizontal: 20}}
+                onPress={() =>{
+                  if (this.state.userUid){
+                     //Firebase.setBussinessFavorites('/users/xbEMtkjh3mY257tN17tkfVhX8Hh2/negocios/favoritos/',this.props.navigation.state.params.data.key);
+                     Firebase.setBussinessFavorites('/users/'+this.state.userUid+'/negocios/favoritos/',this.props.navigation.state.params.data.key);
+                     this.setState({colorFavorite: '#FFFFFF'});
+                  } else {
+                     Alert.alert('Favoritos', 'Necesitas estar loggeado para agregar negocios como favoritos.');
+                  }
+                }}
               >
                 <MaterialCommunityIcons
                   name="heart"
                   size={40}
-                  color="#F8C029"
+                  color={this.state.colorFavorite}
                 />
               </TouchableOpacity>
               <TouchableOpacity

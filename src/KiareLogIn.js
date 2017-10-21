@@ -54,7 +54,7 @@ class KiareLogIn extends Component {
         this.setState({showActivityIndicator: !this.state.showActivityIndicator});
         Firebase.loginWithEmail(this.state.userName, this.state.password , (User)=>{
           console.log('user logged: ', User.uid);
-          AsyncStorage.setItem('userUid', User.uid);
+          AsyncStorage.setItem('user', JSON.stringify(User));
           Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
             this.setState({showActivityIndicator: !this.state.showActivityIndicator});
             this.goBack();
@@ -77,7 +77,7 @@ class KiareLogIn extends Component {
   }
 
   componentDidMount(){
-    AsyncStorage.getItem('userUid')
+    AsyncStorage.getItem('user')
     .then((result)=>{
       if (result){
         console.log(result);

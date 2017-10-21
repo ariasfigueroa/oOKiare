@@ -18,10 +18,9 @@ import {
 
 import { NavigationActions } from 'react-navigation';
 import Firebase from '../lib/Firebase';
-
 const {width, height} = Dimensions.get('window');
 
-class RequestAccount extends Component {
+class KiareLogOut extends Component {
 
   static navigationOptions = {
     header: null,
@@ -31,8 +30,7 @@ class RequestAccount extends Component {
   constructor(props){
     super(props);
     this.state = {
-      userName: '',
-      password: '',
+      email: '',
       errorMessage: null,
       showActivityIndicator: false,
     }
@@ -40,44 +38,46 @@ class RequestAccount extends Component {
     this.goBack = this.goBack.bind(this);
   }
 
+  componentWillMount(){
+    AsyncStorage.getItem('user')
+    .then((result)=>{
+      if (result){
+        var user = JSON.parse(result);
+        this.setState({email: user.email});
+      } else {
+        console.log("No user in the storage");
+      }
+    })
+    .catch((error)=>{
+      console.log(error);
+    });
+  }
+
   _resetErrors(){
     if (this.state.errorMessage)
       this.setState({errorMessage: null})
   }
 
-  componentWillMount(){
-
-  }
-
-  requestNewAccount(){
+  logOut(){
     try{
-      if (this.state.userName && this.state.password ){
+      if (this.state.email){
         this.setState({
           showActivityIndicator: !this.state.showActivityIndicator
         });
-        let object = {email: this.state.userName, password: this.state.password};
-        Firebase.createUser(object, (user)=>{
-          if (user){
-            // Send request to create the account.
-            object['uid'] = user.uid;
-            Firebase.setUser(object, ()=>{
-                Firebase.logOut(()=>{
-                  Alert.alert('¡Genial!', 'Cuenta creada, ahora ingresa a Kiare con ella.',  [ {text: 'Yes', onPress: () => {
-                  this.setState({showActivityIndicator: !this.state.showActivityIndicator});
-                  this.goBack();
-                  }, style: 'cancel'},], { cancelable: false });
-                });
-              }, (error)=>{
-              this.setState({errorMessage: error, showActivityIndicator: !this.state.showActivityIndicator});
-            });
-          }else {
-            this.setState({errorMessage: 'Usuario no creado.', showActivityIndicator: !this.state.showActivityIndicator});
-          }
-        }, (errorUser)=>{
-          this.setState({errorMessage: errorUser, showActivityIndicator: !this.state.showActivityIndicator});
+        Firebase.logOut(()=>{
+          Alert.alert('¡Graciasl!', 'Esperamos verte de regreso pronto.',  [ {text: 'Yes', onPress: () => {
+          AsyncStorage.removeItem('user')
+          .then((result)=>{
+              this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+              this.goBack();
+          })
+          .catch((error)=>{
+            console.log(error);
+          });
+          }, style: 'cancel'},], { cancelable: false });
         });
       } else {
-        this.setState({errorMessage: 'Correo Electrónico es requerido y Empresa son requeridos', showActivityIndicator: !this.state.showActivityIndicator});
+        this.setState({errorMessage: 'Correo Electrónico es requerido.', showActivityIndicator: !this.state.showActivityIndicator});
       }
     } catch(error){
       this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
@@ -87,10 +87,6 @@ class RequestAccount extends Component {
   goBack(){
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction)
-  }
-
-  componentDidMount(){
-
   }
 
   render(){
@@ -131,48 +127,22 @@ class RequestAccount extends Component {
               <View style={styles.logoView}>
                 <Image
                   resizeMode={'contain'}
-                  style={styles.logo}
+                  style={styles.headerImageContainer}
                   source={require('../resources/images/kiare_logo_vertical.png')}
                 />
               </View>
               <View style={styles.loginView}>
                 <View style={[styles.loginField]}>
-                  <TextInput style={styles.textInputStyle}
-                     autoCapitalize= {'none'}
-                     autoCorrect={false}
-                     placeholder= {'Correo Electrónico'}
-                     onChangeText={(userName) => this.setState({userName})}
-                     returnKeyType={'next'}
-                     keyboardType={'email-address'}
-                     ref={(userNameInput) => this.userNameInput = userNameInput}
-                     onSubmitEditing={() => this.passwordInput.focus()}
-                     value={this.state.userName}
-                     onFocus={this._resetErrors}
-                  />
-                </View>
-                <View style={[styles.loginField]}>
-                  <TextInput style={styles.textInputStyle}
-                    autoCapitalize= {'none'}
-                    autoCorrect={false}
-                    placeholder= {'Contraseña'}
-                    onChangeText={(password) => this.setState({password})}
-                    returnKeyType={'go'}
-                    secureTextEntry={true}
-                    keyboardType={'default'}
-                    ref={(passwordInput) => this.passwordInput = passwordInput}
-                    value={this.state.password}
-                    onFocus={this._resetErrors}
-                  />
+                  {this.state.email ? <Text style={styles.errorMessageStyle}> {this.state.email} </Text> : null}
                 </View>
               </View>
 
-
               <View style={styles.loginButtonContainer}>
                 <TouchableOpacity style={styles.loginButtonStyle}
-                  onPress={this.requestNewAccount.bind(this)}
+                  onPress={this.logOut.bind(this)}
                 >
                  <Text style={styles.textInsideButtons}>
-                   Solicitar Cuenta
+                   Salir de mi perfil.
                  </Text>
                 </TouchableOpacity>
               </View>
@@ -224,9 +194,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   loginView: {
-    width: width - 40,
-    height:100,
-    backgroundColor: "rgba(255,255,255,0.80)",
+    width: width - 100,
+    height:50,
+    backgroundColor: "transparent",
     borderRadius: 5,
     flex: 1,
     alignItems: 'center',
@@ -243,7 +213,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    height: 50,
+    width: 162,
+    height: 90,
   },
   loginField:{
     backgroundColor: 'transparent',
@@ -283,21 +254,16 @@ const styles = StyleSheet.create({
   errorMessageStyle: {
     marginTop: 20,
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: '500',
     textAlign: 'center',
     fontStyle: 'italic',
     backgroundColor: 'transparent',
   },
-  dropdownStyle: {
-    width: width - 100,
-    backgroundColor: 'rgba(255,255,255,0.80)',
-    borderRadius: 5,
-    flex: 1,
-    justifyContent: 'center',
-    marginTop: 20,
-  }
+  headerImageContainer: {
+    height: 50,
+    }
 
 });
 
-export default RequestAccount;
+export default KiareLogOut;

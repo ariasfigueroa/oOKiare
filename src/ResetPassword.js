@@ -50,19 +50,17 @@ class ResetPassword extends Component {
         });
         Firebase.resetPassword(this.state.userName, () => {
           Alert.alert('Contraseña', 'Te enviamos un correo a: ' + this.state.userName, [ {text: 'OK', onPress: () => {
-            this.setState({
-              showActivityIndicator: !this.state.showActivityIndicator
-            });
+            this.setState({showActivityIndicator: !this.state.showActivityIndicator});
             this.goBack();
           }, style: 'cancel'}],  { cancelable: false });
         }, (error) => {
-          this.setState({errorMessage: error});
+          this.setState({errorMessage: error, showActivityIndicator: !this.state.showActivityIndicator});
         });
       } else {
-        this.setState({errorMessage: 'Correo Electrónico es requerido.'});
+        this.setState({errorMessage: 'Correo Electrónico es requerido.', showActivityIndicator: !this.state.showActivityIndicator});
       }
     } catch(error){
-      this.setState({errorMessage: error.message});
+      this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
     }
   }
 

@@ -23,6 +23,7 @@ import Radar from './Radar';
 import KiareLogIn from './KiareLogIn';
 import ResetPassword from './ResetPassword';
 import RequestAccount from './RequestAccount';
+import KiareLogOut from './KiareLogOut';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -502,6 +503,9 @@ export const Stack = StackNavigator({
   },
   RequestAccount:{
     screen: RequestAccount
+  },
+  KiareLogOut: {
+    screen: KiareLogOut
   }
 },
 {
