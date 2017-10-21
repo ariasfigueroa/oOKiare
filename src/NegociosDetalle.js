@@ -154,6 +154,9 @@ class NegociosDetalle extends Component{
           }, (error) => {
             console.log(error);
           });
+<<<<<<< HEAD
+>>>>>>> 0edf9ce81fa4bb1088d7ee48b3adaa137e0478f1
+=======
 >>>>>>> 0edf9ce81fa4bb1088d7ee48b3adaa137e0478f1
         } else {
           console.log("userUid is null, means the user is no logged");
