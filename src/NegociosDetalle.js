@@ -145,19 +145,13 @@ class NegociosDetalle extends Component{
       AsyncStorage.getItem('user')
       .then((result)=>{
         if (result){
-<<<<<<< HEAD
-          this.setState({userUid: result.uid});
-=======
-          this.setState({userUid: result});
+          var user = JSON.parse(result);
+          this.setState({userUid: user.uid});
           Firebase.isBusinessFavorite('/users/'+result+'/negocios/favoritos/',this.props.navigation.state.params.data.key, () => {
               this.setState({colorFavorite: '#FFFFFF'});
           }, (error) => {
             console.log(error);
           });
-<<<<<<< HEAD
->>>>>>> 0edf9ce81fa4bb1088d7ee48b3adaa137e0478f1
-=======
->>>>>>> 0edf9ce81fa4bb1088d7ee48b3adaa137e0478f1
         } else {
           console.log("userUid is null, means the user is no logged");
         }
