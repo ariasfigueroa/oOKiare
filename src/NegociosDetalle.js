@@ -12,6 +12,7 @@ import {
   Platform,
   Linking,
   Alert,
+  AsyncStorage,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
@@ -128,6 +129,7 @@ class NegociosDetalle extends Component{
       super(props);
       this.state = {
         masInformacionData: [],
+        userUid: null,
       }
 
       this.showScaleAnimationDialog = this.showScaleAnimationDialog.bind(this);
@@ -135,6 +137,20 @@ class NegociosDetalle extends Component{
       this.scaleAnimationSugerenciaDialog = this.scaleAnimationSugerenciaDialog.bind(this);
 
       console.log(this.props.navigation.state.params);
+    }
+
+    componentWillMount(){
+      AsyncStorage.getItem('userUid')
+      .then((result)=>{
+        if (result){
+          this.setState({userUid: result});
+        } else {
+          console.log("userUid is null, means the user is no logged");
+        }
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
     }
 
     showScaleAnimationDialog() {

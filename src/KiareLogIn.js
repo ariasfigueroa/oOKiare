@@ -13,6 +13,8 @@ import {
   PixelRatio,
   KeyboardAvoidingView,
   TextInput,
+  AsyncStorage,
+  Alert
 } from 'react-native';
 
 import Firebase from '../lib/Firebase';
@@ -51,8 +53,12 @@ class KiareLogIn extends Component {
       if (this.state.userName && this.state.password){
         this.setState({showActivityIndicator: !this.state.showActivityIndicator});
         Firebase.loginWithEmail(this.state.userName, this.state.password , (User)=>{
-          // get userRole
-        console.log('user logged');
+          console.log('user logged: ', User.uid);
+          AsyncStorage.setItem('userUid', User.uid);
+          Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
+            this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+            this.goBack();
+          }, style: 'cancel'},], { cancelable: false });
         }, (errorMessage)=>{
           console.log(errorMessage);
           this.setState({errorMessage: errorMessage.message, showActivityIndicator: !this.state.showActivityIndicator})
@@ -70,8 +76,43 @@ class KiareLogIn extends Component {
     this.props.navigation.dispatch(backAction)
   }
 
+  componentDidMount(){
+    AsyncStorage.getItem('userUid')
+    .then((result)=>{
+      if (result){
+        console.log(result);
+      } else {
+        console.log("userUid is null, means the user is no logged");
+      }
+      this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+    })
+    .catch((error)=>{
+      console.log(error);
+      this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+    });
+  }
 
   render() {
+    if (this.state.showActivityIndicator){
+      return(
+        <View style={styles.container}>
+        <StatusBar
+           barStyle="light-content"
+        />
+          <Image
+            style={styles.backgroundImage}
+            source={require('../resources/images/fondo_nuevo.png')}
+          />
+          <View style={styles.containerAbsolute}>
+            <ActivityIndicator
+              animating={this.state.showActivityIndicator}
+              style={{height: 80}}
+              size="large"
+            />
+          </View>
+        </View>
+      );
+    } else {
       return (
         <View style={styles.container}>
         <StatusBar
@@ -197,6 +238,7 @@ class KiareLogIn extends Component {
             </KeyboardAvoidingView>
         </View>
       );
+    }
   }
 }
 
