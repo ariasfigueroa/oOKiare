@@ -21,6 +21,8 @@ import Firebase from '../lib/Firebase';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import CachedImage from 'react-native-cached-image';
 import Icon from 'react-native-vector-icons/Entypo';
+import {LoginButton, AccessToken} from 'react-native-fbsdk';
+
 
 const {width, height} = Dimensions.get('window');
 
@@ -199,29 +201,45 @@ class KiareLogIn extends Component {
                   </Text>
                 </TouchableOpacity>
               </View>
+
               <View style={styles.facebookButtonContainer}>
-                <TouchableOpacity style={styles.loginButtonStyle}
-                  onPress={() => {
-
-                  }}
-                >
-                <View style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  }}>
-                  <Icon
-                    name="facebook-with-circle"
-                    size={30}
-                    color="#3b5998"
-                  />
-                  <Text style={styles.textInsideFacebookButtons}>
-                    Facebook
-                  </Text>
-                </View>
-
-                </TouchableOpacity>
+              <LoginButton
+              readPermissions={["email", "public_profile","user_friends"]}
+              onLoginFinished={(error, result) => {
+                            this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+                            if (error) {
+                              this.setState({errorMessage: result.error, showActivityIndicator: !this.state.showActivityIndicator});
+                            } else if (result.isCancelled) {
+                              console.log("login is cancelled.");
+                            } else {
+                              AccessToken.getCurrentAccessToken().then(
+                                (data) => {
+                                  Firebase.signInWithCredential(data.accessToken, (user)=>{
+                                    Firebase.setUserFromFacebook(user, ()=>{
+                                      AsyncStorage.setItem('user', JSON.stringify(user));
+                                      Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
+                                        this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+                                        this.goBack();
+                                      }, style: 'cancel'},], { cancelable: false });
+                                    }, (error)=>{
+                                      this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
+                                    });
+                                  }, (error)=>{
+                                    this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
+                                  });
+                                }
+                              )
+                            }
+                          }
+                        }
+              onLogoutFinished={() => {
+                Alert.alert('Gracias!', 'Te esperamos pronto en Kiare',  [ {text: 'Yes', onPress: () => {
+                  this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+                  this.goBack();
+                }, style: 'cancel'},], { cancelable: false });
+              }}/>
               </View>
+
               {this.state.errorMessage ? <Text style={styles.errorMessageStyle}> {this.state.errorMessage} </Text> : null}
               <View style={styles.forgotPasswordButtonStyle}>
                 <TouchableOpacity
@@ -321,12 +339,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 40,
   },
-
-  facebookButtonContainer:{
+facebookButtonContainer:{
     width: width - 100,
     height:44,
-    backgroundColor: 'white',
-    borderRadius: 5,
+    backgroundColor: 'transparent',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

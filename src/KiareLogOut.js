@@ -19,6 +19,7 @@ import {
 import { NavigationActions } from 'react-navigation';
 import Firebase from '../lib/Firebase';
 const {width, height} = Dimensions.get('window');
+import {LoginButton, AccessToken} from 'react-native-fbsdk';
 
 class KiareLogOut extends Component {
 
@@ -33,6 +34,7 @@ class KiareLogOut extends Component {
       email: '',
       errorMessage: null,
       showActivityIndicator: false,
+      showFacebookButton: false,
     }
     this._resetErrors = this._resetErrors.bind(this)
     this.goBack = this.goBack.bind(this);
@@ -43,7 +45,13 @@ class KiareLogOut extends Component {
     .then((result)=>{
       if (result){
         var user = JSON.parse(result);
-        this.setState({email: user.email});
+        console.log(user);
+        if (user.providerData[0].providerId == "facebook.com"){
+          this.setState({email: user.providerData[0].email, showFacebookButton: true});
+        } else {
+          this.setState({email: user.email, showFacebookButton: false});
+        }
+
       } else {
         console.log("No user in the storage");
       }
@@ -136,16 +144,56 @@ class KiareLogOut extends Component {
                   {this.state.email ? <Text style={styles.errorMessageStyle}> {this.state.email} </Text> : null}
                 </View>
               </View>
-
-              <View style={styles.loginButtonContainer}>
-                <TouchableOpacity style={styles.loginButtonStyle}
-                  onPress={this.logOut.bind(this)}
-                >
-                 <Text style={styles.textInsideButtons}>
-                   Salir de mi perfil.
-                 </Text>
-                </TouchableOpacity>
-              </View>
+              {this.state.showFacebookButton == true ? (<View style={styles.facebookButtonContainer}><LoginButton
+                readPermissions={["email", "public_profile","user_friends"]}
+                onLoginFinished={(error, result) => {
+                              this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+                              if (error) {
+                                this.setState({errorMessage: result.error, showActivityIndicator: !this.state.showActivityIndicator});
+                              } else if (result.isCancelled) {
+                                console.log("login is cancelled.");
+                              } else {
+                                AccessToken.getCurrentAccessToken().then(
+                                  (data) => {
+                                    Firebase.signInWithCredential(data.accessToken, (user)=>{
+                                      Firebase.setUserFromFacebook(user, ()=>{
+                                        AsyncStorage.setItem('user', JSON.stringify(user));
+                                        Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
+                                          this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+                                          this.goBack();
+                                        }, style: 'cancel'},], { cancelable: false });
+                                      }, (error)=>{
+                                        this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
+                                      });
+                                    }, (error)=>{
+                                      this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
+                                    });
+                                  }
+                                )
+                              }
+                            }
+                          }
+                onLogoutFinished={() => {
+                  Alert.alert('Gracias!', 'Te esperamos pronto en Kiare',  [ {text: 'Yes', onPress: () => {
+                    AsyncStorage.removeItem('user')
+                    .then((result)=>{
+                        this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+                        this.goBack();
+                    })
+                    .catch((error)=>{
+                      console.log(error);
+                    });
+                  }, style: 'cancel'},], { cancelable: false });
+                }}/></View>) : (<View style={styles.loginButtonContainer}>
+                  <TouchableOpacity style={styles.loginButtonStyle}
+                    onPress={this.logOut.bind(this)}
+                  >
+                   <Text style={styles.textInsideButtons}>
+                     Salir de mi perfil.
+                   </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
 
               <View style={styles.forgotPasswordButtonStyle}>
                 <TouchableOpacity
@@ -262,8 +310,17 @@ const styles = StyleSheet.create({
   },
   headerImageContainer: {
     height: 50,
-    }
-
+  },
+  facebookButtonContainer:{
+      width: width - 100,
+      height:44,
+      backgroundColor: 'transparent',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 10,
+      marginTop: 40,
+    },
 });
 
 export default KiareLogOut;
