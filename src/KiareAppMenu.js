@@ -12,6 +12,7 @@ import {
   Dimensions,
   PixelRatio,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 
 import Firebase from '../lib/Firebase';
@@ -52,11 +53,30 @@ class KiareAppMenu extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      userUid: null,
+    }
 
   }
 
   _mostrarCambioEstadoManual(){
-    this.setState({estadoNombre: null, estadoSeleccionado: null, dataComer: null, dataDiversion: null, dataEventos: null, dataPistear: null});
+    this.setState({estadoNombre: null, estadoSeleccionado: null, dataComer: null, dataDiversion: null, dataEventos: null, dataPistear: null, fromFavorites: null});
+  }
+
+  componentWillMount(){
+    AsyncStorage.getItem('user')
+    .then((result)=>{
+      if (result){
+        var user = JSON.parse(result);
+        this.setState({userUid: user.uid});
+      } else {
+        console.log("userUid is null, means the user is no logged");
+      }
+    })
+    .catch((error)=>{
+      console.log(error);
+    });
+
   }
 
 
@@ -111,6 +131,11 @@ class KiareAppMenu extends Component {
             <TouchableOpacity
               onPress={()=>{
                 console.log("Likes");
+                if (this.state.userUid){
+                 this.props.navigation.navigate('BusinessBySubcategory', {fromFavorites: true, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                } else {
+                   Alert.alert('Favoritos', 'Necesitas estar loggeado para ver tus negocios favoritos.');
+                }
               }}
             >
               <Ionicons name="md-heart" size={40} color="#ffffff" />
@@ -129,6 +154,7 @@ class KiareAppMenu extends Component {
                 AsyncStorage.getItem('user')
                 .then((result)=>{
                   if (result){
+                    var user = JSON.parse(result);
                     this.props.navigation.navigate('KiareLogOut');
                   } else {
                     this.props.navigation.navigate('KiareLogIn');

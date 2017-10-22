@@ -147,7 +147,7 @@ class NegociosDetalle extends Component{
         if (result){
           var user = JSON.parse(result);
           this.setState({userUid: user.uid});
-          Firebase.isBusinessFavorite('/users/'+result+'/negocios/favoritos/',this.props.navigation.state.params.data.key, () => {
+          Firebase.isBusinessFavorite('/users/'+user.uid+'/negocios/favoritos/',this.props.navigation.state.params.data.key, () => {
               this.setState({colorFavorite: '#FFFFFF'});
           }, (error) => {
             console.log(error);
@@ -348,7 +348,6 @@ class NegociosDetalle extends Component{
                 style={{marginHorizontal: 20}}
                 onPress={() =>{
                   if (this.state.userUid){
-                     //Firebase.setBussinessFavorites('/users/xbEMtkjh3mY257tN17tkfVhX8Hh2/negocios/favoritos/',this.props.navigation.state.params.data.key);
                      Firebase.setBussinessFavorites('/users/'+this.state.userUid+'/negocios/favoritos/',this.props.navigation.state.params.data.key);
                      this.setState({colorFavorite: '#FFFFFF'});
                   } else {
