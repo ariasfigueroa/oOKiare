@@ -8,7 +8,8 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
@@ -123,8 +124,113 @@ class BusinessBySubcategory extends Component{
       }
     }
 
+    _getBusinessFavorites(snapshotFavoritos){
+      try {
+        if (snapshotFavoritos){
+            let json = snapshotFavoritos.val();
+            var data = [];
+            var index = 0;
+            if (json && Object.keys(json).length > 0){
+              for (var item in json){                
+                index++;
+                Firebase.obtenerArbol('/negocios/'+item,(snapshot)=>{
+                  if (snapshot && snapshot.child('estado').val() === this.props.navigation.state.params.estadoSeleccionado && snapshot.child('activo').val()){
+                    var item = snapshot.val();
+                    item['key'] = snapshot.key;
+                    if ( Object.keys(item.horarios).length > 0){
+                      var date = new Date();
+                      if ((item.horarios[date.getDay()].abi && item.horarios[date.getDay()].cer) && (!(item.horarios[date.getDay()].abi === 0 && item.horarios[date.getDay()].cer === 0) && (item.horarios[date.getDay()].abi !== item.horarios[date.getDay()].cer))){
+                        if (item.horarios[date.getDay()].abi < date.getHours() && item.horarios[date.getDay()].cer > date.getHours()){
+                          item['isBusinessOpen'] = 'open';
+                        } else {
+                         item['isBusinessOpen'] = 'closed';
+                        }
+                      } else {
+                        item['isBusinessOpen'] = 'closed';
+                      }
+                    } else {
+                      item['isBusinessOpen'] = 'closed';
+                    }
+
+                    if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                      let pointDelta = {
+                        latitude: item.latitud,
+                        longitude: item.longitud,
+                      };
+
+                      let currentPoint= {
+                        latitude: this.props.navigation.state.params.latitude,
+                        longitude: this.props.navigation.state.params.longitude,
+                      }
+
+                      let distanciaFunc = this._getDistance.bind(this);
+                      let distancia = Math.round(distanciaFunc(currentPoint, pointDelta));
+
+                      item['distancia'] = distancia;
+                    }
+
+                    data.push(item);
+                  }// end snapshot
+                  if (index === Object.keys(json).length){
+                    if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                      data.sort((a, b) =>{
+                        var distanciaA = a.distancia;
+                        var distanciaB = b.distancia;
+                        if(distanciaA < distanciaB){
+                          return -1;
+                        }
+                        if(distanciaA > distanciaB){
+                          return 1;
+                        }
+                        return 0;
+                      });
+                    } else {
+                      data.sort((a, b) =>{
+                        var nombreA = a.nombre.toUpperCase();
+                        var nombreB = b.nombre.toUpperCase();
+                        if(nombreA < nombreB){
+                          return -1;
+                        }
+                        if(nombreA > nombreB){
+                          return 1;
+                        }
+                        return 0;
+                     });
+                   }//end sort
+                   this.setState({data, imagenBannerUrl: snapshot.child('imagenBannerUrl').val()});
+                  }
+                });
+              }
+            } else {
+              this.setState({data: [], imagenBannerUrl: snapshot.child('imagenBannerUrl').val()});
+            }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     componentWillMount(){
-        Firebase.obtenerArbol('/subcategorias/'+this.props.navigation.state.params.subcategory, this._getBusiness.bind(this));
+      AsyncStorage.getItem('user')
+      .then((result)=>{
+        var user = null;
+        if (result){
+          user = JSON.parse(result);
+          this.setState({userUid: user.uid});
+        } else {
+          console.log("userUid is null, means the user is no logged");
+        }
+        //console.log('BBS.componentWillMount()-> uid: '+user.uid+ ' favorites: '+ this.props.navigation.state.params.fromFavorites);
+        if (user !== null && user.uid && this.props.navigation.state.params.fromFavorites) {
+          Firebase.obtenerArbol('/users/'+user.uid+'/negocios/favoritos', this._getBusinessFavorites.bind(this));
+        } else {
+          Firebase.obtenerArbol('/subcategorias/'+this.props.navigation.state.params.subcategory, this._getBusiness.bind(this));
+        }
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+
     }
 
     _getDistance(currentPoint, pointDelta){
@@ -145,6 +251,7 @@ class BusinessBySubcategory extends Component{
 
   render(){
     if (this.state.data && this.state.imagenBannerUrl){
+    //if (this.state.data){
       return(
         <View style={styles.container}>
           <StatusBar
