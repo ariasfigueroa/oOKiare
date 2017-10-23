@@ -62,14 +62,14 @@
     <dict>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>fb1744665142272395</string>
+        <string>fb288913104954772</string>
       </array>
     </dict>
   </array>
   <key>FacebookAppID</key>
-  <string>1744665142272395</string>
+  <string>288913104954772</string>
   <key>FacebookDisplayName</key>
-  <string>oOSocial</string>
+  <string>Kiare</string>
   
   <key>LSApplicationQueriesSchemes</key>
   <array>

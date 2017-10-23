@@ -222,10 +222,12 @@ class KiareLogIn extends Component {
                                         this.goBack();
                                       }, style: 'cancel'},], { cancelable: false });
                                     }, (error)=>{
-                                      this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
+                                      console.log(JSON.stringify(error));
+                                      this.setState({errorMessage: JSON.stringify(error), showActivityIndicator: !this.state.showActivityIndicator});
                                     });
                                   }, (error)=>{
-                                    this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
+                                    console.log(JSON.stringify(error));
+                                    this.setState({errorMessage: JSON.stringify(error), showActivityIndicator: !this.state.showActivityIndicator});
                                   });
                                 }
                               )
