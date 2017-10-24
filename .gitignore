@@ -1,2 +1,4 @@
 
 ios/build/*
+node_modules/*
+android/build/*
