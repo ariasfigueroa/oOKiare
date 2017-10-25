@@ -125,7 +125,7 @@ class KiareLogIn extends Component {
             source={require('../resources/images/fondo_nuevo.png')}
           />
           <KeyboardAvoidingView
-            behavior='position'
+            behavior='height'
             style={styles.containerAbsolute}
           >
 
