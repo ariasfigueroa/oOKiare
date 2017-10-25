@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
   },
   headerImageContainer: {
     height: 50,
+    width: width,
     }
 
 });

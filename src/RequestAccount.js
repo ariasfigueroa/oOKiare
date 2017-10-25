@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 50,
+    width: width,
   },
   loginField:{
     backgroundColor: 'transparent',

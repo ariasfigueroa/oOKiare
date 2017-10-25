@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
   loginView: {
     width: width - 100,
-    height:50,
+    height:80,
     backgroundColor: "transparent",
     borderRadius: 5,
     flex: 1,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   loginField:{
     backgroundColor: 'transparent',
     width: width - 100,
-    height:40,
+    height:80,
     borderRadius: 5,
   },
   forgotPasswordButtonStyle: {
@@ -309,6 +309,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   headerImageContainer: {
+    width: width,
     height: 50,
   },
   facebookButtonContainer:{

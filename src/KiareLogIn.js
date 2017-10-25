@@ -125,7 +125,7 @@ class KiareLogIn extends Component {
             source={require('../resources/images/fondo_nuevo.png')}
           />
           <KeyboardAvoidingView
-            behavior='padding'
+            behavior='position'
             style={styles.containerAbsolute}
           >
 
@@ -206,9 +206,8 @@ class KiareLogIn extends Component {
               <LoginButton
               readPermissions={["email", "public_profile","user_friends"]}
               onLoginFinished={(error, result) => {
-                            this.setState({showActivityIndicator: !this.state.showActivityIndicator});
                             if (error) {
-                              this.setState({errorMessage: result.error, showActivityIndicator: !this.state.showActivityIndicator});
+                              this.setState({errorMessage: result.error});
                             } else if (result.isCancelled) {
                               console.log("login is cancelled.");
                             } else {
@@ -218,16 +217,15 @@ class KiareLogIn extends Component {
                                     Firebase.setUserFromFacebook(user, ()=>{
                                       AsyncStorage.setItem('user', JSON.stringify(user));
                                       Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
-                                        this.setState({showActivityIndicator: !this.state.showActivityIndicator});
                                         this.goBack();
                                       }, style: 'cancel'},], { cancelable: false });
                                     }, (error)=>{
                                       console.log(JSON.stringify(error));
-                                      this.setState({errorMessage: JSON.stringify(error), showActivityIndicator: !this.state.showActivityIndicator});
+                                      this.setState({errorMessage: JSON.stringify(error)});
                                     });
                                   }, (error)=>{
                                     console.log(JSON.stringify(error));
-                                    this.setState({errorMessage: JSON.stringify(error), showActivityIndicator: !this.state.showActivityIndicator});
+                                    this.setState({errorMessage: JSON.stringify(error)});
                                   });
                                 }
                               )
@@ -236,7 +234,6 @@ class KiareLogIn extends Component {
                         }
               onLogoutFinished={() => {
                 Alert.alert('Gracias!', 'Te esperamos pronto en Kiare',  [ {text: 'Yes', onPress: () => {
-                  this.setState({showActivityIndicator: !this.state.showActivityIndicator});
                   this.goBack();
                 }, style: 'cancel'},], { cancelable: false });
               }}/>
@@ -296,7 +293,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoView: {
-    width: 180,
+    width: width,
     height:100,
     backgroundColor: "transparent",
     borderRadius: 10,
@@ -375,6 +372,7 @@ facebookButtonContainer:{
   },
   headerImageContainer: {
     height: 50,
+    width: width,
     }
 
 });
