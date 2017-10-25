@@ -131,7 +131,7 @@ class BusinessBySubcategory extends Component{
             var data = [];
             var index = 0;
             if (json && Object.keys(json).length > 0){
-              for (var item in json){                
+              for (var item in json){
                 index++;
                 Firebase.obtenerArbol('/negocios/'+item,(snapshot)=>{
                   if (snapshot && snapshot.child('estado').val() === this.props.navigation.state.params.estadoSeleccionado && snapshot.child('activo').val()){
@@ -204,6 +204,8 @@ class BusinessBySubcategory extends Component{
             } else {
               this.setState({data: [], imagenBannerUrl: snapshot.child('imagenBannerUrl').val()});
             }
+        } else {
+            this.setState({data: [], imagenBannerUrl: null});
         }
       } catch (error) {
         console.log(error);
@@ -351,19 +353,24 @@ class BusinessBySubcategory extends Component{
       );
     } else {
       return (
+
         <View style={styles.container}>
           <StatusBar
              barStyle="light-content"
           />
           <Image source={require('../resources/images/fondo_nuevo.png')}/>
-          <View style={styles.containerLogoAndSpinner}>
+          <View style={styles.containerList}>
+            <View style={styles.headerContainer}>
+              <Image resizeMode={'contain'} style={styles.headerImageContainer} source={require('../resources/images/kiare_logo_vertical.png')}/>
+            </View>
             <View style={styles.centeredComponents}>
               <ActivityIndicator
                 animating={!(this.state.data && this.state.imagenBannerUrl)}
                 style={{height: 80}}
                 size="large"
               />
-            </View>
+             <Text style={styles.spinnerText}>LO SENTIMOS, NO EXISTEN REGISTROS.</Text>
+           </View>
           </View>
         </View>
       );
