@@ -586,7 +586,8 @@ class NegociosDetalle extends Component{
              onPress={()=>{
                console.log("Likes");
                if (this.state.userUid){
-                this.props.navigation.navigate('BusinessBySubcategory', {fromFavorites: true, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                  console.log('Neg Detalle:'+this.props.navigation.state.params.estadoSeleccionado);
+                  this.props.navigation.navigate('BusinessBySubcategory', {fromFavorites: true, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
                } else {
                   Alert.alert('Favoritos', 'Necesitas estar loggeado para ver tus negocios favoritos.');
                }

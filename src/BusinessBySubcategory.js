@@ -296,9 +296,9 @@ class BusinessBySubcategory extends Component{
                     style={{flex: 1, alignItems: "center", justifyContent: "center"}}
                     onPress={() => {
                         if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
-                          this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia});
+                          this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
                         } else {
-                          this.props.navigation.navigate('NegociosDetalle', {data: item});
+                          this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
                         }
                       }
                     }
@@ -309,9 +309,9 @@ class BusinessBySubcategory extends Component{
                 <TouchableOpacity
                   onPress={() => {
                       if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
-                        this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia});
+                        this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
                       } else {
-                        this.props.navigation.navigate('NegociosDetalle', {data: item});
+                        this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
                       }
                     }
                   }
