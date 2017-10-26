@@ -331,21 +331,48 @@ class BusinessBySubcategory extends Component{
               <Text style={styles.spinnerTextBigger}> {this.props.navigation.state.params.subcategoryName}</Text>
             </View>)
         }
-        <View style={styles.containerRelative}>
-          <ActionButton
-          position="right"
-          buttonColor="rgba(213,85,60,1)">
-            <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => console.log("notes tapped!")}>
-              <Ionicons name="md-heart" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-            <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {}}>
-              <Ionicons name="md-home" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-            <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {}}>
-              <Ionicons name="md-person" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-          </ActionButton>
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            onPress={()=>{
+              console.log("Likes");
+              if (this.state.userUid){
+               this.props.navigation.navigate('BusinessBySubcategory', {fromFavorites: true, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+              } else {
+                 Alert.alert('Favoritos', 'Necesitas estar loggeado para ver tus negocios favoritos.');
+              }
+            }}
+          >
+            <Ionicons name="md-heart" size={40} color="#ffffff" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={()=>{
+
+            }}
+          >
+            <Ionicons name="md-home" size={40} color="#CE267A" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={()=>{
+              AsyncStorage.getItem('user')
+              .then((result)=>{
+                if (result){
+                  var user = JSON.parse(result);
+                  this.props.navigation.navigate('KiareLogOut');
+                } else {
+                  this.props.navigation.navigate('KiareLogIn');
+                }
+              })
+              .catch((error)=>{
+                console.log(error);
+              });
+            }}
+          >
+            <Ionicons name="md-person" size={40} color="#ffffff" />
+          </TouchableOpacity>
         </View>
+
         </View>
 
 
@@ -550,6 +577,15 @@ const styles = StyleSheet.create({
   headerImageContainer: {
     height: 30,
     marginTop: 20,
+  },
+  tabContainer:{
+    width: width,
+    height: 50,
+    backgroundColor: "#272338",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 30,
   }
 });
 

@@ -288,18 +288,19 @@ class NegociosDetalle extends Component{
                 <CachedImage resizeMode={'cover'} style={styles.logoImageSizeStyle} source={{uri: this.props.navigation.state.params.data.imagenUrl}}/>
               </View>
               <View style={styles.buttonsBusinessContainer}>
-                <TouchableOpacity
-                  onPress={this.showScaleAnimationDialog}
-                >
-                  <View style={styles.buttonBusinessStyle}>
-                    <MaterialCommunityIcons
-                      name= "sale"
-                      size={40}
-                      color="#EC573B"
-                    />
-                    <Text style={styles.smallText}>Promos</Text>
-                  </View>
-                </TouchableOpacity>
+              {this.props.navigation.state.params.data.promosiones ? (<TouchableOpacity
+                onPress={this.showScaleAnimationDialog}
+              >
+                <View style={styles.buttonBusinessStyle}>
+                  <MaterialCommunityIcons
+                    name= "sale"
+                    size={40}
+                    color="#EC573B"
+                  />
+                  <Text style={styles.smallText}>Promos</Text>
+                </View>
+              </TouchableOpacity>) : null}
+              {this.props.navigation.state.params.data.servicios ? (
                 <TouchableOpacity
                   onPress={this.scaleAnimationServiceDialog}
                 >
@@ -312,6 +313,8 @@ class NegociosDetalle extends Component{
                   <Text style={styles.smallText}>Servicios</Text>
                   </View>
                 </TouchableOpacity>
+              ) : null}
+              {this.props.navigation.state.params.data.sugerencia ? (
                 <TouchableOpacity
                   onPress={this.scaleAnimationSugerenciaDialog}
                 >
@@ -324,6 +327,8 @@ class NegociosDetalle extends Component{
                     <Text style={styles.smallText}>Sugerencia</Text>
                   </View>
                 </TouchableOpacity>
+              ) : null}
+
               </View>
             </View>
 
@@ -495,89 +500,129 @@ class NegociosDetalle extends Component{
               </TouchableOpacity>
             </View>
 
-            <View style={styles.horizontalBar}>
+            <View style={styles.horizontalBarTransparent}>
               <View style={[styles.verticalAligning, {alignItems: 'center', paddingHorizontal: 20, justifyContent: "space-between", width: width - 40 }]}>
-                <TouchableOpacity
-                  onPress={()=>{
-                    if (this.props.navigation.state.params.data.facebookUrl){
-                        console.log('send to facebook');
-                    }else {
-                      Alert.alert('Oops!', 'Fecebook no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
-                    }
-                  }}
-                >
-                  <Icon
-                    name="facebook-with-circle"
-                    size={40}
-                    color="white"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={()=>{
-                    if (this.props.navigation.state.params.data.twitterkUrl){
-                        console.log('send to twitter');
-                    }else {
-                      Alert.alert('Oops!', 'Twitter no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
-                    }
-                  }}
-                >
-                  <Icon
-                    name="twitter-with-circle"
-                    size={40}
-                    color="white"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={()=>{
-                    if (this.props.navigation.state.params.data.instagramkUrl){
-                        console.log('send to instragram');
-                    }else {
-                      Alert.alert('Oops!', 'Instagram no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
-                    }
-                  }}
-                >
-                  <Icon
-                    name="instagram-with-circle"
-                    size={40}
-                    color="white"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={()=>{
-                    if (this.props.navigation.state.params.data.googlekUrl){
-                        console.log('send to google plus');
-                    }else {
-                      Alert.alert('Oops!', 'Google Plus no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
-                    }
-                  }}
-                >
-                  <Icon
-                    name="google--with-circle"
-                    size={40}
-                    color="white"
-                  />
-                </TouchableOpacity>
+                {this.props.navigation.state.params.data.facebookUrl ? (
+                  <TouchableOpacity
+                    onPress={()=>{
+                      if (this.props.navigation.state.params.data.facebookUrl){
+                          console.log('send to facebook');
+                      }else {
+                        Alert.alert('Oops!', 'Fecebook no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                      }
+                    }}
+                  >
+                    <Icon
+                      name="facebook-with-circle"
+                      size={40}
+                      color="white"
+                    />
+                  </TouchableOpacity>
+                ) : null}
+
+
+                {this.props.navigation.state.params.data.twitterkUrl ? (
+                  <TouchableOpacity
+                    onPress={()=>{
+                      if (this.props.navigation.state.params.data.twitterkUrl){
+                          console.log('send to twitter');
+                      }else {
+                        Alert.alert('Oops!', 'Twitter no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                      }
+                    }}
+                  >
+                    <Icon
+                      name="twitter-with-circle"
+                      size={40}
+                      color="white"
+                    />
+                  </TouchableOpacity>
+                ) : null}
+
+
+                {this.props.navigation.state.params.data.instagramkUrl ? (
+                  <TouchableOpacity
+                    onPress={()=>{
+                      if (this.props.navigation.state.params.data.instagramkUrl){
+                          console.log('send to instragram');
+                      }else {
+                        Alert.alert('Oops!', 'Instagram no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                      }
+                    }}
+                  >
+                    <Icon
+                      name="instagram-with-circle"
+                      size={40}
+                      color="white"
+                    />
+                  </TouchableOpacity>
+                ) : null}
+
+                {this.props.navigation.state.params.data.googlekUrl ? (
+                  <TouchableOpacity
+                    onPress={()=>{
+                      if (this.props.navigation.state.params.data.googlekUrl){
+                          console.log('send to google plus');
+                      }else {
+                        Alert.alert('Oops!', 'Google Plus no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
+                      }
+                    }}
+                  >
+                    <Icon
+                      name="google--with-circle"
+                      size={40}
+                      color="white"
+                    />
+                  </TouchableOpacity>
+                ) : null}
+
               </View>
             </View>
             </View>
             </View>
          </ScrollView>
-         <View style={styles.containerRelative}>
-           <ActionButton
-           position="right"
-           buttonColor="rgba(213,85,60,1)">
-             <ActionButton.Item buttonColor='#F8C029' title="Likes" onPress={() => console.log("notes tapped!")}>
-               <Ionicons name="md-heart" style={styles.actionButtonIcon} />
-             </ActionButton.Item>
-             <ActionButton.Item buttonColor='#88A451' title="Home" onPress={() => {}}>
-               <Ionicons name="md-home" style={styles.actionButtonIcon} />
-             </ActionButton.Item>
-             <ActionButton.Item buttonColor='#EC573B' title="Profile" onPress={() => {}}>
-               <Ionicons name="md-person" style={styles.actionButtonIcon} />
-             </ActionButton.Item>
-           </ActionButton>
+         <View style={styles.tabContainer}>
+           <TouchableOpacity
+             onPress={()=>{
+               console.log("Likes");
+               if (this.state.userUid){
+                this.props.navigation.navigate('BusinessBySubcategory', {fromFavorites: true, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+               } else {
+                  Alert.alert('Favoritos', 'Necesitas estar loggeado para ver tus negocios favoritos.');
+               }
+             }}
+           >
+             <Ionicons name="md-heart" size={40} color="#ffffff" />
+           </TouchableOpacity>
+
+           <TouchableOpacity
+             onPress={()=>{
+
+             }}
+           >
+             <Ionicons name="md-home" size={40} color="#CE267A" />
+           </TouchableOpacity>
+
+           <TouchableOpacity
+             onPress={()=>{
+               AsyncStorage.getItem('user')
+               .then((result)=>{
+                 if (result){
+                   var user = JSON.parse(result);
+                   this.props.navigation.navigate('KiareLogOut');
+                 } else {
+                   this.props.navigation.navigate('KiareLogIn');
+                 }
+               })
+               .catch((error)=>{
+                 console.log(error);
+               });
+             }}
+           >
+             <Ionicons name="md-person" size={40} color="#ffffff" />
+           </TouchableOpacity>
          </View>
-        </View>
+         </View>
       </View>
     );
   }
@@ -615,7 +660,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: "absolute",
     top: 0,
-    bottom: 10,
+    bottom: 0,
   },
   sliderStyle: {
     backgroundColor:"transparent",
@@ -698,7 +743,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 65,
     borderRadius: 8,
-    backgroundColor: "rgba(255,255,255,0.3)",
+    backgroundColor: "transparent",
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -710,6 +755,16 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 8,
     backgroundColor: "rgba(255,255,255,0.3)",
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  horizontalBarTransparent:{
+    width: width - 40,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: "transparent",
     marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -792,6 +847,15 @@ headerContainer: {
 headerImageContainer: {
   height: 30,
   marginTop: 20,
+},
+tabContainer:{
+  width: width,
+  height: 50,
+  backgroundColor: "#272338",
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: 30,
 }
 });
 

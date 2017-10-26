@@ -22,6 +22,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation';
 import CachedImage from 'react-native-cached-image';
 import Icon from 'react-native-vector-icons/Entypo';
 import {LoginButton, AccessToken} from 'react-native-fbsdk';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 const {width, height} = Dimensions.get('window');
@@ -53,6 +54,8 @@ class KiareLogIn extends Component {
   login(){
     try {
       if (this.state.userName && this.state.password){
+        console.log(this.state.userName);
+        console.log(this.state.password);
         this.setState({showActivityIndicator: !this.state.showActivityIndicator});
         Firebase.loginWithEmail(this.state.userName, this.state.password , (User)=>{
           console.log('user logged: ', User.uid);
@@ -66,7 +69,7 @@ class KiareLogIn extends Component {
           this.setState({errorMessage: errorMessage.message, showActivityIndicator: !this.state.showActivityIndicator})
         });
       } else {
-        this.setState({errorMessage: 'Correo Eletrónico y Contraseña requeridos.', showActivityIndicator: !this.state.showActivityIndicator});
+        this.setState({errorMessage: 'Correo Eletrónico y Contraseña requeridos.'});
       }
     } catch (error) {
       this.setState({errorMessage: error.message, showActivityIndicator: !this.state.showActivityIndicator});
@@ -124,8 +127,7 @@ class KiareLogIn extends Component {
             style={styles.backgroundImage}
             source={require('../resources/images/fondo_nuevo.png')}
           />
-          <KeyboardAvoidingView
-            behavior='height'
+          <KeyboardAwareScrollView
             style={styles.containerAbsolute}
           >
 
@@ -162,6 +164,7 @@ class KiareLogIn extends Component {
                     secureTextEntry={true}
                     keyboardType={'default'}
                     ref={(passwordInput) => this.passwordInput = passwordInput}
+                    onSubmitEditing={() => this.login()}
                     value={this.state.password}
                     onFocus={this._resetErrors}
                   />
@@ -252,7 +255,7 @@ class KiareLogIn extends Component {
                 </TouchableOpacity>
               </View>
               </View>
-            </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
         </View>
       );
     }
@@ -272,7 +275,6 @@ const styles = StyleSheet.create({
   },
   containerAbsolute:{
     position: 'absolute',
-
   },
   textInputViewStyle:{
     flex: 1,
