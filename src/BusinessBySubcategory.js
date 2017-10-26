@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
-import { NavigationActions } from 'react-navigation';
+import { StackNavigator, NavigationActions } from 'react-navigation';
 import CachedImage from 'react-native-cached-image';
 import Swiper from 'react-native-swiper';
 import Firebase from '../lib/Firebase';
@@ -253,6 +253,11 @@ class BusinessBySubcategory extends Component{
     return deg * (Math.PI/180)
     }
 
+    goBack(){
+      const backAction = NavigationActions.back();
+      this.props.navigation.dispatch(backAction)
+    }
+
 
   render(){
     if (this.state.data && this.state.imagenBannerUrl){
@@ -334,47 +339,86 @@ class BusinessBySubcategory extends Component{
               <Text style={styles.spinnerTextBigger}> {this.props.navigation.state.params.subcategoryName}</Text>
             </View>)
         }
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            onPress={()=>{
-              console.log("Likes");
-              if (this.state.userUid){
-               this.props.navigation.navigate('BusinessBySubcategory', {fromFavorites: true, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
-              } else {
-                 Alert.alert('Favoritos', 'Necesitas estar loggeado para ver tus negocios favoritos.');
-              }
-            }}
-          >
-            <Ionicons name="md-heart" size={40} color="#ffffff" />
-          </TouchableOpacity>
+        {this.props.navigation.state.params.fromFavorites ? (
+          <View style={styles.tabContainer}>
+            <TouchableOpacity
+              onPress={()=>{
+                console.log("Likes");
+              }}
+            >
+              <Ionicons name="md-heart" size={40} color="#CE267A" />
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={()=>{
+            <TouchableOpacity
+              onPress={()=>{
+                this.goBack()
+              }}
+            >
+              <Ionicons name="md-home" size={40} color="#ffffff" />
+            </TouchableOpacity>
 
-            }}
-          >
-            <Ionicons name="md-home" size={40} color="#CE267A" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={()=>{
-              AsyncStorage.getItem('user')
-              .then((result)=>{
-                if (result){
-                  var user = JSON.parse(result);
-                  this.props.navigation.navigate('KiareLogOut');
+            <TouchableOpacity
+              onPress={()=>{
+                AsyncStorage.getItem('user')
+                .then((result)=>{
+                  if (result){
+                    var user = JSON.parse(result);
+                    this.props.navigation.navigate('KiareLogOut');
+                  } else {
+                    this.props.navigation.navigate('KiareLogIn');
+                  }
+                })
+                .catch((error)=>{
+                  console.log(error);
+                });
+              }}
+            >
+              <Ionicons name="md-person" size={40} color="#ffffff" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.tabContainer}>
+            <TouchableOpacity
+              onPress={()=>{
+                console.log("Likes");
+                if (this.state.userUid){
+                 this.props.navigation.navigate('BusinessBySubcategory', {fromFavorites: true, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
                 } else {
-                  this.props.navigation.navigate('KiareLogIn');
+                   Alert.alert('Favoritos', 'Necesitas estar loggeado para ver tus negocios favoritos.');
                 }
-              })
-              .catch((error)=>{
-                console.log(error);
-              });
-            }}
-          >
-            <Ionicons name="md-person" size={40} color="#ffffff" />
-          </TouchableOpacity>
-        </View>
+              }}
+            >
+              <Ionicons name="md-heart" size={40} color="#ffffff" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={()=>{
+
+              }}
+            >
+              <Ionicons name="md-home" size={40} color="#CE267A" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={()=>{
+                AsyncStorage.getItem('user')
+                .then((result)=>{
+                  if (result){
+                    var user = JSON.parse(result);
+                    this.props.navigation.navigate('KiareLogOut');
+                  } else {
+                    this.props.navigation.navigate('KiareLogIn');
+                  }
+                })
+                .catch((error)=>{
+                  console.log(error);
+                });
+              }}
+            >
+              <Ionicons name="md-person" size={40} color="#ffffff" />
+            </TouchableOpacity>
+          </View>
+        )}
         </View>
       </View>
       );
