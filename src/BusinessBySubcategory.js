@@ -10,6 +10,7 @@ import {
   Dimensions,
   ActivityIndicator,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
@@ -372,10 +373,7 @@ class BusinessBySubcategory extends Component{
             <Ionicons name="md-person" size={40} color="#ffffff" />
           </TouchableOpacity>
         </View>
-
         </View>
-
-
       </View>
       );
     } else {
@@ -507,8 +505,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   centeredComponents: {
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   spinnerText: {
     backgroundColor: 'transparent',
@@ -586,6 +585,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 30,
+    bottom: 0,
   }
 });
 

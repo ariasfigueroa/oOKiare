@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   PixelRatio,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
