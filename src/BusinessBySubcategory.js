@@ -10,6 +10,7 @@ import {
   Dimensions,
   ActivityIndicator,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
@@ -225,7 +226,9 @@ class BusinessBySubcategory extends Component{
         //console.log('BBS.componentWillMount()-> uid: '+user.uid+ ' favorites: '+ this.props.navigation.state.params.fromFavorites);
         if (user !== null && user.uid && this.props.navigation.state.params.fromFavorites) {
           Firebase.obtenerArbol('/users/'+user.uid+'/negocios/favoritos', this._getBusinessFavorites.bind(this));
+          console.log('BBS.componentWillMount()-> uid: '+user.uid+ ' favorites: '+ this.props.navigation.state.params.fromFavorites);
         } else {
+          console.log('BBS.componentWillMount()-> uid: '+user.uid);
           Firebase.obtenerArbol('/subcategorias/'+this.props.navigation.state.params.subcategory, this._getBusiness.bind(this));
         }
       })

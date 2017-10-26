@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   PixelRatio,
   AsyncStorage,
+  Alert,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
@@ -43,6 +44,24 @@ class Subcategories extends Component{
         var subcategoriesMap = Firebase.jsonToMap(this.props.navigation.state.params.subcategories);
         var subcategoriesNestedMap = Firebase.jsonToMapNested(this.props.navigation.state.params.subcategories);
 
+        AsyncStorage.getItem('user')
+        .then((result)=>{
+          if (result){
+            var user = JSON.parse(result);
+            this.setState({userUid: user.uid});
+            Firebase.isBusinessFavorite('/users/'+user.uid+'/negocios/favoritos/',this.props.navigation.state.params.data.key, () => {
+                this.setState({colorFavorite: '#FFFFFF'});
+            }, (error) => {
+              console.log(error);
+            });
+          } else {
+            console.log("userUid is null, means the user is no logged");
+          }
+        })
+        .catch((error)=>{
+          console.log(error);
+        });
+        
         Firebase.obtenerArbol('/subcategorias/', (snapshotSubcategories) =>{
           snapshotSubcategories.forEach((childSnapshot)=>{
             if (childSnapshot.child('activo').val() === true){
