@@ -134,9 +134,9 @@ class NegociosDetalle extends Component{
         colorFavorite: '#F8C029',
       }
 
-      this.showScaleAnimationDialog = this.showScaleAnimationDialog.bind(this);
-      this.scaleAnimationServiceDialog = this.scaleAnimationServiceDialog.bind(this);
-      this.scaleAnimationSugerenciaDialog = this.scaleAnimationSugerenciaDialog.bind(this);
+      this.scaleAnimationPromo = this.scaleAnimationPromoDialog.bind(this);
+      this.scaleAnimationService = this.scaleAnimationServiceDialog.bind(this);
+      this.scaleAnimationSugerencia = this.scaleAnimationSugerenciaDialog.bind(this);
 
       console.log('Constructor:'+this.props.navigation.state.params);
     }
@@ -161,15 +161,15 @@ class NegociosDetalle extends Component{
       });
     }
 
-    showScaleAnimationDialog() {
+    scaleAnimationPromoDialog() {
       this.scaleAnimationDialog.show();
     }
 
-    scaleAnimationServiceDialog(){
+    scaleAnimationServiceDialog() {
       this.scaleAnimationServiceDialog.show();
     }
 
-    scaleAnimationSugerenciaDialog(){
+    scaleAnimationSugerenciaDialog() {
       this.scaleAnimationSugerenciaDialog.show();
     }
 
@@ -218,7 +218,7 @@ class NegociosDetalle extends Component{
                 size={40}
                 color="#EC573B"
               />
-              <Text>{this.props.navigation.state.params.data.promo ? this.props.navigation.state.params.data.promo : 'No hay promo...'}</Text>
+              <Text>{this.props.navigation.state.params.data.promos ? this.props.navigation.state.params.data.promos : 'No hay promo...'}</Text>
             </View>
         </PopupDialog>
 
@@ -288,8 +288,8 @@ class NegociosDetalle extends Component{
                 <CachedImage resizeMode={'cover'} style={styles.logoImageSizeStyle} source={{uri: this.props.navigation.state.params.data.imagenUrl}}/>
               </View>
               <View style={styles.buttonsBusinessContainer}>
-              {this.props.navigation.state.params.data.promosiones ? (<TouchableOpacity
-                onPress={this.showScaleAnimationDialog}
+              {this.props.navigation.state.params.data.promos ? (<TouchableOpacity
+                onPress={this.scaleAnimationPromo}
               >
                 <View style={styles.buttonBusinessStyle}>
                   <MaterialCommunityIcons
@@ -302,7 +302,7 @@ class NegociosDetalle extends Component{
               </TouchableOpacity>) : null}
               {this.props.navigation.state.params.data.servicios ? (
                 <TouchableOpacity
-                  onPress={this.scaleAnimationServiceDialog}
+                  onPress={this.scaleAnimationService}
                 >
                   <View style={styles.buttonBusinessStyle}>
                   <MaterialIcons
@@ -316,7 +316,7 @@ class NegociosDetalle extends Component{
               ) : null}
               {this.props.navigation.state.params.data.sugerencia ? (
                 <TouchableOpacity
-                  onPress={this.scaleAnimationSugerenciaDialog}
+                  onPress={this.scaleAnimationSugerencia}
                 >
                   <View style={styles.buttonBusinessStyle}>
                     <Icon
@@ -502,10 +502,10 @@ class NegociosDetalle extends Component{
 
             <View style={styles.horizontalBarTransparent}>
               <View style={[styles.verticalAligning, {alignItems: 'center', paddingHorizontal: 20, justifyContent: "space-between", width: width - 40 }]}>
-                {this.props.navigation.state.params.data.facebookUrl ? (
+                {this.props.navigation.state.params.data.facebook ? (
                   <TouchableOpacity
                     onPress={()=>{
-                      if (this.props.navigation.state.params.data.facebookUrl){
+                      if (this.props.navigation.state.params.data.facebook){
                           console.log('send to facebook');
                       }else {
                         Alert.alert('Oops!', 'Fecebook no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
@@ -521,10 +521,10 @@ class NegociosDetalle extends Component{
                 ) : null}
 
 
-                {this.props.navigation.state.params.data.twitterkUrl ? (
+                {this.props.navigation.state.params.data.twitter ? (
                   <TouchableOpacity
                     onPress={()=>{
-                      if (this.props.navigation.state.params.data.twitterkUrl){
+                      if (this.props.navigation.state.params.data.twitter){
                           console.log('send to twitter');
                       }else {
                         Alert.alert('Oops!', 'Twitter no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
@@ -540,10 +540,10 @@ class NegociosDetalle extends Component{
                 ) : null}
 
 
-                {this.props.navigation.state.params.data.instagramkUrl ? (
+                {this.props.navigation.state.params.data.instagram ? (
                   <TouchableOpacity
                     onPress={()=>{
-                      if (this.props.navigation.state.params.data.instagramkUrl){
+                      if (this.props.navigation.state.params.data.instagram){
                           console.log('send to instragram');
                       }else {
                         Alert.alert('Oops!', 'Instagram no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
@@ -558,10 +558,10 @@ class NegociosDetalle extends Component{
                   </TouchableOpacity>
                 ) : null}
 
-                {this.props.navigation.state.params.data.googlekUrl ? (
+                {this.props.navigation.state.params.data.google ? (
                   <TouchableOpacity
                     onPress={()=>{
-                      if (this.props.navigation.state.params.data.googlekUrl){
+                      if (this.props.navigation.state.params.data.google){
                           console.log('send to google plus');
                       }else {
                         Alert.alert('Oops!', 'Google Plus no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
