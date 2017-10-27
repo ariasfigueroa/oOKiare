@@ -223,12 +223,10 @@ class BusinessBySubcategory extends Component{
         } else {
           console.log("userUid is null, means the user is no logged");
         }
-        //console.log('BBS.componentWillMount()-> uid: '+user.uid+ ' favorites: '+ this.props.navigation.state.params.fromFavorites);
+        console.log('BBS.componentWillMount()-> uid: '+user+ ' userUid: '+this.state.userUid +' favorites: '+ this.props.navigation.state.params.fromFavorites);
         if (user !== null && user.uid && this.props.navigation.state.params.fromFavorites) {
           Firebase.obtenerArbol('/users/'+user.uid+'/negocios/favoritos', this._getBusinessFavorites.bind(this));
-          console.log('BBS.componentWillMount()-> uid: '+user.uid+ ' favorites: '+ this.props.navigation.state.params.fromFavorites);
         } else {
-          console.log('BBS.componentWillMount()-> uid: '+user.uid);
           Firebase.obtenerArbol('/subcategorias/'+this.props.navigation.state.params.subcategory, this._getBusiness.bind(this));
         }
       })

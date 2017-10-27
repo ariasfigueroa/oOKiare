@@ -49,6 +49,7 @@ class Subcategories extends Component{
           if (result){
             var user = JSON.parse(result);
             this.setState({userUid: user.uid});
+            console.log('Sub.componentWillMount()-> uid: '+user.uid+ ' userUid: '+this.state.userUid);
             Firebase.isBusinessFavorite('/users/'+user.uid+'/negocios/favoritos/',this.props.navigation.state.params.data.key, () => {
                 this.setState({colorFavorite: '#FFFFFF'});
             }, (error) => {
@@ -61,7 +62,7 @@ class Subcategories extends Component{
         .catch((error)=>{
           console.log(error);
         });
-        
+
         Firebase.obtenerArbol('/subcategorias/', (snapshotSubcategories) =>{
           snapshotSubcategories.forEach((childSnapshot)=>{
             if (childSnapshot.child('activo').val() === true){

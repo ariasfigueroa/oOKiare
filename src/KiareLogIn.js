@@ -210,6 +210,7 @@ class KiareLogIn extends Component {
               readPermissions={["email", "public_profile","user_friends"]}
               onLoginFinished={(error, result) => {
                             if (error) {
+                              console.log("Error: "+ error);
                               this.setState({errorMessage: result.error});
                             } else if (result.isCancelled) {
                               console.log("login is cancelled.");
