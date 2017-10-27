@@ -62,6 +62,7 @@ class KiareLogIn extends Component {
           AsyncStorage.setItem('user', JSON.stringify(User));
           Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
             this.setState({showActivityIndicator: !this.state.showActivityIndicator});
+            this.props.navigation.state.params.callbackLogin();
             this.goBack();
           }, style: 'cancel'},], { cancelable: false });
         }, (errorMessage)=>{
@@ -209,11 +210,13 @@ class KiareLogIn extends Component {
               <LoginButton
               readPermissions={["email", "public_profile","user_friends"]}
               onLoginFinished={(error, result) => {
+                            this.setState({showActivityIndicator: true});
                             if (error) {
                               console.log("Error: "+ error);
-                              this.setState({errorMessage: result.error});
+                              this.setState({errorMessage: result.error, showActivityIndicator: false});
                             } else if (result.isCancelled) {
                               console.log("login is cancelled.");
+                              this.setState({showActivityIndicator: false});
                             } else {
                               AccessToken.getCurrentAccessToken().then(
                                 (data) => {
@@ -221,15 +224,17 @@ class KiareLogIn extends Component {
                                     Firebase.setUserFromFacebook(user, ()=>{
                                       AsyncStorage.setItem('user', JSON.stringify(user));
                                       Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
+                                        this.props.navigation.state.params.callbackLogin();
+                                        this.setState({showActivityIndicator: false});
                                         this.goBack();
                                       }, style: 'cancel'},], { cancelable: false });
                                     }, (error)=>{
                                       console.log(JSON.stringify(error));
-                                      this.setState({errorMessage: JSON.stringify(error)});
+                                      this.setState({errorMessage: JSON.stringify(error), showActivityIndicator: false});
                                     });
                                   }, (error)=>{
                                     console.log(JSON.stringify(error));
-                                    this.setState({errorMessage: JSON.stringify(error)});
+                                    this.setState({errorMessage: JSON.stringify(error), showActivityIndicator: false});
                                   });
                                 }
                               )
@@ -238,6 +243,7 @@ class KiareLogIn extends Component {
                         }
               onLogoutFinished={() => {
                 Alert.alert('Gracias!', 'Te esperamos pronto en Kiare',  [ {text: 'Yes', onPress: () => {
+                  this.setState({showActivityIndicator: false});
                   this.goBack();
                 }, style: 'cancel'},], { cancelable: false });
               }}/>

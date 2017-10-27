@@ -64,19 +64,23 @@ class KiareAppMenu extends Component {
   }
 
   componentWillMount(){
+    this._callbackLogin();
+  }
+
+  _callbackLogin(){
     AsyncStorage.getItem('user')
     .then((result)=>{
       if (result){
         var user = JSON.parse(result);
         this.setState({userUid: user.uid});
       } else {
+        this.setState({userUid: null});
         console.log("userUid is null, means the user is no logged");
       }
     })
     .catch((error)=>{
       console.log(error);
     });
-
   }
 
 
@@ -155,9 +159,9 @@ class KiareAppMenu extends Component {
                 .then((result)=>{
                   if (result){
                     var user = JSON.parse(result);
-                    this.props.navigation.navigate('KiareLogOut');
+                    this.props.navigation.navigate('KiareLogOut', {callbackLogin: this._callbackLogin.bind(this)});
                   } else {
-                    this.props.navigation.navigate('KiareLogIn');
+                    this.props.navigation.navigate('KiareLogIn', {callbackLogin: this._callbackLogin.bind(this)});
                   }
                 })
                 .catch((error)=>{
