@@ -507,6 +507,7 @@ class NegociosDetalle extends Component{
                     onPress={()=>{
                       if (this.props.navigation.state.params.data.facebook){
                           console.log('send to facebook');
+                          this.props.navigation.navigate('WebBrowser', {url: this.props.navigation.state.params.data.facebook});
                       }else {
                         Alert.alert('Oops!', 'Fecebook no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
                       }
@@ -526,6 +527,7 @@ class NegociosDetalle extends Component{
                     onPress={()=>{
                       if (this.props.navigation.state.params.data.twitter){
                           console.log('send to twitter');
+                          this.props.navigation.navigate('WebBrowser', {url: this.props.navigation.state.params.data.twitter});
                       }else {
                         Alert.alert('Oops!', 'Twitter no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
                       }
@@ -545,6 +547,7 @@ class NegociosDetalle extends Component{
                     onPress={()=>{
                       if (this.props.navigation.state.params.data.instagram){
                           console.log('send to instragram');
+                          this.props.navigation.navigate('WebBrowser', {url: this.props.navigation.state.params.data.instagram});
                       }else {
                         Alert.alert('Oops!', 'Instagram no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
                       }
@@ -563,6 +566,7 @@ class NegociosDetalle extends Component{
                     onPress={()=>{
                       if (this.props.navigation.state.params.data.google){
                           console.log('send to google plus');
+                          this.props.navigation.navigate('WebBrowser', {url: this.props.navigation.state.params.data.google});
                       }else {
                         Alert.alert('Oops!', 'Google Plus no disponible',  [ {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},], { cancelable: false });
                       }
