@@ -131,7 +131,7 @@ class NegociosDetalle extends Component{
       this.state = {
         masInformacionData: [],
         userUid: null,
-        colorFavorite: '#F8C029',
+        colorFavorite: '#CE267A',
       }
 
       this.scaleAnimationPromo = this.scaleAnimationPromoDialog.bind(this);
