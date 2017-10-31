@@ -131,7 +131,7 @@ class NegociosDetalle extends Component{
       this.state = {
         masInformacionData: [],
         userUid: null,
-        colorFavorite: '#CE267A',
+        colorFavorite: '#F8C029',
       }
 
       this.scaleAnimationPromo = this.scaleAnimationPromoDialog.bind(this);
@@ -148,7 +148,7 @@ class NegociosDetalle extends Component{
           var user = JSON.parse(result);
           this.setState({userUid: user.uid});
           Firebase.isBusinessFavorite('/users/'+user.uid+'/negocios/favoritos/',this.props.navigation.state.params.data.key, () => {
-              this.setState({colorFavorite: '#FFFFFF'});
+              this.setState({colorFavorite: '#CE267A'});
           }, (error) => {
             console.log(error);
           });
