@@ -161,6 +161,15 @@ class NegociosDetalle extends Component{
       });
     }
 
+    formatHours(horario){
+      let splitter = horario.toString().split('.');
+      if (splitter.length === 1) {
+         return (splitter[0] + ':00');
+      } else {
+        return (splitter[0] + ':' + splitter[1]+'0');
+      }
+    }
+
     scaleAnimationPromoDialog() {
       this.scaleAnimationDialog.show();
     }
@@ -354,7 +363,7 @@ class NegociosDetalle extends Component{
                 onPress={() =>{
                   if (this.state.userUid){
                      Firebase.setBussinessFavorites('/users/'+this.state.userUid+'/negocios/favoritos/',this.props.navigation.state.params.data.key);
-                     this.setState({colorFavorite: '#FFFFFF'});
+                     this.setState({colorFavorite: '#CE267A'});
                   } else {
                      Alert.alert('Favoritos', 'Necesitas estar loggeado para agregar negocios como favoritos.');
                   }
@@ -396,25 +405,25 @@ class NegociosDetalle extends Component{
                 />
                 <View style={{marginLeft:5}}>
                 <Text style={styles.horarioTextStyle}>
-                  Domingo: {(this.props.navigation.state.params.data.horarios[0].abi === 0 && this.props.navigation.state.params.data.horarios[0].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[0].abi +' - '+ this.props.navigation.state.params.data.horarios[0].cer}
+                  Domingo: {(this.props.navigation.state.params.data.horarios[0].abi === 0 && this.props.navigation.state.params.data.horarios[0].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[0].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[0].cer)}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Lunes: {(this.props.navigation.state.params.data.horarios[1].abi === 0 && this.props.navigation.state.params.data.horarios[1].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[1].abi +' - '+ this.props.navigation.state.params.data.horarios[1].cer}
+                  Lunes: {(this.props.navigation.state.params.data.horarios[1].abi === 0 && this.props.navigation.state.params.data.horarios[1].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[1].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[1].cer)}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Martes: {(this.props.navigation.state.params.data.horarios[2].abi === 0 && this.props.navigation.state.params.data.horarios[2].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[2].abi +' - '+ this.props.navigation.state.params.data.horarios[2].cer}
+                  Martes: {(this.props.navigation.state.params.data.horarios[2].abi === 0 && this.props.navigation.state.params.data.horarios[2].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[2].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[2].cer)}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Miércoles: {(this.props.navigation.state.params.data.horarios[3].abi === 0 && this.props.navigation.state.params.data.horarios[3].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[3].abi +' - '+ this.props.navigation.state.params.data.horarios[3].cer}
+                  Miércoles: {(this.props.navigation.state.params.data.horarios[3].abi === 0 && this.props.navigation.state.params.data.horarios[3].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[3].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[3].cer)}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Jueves: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[4].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[4].abi +' - '+ this.props.navigation.state.params.data.horarios[4].cer}
+                  Jueves: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[4].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[4].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[4].cer)}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Viernes: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[5].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[5].abi +' - '+ this.props.navigation.state.params.data.horarios[5].cer}
+                  Viernes: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[5].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[5].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[5].cer)}
                 </Text>
                 <Text style={styles.horarioTextStyle}>
-                  Sábado: {(this.props.navigation.state.params.data.horarios[6].abi === 0 && this.props.navigation.state.params.data.horarios[6].cer === 0) ? 'Cerrado' : this.props.navigation.state.params.data.horarios[6].abi +' - '+ this.props.navigation.state.params.data.horarios[6].cer}
+                  Sábado: {(this.props.navigation.state.params.data.horarios[6].abi === 0 && this.props.navigation.state.params.data.horarios[6].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[6].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[6].cer)}
                 </Text>
                 </View>
               </View>
