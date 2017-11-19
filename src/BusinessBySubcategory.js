@@ -54,7 +54,9 @@ class BusinessBySubcategory extends Component{
                     if ( Object.keys(item.horarios).length > 0){
                       var date = new Date();
                       if ((item.horarios[date.getDay()].abi && item.horarios[date.getDay()].cer) && (!(item.horarios[date.getDay()].abi === 0 && item.horarios[date.getDay()].cer === 0) && (item.horarios[date.getDay()].abi !== item.horarios[date.getDay()].cer))){
-                        if (item.horarios[date.getDay()].abi < date.getHours() && item.horarios[date.getDay()].cer > date.getHours()){
+                        if ((item.horarios[date.getDay()].abi <= date.getHours() && item.horarios[date.getDay()].cer > date.getHours())
+                            || (item.horarios[date.getDay()].abi <= date.getHours() && item.horarios[date.getDay()].abi > item.horarios[date.getDay()].cer && item.horarios[date.getDay()].cer < date.getHours())
+                            || (item.horarios[date.getDay()].abi >= date.getHours() && item.horarios[date.getDay()].abi > item.horarios[date.getDay()].cer && item.horarios[date.getDay()].cer > date.getHours())) {
                           item['isBusinessOpen'] = 'open';
                         } else {
                          item['isBusinessOpen'] = 'closed';
@@ -141,7 +143,9 @@ class BusinessBySubcategory extends Component{
                     if ( Object.keys(item.horarios).length > 0){
                       var date = new Date();
                       if ((item.horarios[date.getDay()].abi && item.horarios[date.getDay()].cer) && (!(item.horarios[date.getDay()].abi === 0 && item.horarios[date.getDay()].cer === 0) && (item.horarios[date.getDay()].abi !== item.horarios[date.getDay()].cer))){
-                        if (item.horarios[date.getDay()].abi < date.getHours() && item.horarios[date.getDay()].cer > date.getHours()){
+                        if ((item.horarios[date.getDay()].abi <= date.getHours() && item.horarios[date.getDay()].cer > date.getHours())
+                            || (item.horarios[date.getDay()].abi <= date.getHours() && item.horarios[date.getDay()].abi > item.horarios[date.getDay()].cer && item.horarios[date.getDay()].cer < date.getHours())
+                            || (item.horarios[date.getDay()].abi >= date.getHours() && item.horarios[date.getDay()].abi > item.horarios[date.getDay()].cer && item.horarios[date.getDay()].cer > date.getHours())) {
                           item['isBusinessOpen'] = 'open';
                         } else {
                          item['isBusinessOpen'] = 'closed';
@@ -299,9 +303,9 @@ class BusinessBySubcategory extends Component{
                     style={{flex: 1, alignItems: "center", justifyContent: "center"}}
                     onPress={() => {
                         if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
-                          this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                          this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName});
                         } else {
-                          this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                          this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName});
                         }
                       }
                     }
@@ -312,9 +316,9 @@ class BusinessBySubcategory extends Component{
                 <TouchableOpacity
                   onPress={() => {
                       if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
-                        this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                        this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName});
                       } else {
-                        this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude});
+                        this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName});
                       }
                     }
                   }

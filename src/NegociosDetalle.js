@@ -13,6 +13,7 @@ import {
   Linking,
   Alert,
   AsyncStorage,
+  Share,
 } from 'react-native';
 
 import Firebase from '../lib/Firebase';
@@ -138,7 +139,7 @@ class NegociosDetalle extends Component{
       this.scaleAnimationService = this.scaleAnimationServiceDialog.bind(this);
       this.scaleAnimationSugerencia = this.scaleAnimationSugerenciaDialog.bind(this);
 
-      console.log('Constructor:'+this.props.navigation.state.params);
+      console.log(':::::::::::::: Constructor: '+this.props.navigation.state.params.data.nombre);
     }
 
     componentWillMount(){
@@ -168,6 +169,42 @@ class NegociosDetalle extends Component{
       } else {
         return (splitter[0] + ':' + splitter[1]+'0');
       }
+    }
+
+    formatShareHorario(){
+      var shareHorario = '';
+      if (this.props.navigation.state.params.categoryName === 'EVENTOS'){
+        if (this.props.navigation.state.params.data.horarios[0].abi !== 0 && this.props.navigation.state.params.data.horarios[0].cer !== 0){
+         shareHorario = ' Domingo: '+this.formatHours(this.props.navigation.state.params.data.horarios[0].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[0].cer)
+        }
+        if (this.props.navigation.state.params.data.horarios[1].abi !== 0 && this.props.navigation.state.params.data.horarios[1].cer !== 0){
+         shareHorario = ' Lunes: '+this.formatHours(this.props.navigation.state.params.data.horarios[1].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[1].cer)
+        }
+        if (this.props.navigation.state.params.data.horarios[2].abi !== 0 && this.props.navigation.state.params.data.horarios[2].cer !== 0){
+         shareHorario = ' Martes: '+this.formatHours(this.props.navigation.state.params.data.horarios[2].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[2].cer)
+        }
+        if (this.props.navigation.state.params.data.horarios[3].abi !== 0 && this.props.navigation.state.params.data.horarios[3].cer !== 0){
+         shareHorario = ' Miércoles: '+this.formatHours(this.props.navigation.state.params.data.horarios[3].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[3].cer)
+        }
+        if (this.props.navigation.state.params.data.horarios[4].abi !== 0 && this.props.navigation.state.params.data.horarios[4].cer !== 0){
+         shareHorario = ' Jueves: '+this.formatHours(this.props.navigation.state.params.data.horarios[4].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[4].cer)
+        }
+        if (this.props.navigation.state.params.data.horarios[5].abi !== 0 && this.props.navigation.state.params.data.horarios[5].cer !== 0){
+         shareHorario = ' Viernes: '+this.formatHours(this.props.navigation.state.params.data.horarios[5].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[5].cer)
+        }
+        if (this.props.navigation.state.params.data.horarios[6].abi !== 0 && this.props.navigation.state.params.data.horarios[6].cer !== 0){
+         shareHorario = ' Sábado: '+this.formatHours(this.props.navigation.state.params.data.horarios[6].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[6].cer)
+        }
+      } else {
+       shareHorario =' Domingo: '+this.formatHours(this.props.navigation.state.params.data.horarios[0].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[0].cer)+
+                    '\n Lunes: '+this.formatHours(this.props.navigation.state.params.data.horarios[1].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[1].cer)+
+                    '\n Martes: '+this.formatHours(this.props.navigation.state.params.data.horarios[2].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[2].cer)+
+                    '\n Miércoles: '+this.formatHours(this.props.navigation.state.params.data.horarios[3].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[3].cer)+
+                    '\n Jueves: '+this.formatHours(this.props.navigation.state.params.data.horarios[4].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[4].cer)+
+                    '\n Viernes: '+this.formatHours(this.props.navigation.state.params.data.horarios[5].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[5].cer)+
+                    '\n Sábado: '+this.formatHours(this.props.navigation.state.params.data.horarios[6].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[6].cer);
+      }
+      return shareHorario;
     }
 
     scaleAnimationPromoDialog() {
@@ -362,8 +399,15 @@ class NegociosDetalle extends Component{
                 style={{marginHorizontal: 20}}
                 onPress={() =>{
                   if (this.state.userUid){
-                     Firebase.setBussinessFavorites('/users/'+this.state.userUid+'/negocios/favoritos/',this.props.navigation.state.params.data.key);
-                     this.setState({colorFavorite: '#CE267A'});
+                     if (this.state.colorFavorite === '#CE267A') {
+                       Firebase.removeBussinessFavorites('/users/'+this.state.userUid+'/negocios/favoritos/',this.props.navigation.state.params.data.key);
+                       this.setState({colorFavorite: '#F8C029'});
+                       Alert.alert('Favoritos', 'Eliminado de favoritos.');
+                     } else {
+                       Firebase.setBussinessFavorites('/users/'+this.state.userUid+'/negocios/favoritos/',this.props.navigation.state.params.data.key);
+                       this.setState({colorFavorite: '#CE267A'});
+                       Alert.alert('Favoritos', 'Agregado a favoritos.');
+                    }
                   } else {
                      Alert.alert('Favoritos', 'Necesitas estar loggeado para agregar negocios como favoritos.');
                   }
@@ -377,6 +421,26 @@ class NegociosDetalle extends Component{
               </TouchableOpacity>
               <TouchableOpacity
                 style={{marginHorizontal: 20}}
+                onPress={() =>{
+                  Share.share({
+                                message: 'Kiare hoy en: \n   '+this.props.navigation.state.params.data.nombre +
+                                         '\n\nHorarios: '+
+                                         '\n'+this.formatShareHorario()+
+                                         '\n\nPromociones: ' +
+                                         '\n 2 x 1 en bebidas. ' +
+                                         '\n\n¡ Si aún no tienes Kiare descargala desde google play !'+
+                                         '\n https://play.google.com/store/apps/details?id=app.oo.android.kiare',
+                                url: 'https://play.google.com/store/apps/details?id=app.oo.android.kiare',
+                                title: 'Kiare app'
+                              }, {
+                                // Android only:
+                                dialogTitle: 'Compartir . . .',
+                                // iOS only:
+                                excludedActivityTypes: [
+                                  'com.apple.UIKit.activity.PostToTwitter'
+                                ]
+                              })
+                }}
               >
                 <IconFontAwesome
                   name="share-square"
@@ -403,58 +467,155 @@ class NegociosDetalle extends Component{
                   size={25}
                   color="#EC573B"
                 />
-                <View style={{marginLeft:5}}>
-                <Text style={styles.horarioTextStyle}>
-                  Domingo: {(this.props.navigation.state.params.data.horarios[0].abi === 0 && this.props.navigation.state.params.data.horarios[0].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[0].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[0].cer)}
-                </Text>
-                <Text style={styles.horarioTextStyle}>
-                  Lunes: {(this.props.navigation.state.params.data.horarios[1].abi === 0 && this.props.navigation.state.params.data.horarios[1].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[1].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[1].cer)}
-                </Text>
-                <Text style={styles.horarioTextStyle}>
-                  Martes: {(this.props.navigation.state.params.data.horarios[2].abi === 0 && this.props.navigation.state.params.data.horarios[2].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[2].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[2].cer)}
-                </Text>
-                <Text style={styles.horarioTextStyle}>
-                  Miércoles: {(this.props.navigation.state.params.data.horarios[3].abi === 0 && this.props.navigation.state.params.data.horarios[3].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[3].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[3].cer)}
-                </Text>
-                <Text style={styles.horarioTextStyle}>
-                  Jueves: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[4].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[4].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[4].cer)}
-                </Text>
-                <Text style={styles.horarioTextStyle}>
-                  Viernes: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[5].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[5].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[5].cer)}
-                </Text>
-                <Text style={styles.horarioTextStyle}>
-                  Sábado: {(this.props.navigation.state.params.data.horarios[6].abi === 0 && this.props.navigation.state.params.data.horarios[6].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[6].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[6].cer)}
-                </Text>
-                </View>
+
+                {(this.props.navigation.state.params.categoryName === 'EVENTOS')
+                 ?
+                  (
+                    <View style={{marginLeft:5}}>
+
+                    {(this.props.navigation.state.params.data.horarios[0].abi !== 0 && this.props.navigation.state.params.data.horarios[0].cer !== 0)
+                      ?
+                       (<Text style={styles.horarioTextStyle}>
+                         Domingo: {this.formatHours(this.props.navigation.state.params.data.horarios[0].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[0].cer)}
+                       </Text>)
+                      :
+                        (<Text style={styles.horarioTextStyle}>
+                        </Text>)
+                    }
+
+                    {(this.props.navigation.state.params.data.horarios[1].abi !== 0 && this.props.navigation.state.params.data.horarios[1].cer !== 0)
+                      ?
+                       (<Text style={styles.horarioTextStyle}>
+                         Lunes: {this.formatHours(this.props.navigation.state.params.data.horarios[1].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[1].cer)}
+                       </Text>)
+                      :
+                        (<Text style={styles.horarioTextStyle}>
+                        </Text>)
+                    }
+
+                    {(this.props.navigation.state.params.data.horarios[2].abi !== 0 && this.props.navigation.state.params.data.horarios[2].cer !== 0)
+                      ?
+                       (<Text style={styles.horarioTextStyle}>
+                         Martes: {this.formatHours(this.props.navigation.state.params.data.horarios[2].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[2].cer)}
+                       </Text>)
+                      :
+                        (<Text style={styles.horarioTextStyle}>
+                        </Text>)
+                    }
+
+                    {(this.props.navigation.state.params.data.horarios[3].abi !== 0 && this.props.navigation.state.params.data.horarios[3].cer !== 0)
+                      ?
+                       (<Text style={styles.horarioTextStyle}>
+                         Miércoles: {this.formatHours(this.props.navigation.state.params.data.horarios[3].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[3].cer)}
+                       </Text>)
+                      :
+                        (<Text style={styles.horarioTextStyle}>
+                        </Text>)
+                    }
+
+                    {(this.props.navigation.state.params.data.horarios[4].abi !== 0 && this.props.navigation.state.params.data.horarios[4].cer !== 0)
+                      ?
+                       (<Text style={styles.horarioTextStyle}>
+                         Jueves: {this.formatHours(this.props.navigation.state.params.data.horarios[4].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[4].cer)}
+                       </Text>)
+                      :
+                        (<Text style={styles.horarioTextStyle}>
+                        </Text>)
+                    }
+
+                    {(this.props.navigation.state.params.data.horarios[5].abi !== 0 && this.props.navigation.state.params.data.horarios[5].cer !== 0)
+                      ?
+                       (<Text style={styles.horarioTextStyle}>
+                         Viernes: {this.formatHours(this.props.navigation.state.params.data.horarios[5].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[5].cer)}
+                       </Text>)
+                      :
+                        (<View></View>)
+                    }
+
+                    {(this.props.navigation.state.params.data.horarios[6].abi !== 0 && this.props.navigation.state.params.data.horarios[6].cer !== 0)
+                      ?
+                       (<Text style={styles.horarioTextStyle}>
+                         Sábado: {this.formatHours(this.props.navigation.state.params.data.horarios[6].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[6].cer)}
+                       </Text>)
+                      :
+                        (<View></View>)
+                    }
+
+                   </View>
+                  )
+                 :
+                  (
+                    <View style={{marginLeft:5}}>
+                      <Text style={styles.horarioTextStyle}>
+                        Domingo: {(this.props.navigation.state.params.data.horarios[0].abi === 0 && this.props.navigation.state.params.data.horarios[0].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[0].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[0].cer)}
+                      </Text>
+                      <Text style={styles.horarioTextStyle}>
+                        Lunes: {(this.props.navigation.state.params.data.horarios[1].abi === 0 && this.props.navigation.state.params.data.horarios[1].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[1].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[1].cer)}
+                      </Text>
+                      <Text style={styles.horarioTextStyle}>
+                        Martes: {(this.props.navigation.state.params.data.horarios[2].abi === 0 && this.props.navigation.state.params.data.horarios[2].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[2].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[2].cer)}
+                      </Text>
+                      <Text style={styles.horarioTextStyle}>
+                        Miércoles: {(this.props.navigation.state.params.data.horarios[3].abi === 0 && this.props.navigation.state.params.data.horarios[3].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[3].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[3].cer)}
+                      </Text>
+                      <Text style={styles.horarioTextStyle}>
+                        Jueves: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[4].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[4].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[4].cer)}
+                      </Text>
+                      <Text style={styles.horarioTextStyle}>
+                        Viernes: {(this.props.navigation.state.params.data.horarios[5].abi === 0 && this.props.navigation.state.params.data.horarios[5].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[5].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[5].cer)}
+                      </Text>
+                      <Text style={styles.horarioTextStyle}>
+                        Sábado: {(this.props.navigation.state.params.data.horarios[6].abi === 0 && this.props.navigation.state.params.data.horarios[6].cer === 0) ? 'Cerrado' : this.formatHours(this.props.navigation.state.params.data.horarios[6].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[6].cer)}
+                      </Text>
+                    </View>
+                  )
+                }
+
               </View>
 
-              <View style={[styles.verticalAligning,{alignItems: 'center', marginBottom: 10}]}>
-                <Text numberOfLines={1} style={styles.textTitleMiddle}>Rango de precio: </Text>
-                <Text numberOfLines={1} style={styles.textTitleMiddle}>{this.props.navigation.state.params.data.rangoDePrecions ? this.props.navigation.state.params.data.rangoDePrecions : 'No establecido'}</Text>
-              </View>
-              <View style={[styles.verticalAligning,{alignItems: 'center', marginBottom: 10}]}>
-                <Icon
-                  name="link"
-                  size={18}
-                  color="white"
-                />
-                <Text numberOfLines={1} style={styles.textTitleMiddle}>{this.props.navigation.state.params.data.web ? this.props.navigation.state.params.data.web : ' Sitio web no proporcionado.'}</Text>
-              </View>
+              {(this.props.navigation.state.params.categoryName !== 'EVENTOS')
+                ?
+                  (<View style={[styles.verticalAligning,{alignItems: 'center', marginBottom: 10}]}>
+                    <Text numberOfLines={1} style={styles.textTitleMiddle}>Rango de precio: </Text>
+                    <Text numberOfLines={1} style={styles.textTitleMiddle}>{this.props.navigation.state.params.data.rangoDePrecios ? this.props.navigation.state.params.data.rangoDePrecios : 'No establecido'}</Text>
+                  </View>)
+                :
+                 (<View></View>)
+              }
 
+              {(this.props.navigation.state.params.categoryName !== 'EVENTOS')
+                ?
+                  (
+                  <View style={[styles.verticalAligning,{alignItems: 'center', marginBottom: 10}]}>
+                    <Icon
+                      name="link"
+                      size={18}
+                      color="white"
+                    />
+                    <Text numberOfLines={1} style={styles.textTitleMiddle}>{this.props.navigation.state.params.data.web ? this.props.navigation.state.params.data.web : ' Sitio web no proporcionado.'}</Text>
+                  </View>)
+                :
+                 (<View></View>)
+              }
             </View>
 
-            <View style={[styles.horizontalBarMedium, {padding: 10}]}>
-              <View style={[styles.verticalAligning]}>
-                <IconFontAwesome
-                  name="newspaper-o"
-                  size={25}
-                  color="white"
-                  style={{marginRight: 10}}
-                />
-                {this.props.navigation.state.params.data.informacion ? (<Text numberOfLines={4} style={[styles.textTitleMiddle, {width: width - 100}]}>{this.props.navigation.state.params.data.informacion}</Text>)
-                : (<Text numberOfLines={4} style={[styles.textTitleMiddle, {width: width - 100}]}>Para más información visita nuestro establecimiento.</Text>)}
-              </View>
-            </View>
+            {(this.props.navigation.state.params.categoryName !== 'EVENTOS')
+              ?
+                (<View style={[styles.horizontalBarMedium, {padding: 10}]}>
+                  <View style={[styles.verticalAligning]}>
+                    <IconFontAwesome
+                      name="newspaper-o"
+                      size={25}
+                      color="white"
+                      style={{marginRight: 10}}
+                    />
+                    {this.props.navigation.state.params.data.informacion ? (<Text numberOfLines={4} style={[styles.textTitleMiddle, {width: width - 100}]}>{this.props.navigation.state.params.data.informacion}</Text>)
+                    : (<Text numberOfLines={4} style={[styles.textTitleMiddle, {width: width - 100}]}>Para más información visita nuestro establecimiento.</Text>)}
+                  </View>
+                </View>)
+              :
+                (<View></View>)
+            }
 
             <View style={styles.horizontalBarNoPaddingLarge}>
               <Swiper
@@ -464,11 +625,15 @@ class NegociosDetalle extends Component{
                 height= {(height/2) + 20}
                 style={{backgroundColor: "transparent", borderRadius: 10}}
                 >
-                  {this.props.navigation.state.params.data.imagenExtra.map((item, i) => <Slider
-                    imagenUrl={item.imagenUrl}
-                    key={i}
-                    />
-                  )
+                  {this.props.navigation.state.params.data.imagenExtra
+                    ?
+                      (this.props.navigation.state.params.data.imagenExtra.map((item, i) => <Slider
+                      imagenUrl={item.imagenUrl}
+                      key={i}
+                      />
+                      ))
+                    :
+                      (<Text> No hay imágenes para mostrar. </Text>)
                   }
               </Swiper>
             </View>
@@ -483,7 +648,7 @@ class NegociosDetalle extends Component{
                       let dirflg = '&dirflg=d'
                       if (Platform.OS === 'android'){
                         // here goes the call to open the google maps
-                        url = 'geo:';
+                        url = 'http://maps.google.com/maps?daddr='
                       } else {
                         // her goes the call to open Apple maps
                         url = 'http://maps.apple.com/?daddr=';

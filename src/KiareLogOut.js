@@ -178,7 +178,9 @@ class KiareLogOut extends Component {
                     AsyncStorage.removeItem('user')
                     .then((result)=>{
                         this.setState({showActivityIndicator: !this.state.showActivityIndicator});
-                        this.props.navigation.state.params.callbackLogin();
+                        if (this.props.navigation.state.params.callbackLogin){
+                         this.props.navigation.state.params.callbackLogin();
+                        }
                         this.goBack();
                     })
                     .catch((error)=>{
