@@ -226,6 +226,7 @@ class KiareLogIn extends Component {
                                     Firebase.setUserFromFacebook(user, ()=>{
                                       AsyncStorage.setItem('user', JSON.stringify(user));
                                       Alert.alert('¡Genial!', 'Bienvenido a Kiare',  [ {text: 'Yes', onPress: () => {
+                                        console.log("LoginFace: "+this.props.navigation.state.params.callbackLogin);
                                         if (this.props.navigation.state.params.callbackLogin){
                                          this.props.navigation.state.params.callbackLogin();
                                         }
@@ -233,7 +234,7 @@ class KiareLogIn extends Component {
                                         this.goBack();
                                       }, style: 'cancel'},], { cancelable: false });
                                     }, (error)=>{
-                                      console.log(JSON.stringify(error));
+                                      console.log("setUserFromFacebook: " +JSON.stringify(error));
                                       this.setState({errorMessage: JSON.stringify(error), showActivityIndicator: false});
                                     });
                                   }, (error)=>{

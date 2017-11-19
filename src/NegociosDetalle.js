@@ -207,6 +207,14 @@ class NegociosDetalle extends Component{
       return shareHorario;
     }
 
+    formatPromociones() {
+     if (this.props.navigation.state.params.data.promos){
+       return '\n\nPromociones: \n '+ this.props.navigation.state.params.data.promos;
+     } else {
+       return '';
+     }
+    }
+
     scaleAnimationPromoDialog() {
       this.scaleAnimationDialog.show();
     }
@@ -425,9 +433,8 @@ class NegociosDetalle extends Component{
                   Share.share({
                                 message: 'Kiare hoy en: \n   '+this.props.navigation.state.params.data.nombre +
                                          '\n\nHorarios: '+
-                                         '\n'+this.formatShareHorario()+
-                                         '\n\nPromociones: ' +
-                                         '\n 2 x 1 en bebidas. ' +
+                                         '\n'+this.formatShareHorario() +
+                                         this.formatPromociones() +
                                          '\n\n¡ Si aún no tienes Kiare descargala desde google play !'+
                                          '\n https://play.google.com/store/apps/details?id=app.oo.android.kiare',
                                 url: 'https://play.google.com/store/apps/details?id=app.oo.android.kiare',
