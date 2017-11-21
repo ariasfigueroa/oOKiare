@@ -173,6 +173,7 @@ class NegociosDetalle extends Component{
 
     formatShareHorario(){
       var shareHorario = '';
+      console.log("::::::::::Categoria::::::\n "+consolethis.props.navigation.state.params.categoryName);
       if (this.props.navigation.state.params.categoryName === 'EVENTOS'){
         if (this.props.navigation.state.params.data.horarios[0].abi !== 0 && this.props.navigation.state.params.data.horarios[0].cer !== 0){
          shareHorario = ' Domingo: '+this.formatHours(this.props.navigation.state.params.data.horarios[0].abi) +' - '+ this.formatHours(this.props.navigation.state.params.data.horarios[0].cer)
