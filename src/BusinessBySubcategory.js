@@ -88,30 +88,50 @@ class BusinessBySubcategory extends Component{
                     data.push(item);
                   }
                   if (index === Object.keys(json).length){
-                    if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                    console.log('orderByCategory: ' +this.props.navigation.state.params.categoryName + ' : '+this.props.navigation.state.params.subcategoryName);
+                    if (this.props.navigation.state.params.categoryName === 'EVENTOS' ||
+                        (this.props.navigation.state.params.categoryName === 'CULTURA' &&
+                         this.props.navigation.state.params.subcategoryName === 'EVENTOS CULTURALES') ||
+                        (this.props.navigation.state.params.categoryName === 'DEPORTES' &&
+                         (this.props.navigation.state.params.subcategoryName === 'CARRERAS ATLÉTICAS' ||
+                          this.props.navigation.state.params.subcategoryName === 'EVENTO DEPORTIVO'))) {
                       data.sort((a, b) =>{
-                        var distanciaA = a.distancia;
-                        var distanciaB = b.distancia;
-                        if(distanciaA < distanciaB){
+                        var fechaEventoA = a.fechaEvento;
+                        var fechaEventoB = b.fechaEvento;
+                        if(fechaEventoA < fechaEventoB){
                           return -1;
                         }
-                        if(distanciaA > distanciaB){
+                        if(fechaEventoA > fechaEventoB){
                           return 1;
                         }
                         return 0;
                       });
                     } else {
-                      data.sort((a, b) =>{
-                        var nombreA = a.nombre.toUpperCase();
-                        var nombreB = b.nombre.toUpperCase();
-                        if(nombreA < nombreB){
-                          return -1;
-                        }
-                        if(nombreA > nombreB){
-                          return 1;
-                        }
-                        return 0;
-                     });
+                      if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                        data.sort((a, b) =>{
+                          var distanciaA = a.distancia;
+                          var distanciaB = b.distancia;
+                          if(distanciaA < distanciaB){
+                            return -1;
+                          }
+                          if(distanciaA > distanciaB){
+                            return 1;
+                          }
+                          return 0;
+                        });
+                      } else {
+                        data.sort((a, b) =>{
+                          var nombreA = a.nombre.toUpperCase();
+                          var nombreB = b.nombre.toUpperCase();
+                          if(nombreA < nombreB){
+                            return -1;
+                          }
+                          if(nombreA > nombreB){
+                            return 1;
+                          }
+                          return 0;
+                       });
+                     }
                    }
                    this.setState({data, imagenBannerUrl: snapshotSubcategory.child('imagenBannerUrl').val()});
                   }
@@ -177,31 +197,51 @@ class BusinessBySubcategory extends Component{
                     data.push(item);
                   }// end snapshot
                   if (index === Object.keys(json).length){
-                    if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                    console.log('orderByCategory: ' +this.props.navigation.state.params.categoryName + ' : '+this.props.navigation.state.params.subcategoryName);
+                    if (this.props.navigation.state.params.categoryName === 'EVENTOS' ||
+                        (this.props.navigation.state.params.categoryName === 'CULTURA' &&
+                         this.props.navigation.state.params.subcategoryName === 'EVENTOS CULTURALES') ||
+                        (this.props.navigation.state.params.categoryName === 'DEPORTES' &&
+                         (this.props.navigation.state.params.subcategoryName === 'CARRERAS ATLÉTICAS' ||
+                          this.props.navigation.state.params.subcategoryName === 'EVENTO DEPORTIVO'))) {
                       data.sort((a, b) =>{
-                        var distanciaA = a.distancia;
-                        var distanciaB = b.distancia;
-                        if(distanciaA < distanciaB){
+                        var fechaEventoA = a.fechaEvento;
+                        var fechaEventoB = b.fechaEvento;
+                        if(fechaEventoA < fechaEventoB){
                           return -1;
                         }
-                        if(distanciaA > distanciaB){
+                        if(fechaEventoA > fechaEventoB){
                           return 1;
                         }
                         return 0;
                       });
                     } else {
-                      data.sort((a, b) =>{
-                        var nombreA = a.nombre.toUpperCase();
-                        var nombreB = b.nombre.toUpperCase();
-                        if(nombreA < nombreB){
-                          return -1;
-                        }
-                        if(nombreA > nombreB){
-                          return 1;
-                        }
-                        return 0;
-                     });
-                   }//end sort
+                      if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
+                        data.sort((a, b) =>{
+                          var distanciaA = a.distancia;
+                          var distanciaB = b.distancia;
+                          if(distanciaA < distanciaB){
+                            return -1;
+                          }
+                          if(distanciaA > distanciaB){
+                            return 1;
+                          }
+                          return 0;
+                        });
+                      } else {
+                        data.sort((a, b) =>{
+                          var nombreA = a.nombre.toUpperCase();
+                          var nombreB = b.nombre.toUpperCase();
+                          if(nombreA < nombreB){
+                            return -1;
+                          }
+                          if(nombreA > nombreB){
+                            return 1;
+                          }
+                          return 0;
+                       });
+                     }//end sort
+                   }
                    this.setState({data, imagenBannerUrl: snapshot.child('imagenBannerUrl').val()});
                   }
                 });
@@ -303,9 +343,9 @@ class BusinessBySubcategory extends Component{
                     style={{flex: 1, alignItems: "center", justifyContent: "center"}}
                     onPress={() => {
                         if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
-                          this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName});
+                          this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName, subcategoryName: this.props.navigation.state.params.subcategoryName});
                         } else {
-                          this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName});
+                          this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName, subcategoryName: this.props.navigation.state.params.subcategoryName});
                         }
                       }
                     }
@@ -316,9 +356,9 @@ class BusinessBySubcategory extends Component{
                 <TouchableOpacity
                   onPress={() => {
                       if (this.props.navigation.state.params.latitude && this.props.navigation.state.params.longitude){
-                        this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName});
+                        this.props.navigation.navigate('NegociosDetalle', {data: item, distancia: item.distancia, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName, subcategoryName: this.props.navigation.state.params.subcategoryName});
                       } else {
-                        this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName});
+                        this.props.navigation.navigate('NegociosDetalle', {data: item, estadoSeleccionado: this.props.navigation.state.params.estadoSeleccionado, latitude: this.props.navigation.state.params.latitude, longitude: this.props.navigation.state.params.longitude, categoryName: this.props.navigation.state.params.categoryName, subcategoryName: this.props.navigation.state.params.subcategoryName});
                       }
                     }
                   }
